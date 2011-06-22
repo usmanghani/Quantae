@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E5AB8C40-42A7-4AFF-A269-F51DCB5FC02F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Quantae</RootNamespace>
+    <AssemblyName>Quantae</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=1.1.0.4184, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL" />
+    <Reference Include="MongoDB.Driver, Version=1.1.0.4184, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Workflow.Activities" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.WorkflowServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnswerChoice.cs" />
+    <Compile Include="AudioRecording.cs" />
+    <Compile Include="ContextualAnalysis.cs" />
+    <Compile Include="SentenceEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SentenceEditorForm.Designer.cs">
+      <DependentUpon>SentenceEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SlideControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SlideControl.Designer.cs">
+      <DependentUpon>SlideControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SlideEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SlideEditorForm.Designer.cs">
+      <DependentUpon>SlideEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TopicControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TopicControl.Designer.cs">
+      <DependentUpon>TopicControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TopicEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TopicEditorForm.Designer.cs">
+      <DependentUpon>TopicEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VerbConjugationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VerbConjugationControl.Designer.cs">
+      <DependentUpon>VerbConjugationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CourseLocation.cs" />
+    <Compile Include="GrammarInterfaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GrammarInterfaceForm.Designer.cs">
+      <DependentUpon>GrammarInterfaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GrammarRole.cs" />
+    <Compile Include="HistoryItem.cs" />
+    <Compile Include="IntroSection.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NounConjugation.cs" />
+    <Compile Include="NounConjugationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NounConjugationControl.Designer.cs">
+      <DependentUpon>NounConjugationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NounConjugationHistoryItem.cs" />
+    <Compile Include="PaymentInstrument.cs" />
+    <Compile Include="PaymentInstrumentInfo.cs" />
+    <Compile Include="AnswerDimension.cs" />
+    <Compile Include="QuestionDimension.cs" />
+    <Compile Include="SentenceType.cs" />
+    <Compile Include="Slide.cs" />
+    <Compile Include="TenseRule.cs" />
+    <Compile Include="Topic.cs" />
+    <Compile Include="DefinitenessRule.cs" />
+    <Compile Include="DepthScore.cs" />
+    <Compile Include="DifficultyLevels.cs" />
+    <Compile Include="GenderRule.cs" />
+    <Compile Include="GrammarAnalysisElement.cs" />
+    <Compile Include="GrammarRule.cs" />
+    <Compile Include="LearningDependencyScore.cs" />
+    <Compile Include="LearningTypeScore.cs" />
+    <Compile Include="NumberRule.cs" />
+    <Compile Include="PaymentInformation.cs" />
+    <Compile Include="PaymentTypes.cs" />
+    <Compile Include="PersonRule.cs" />
+    <Compile Include="Picture.cs" />
+    <Compile Include="Program.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuantaeObject.cs" />
+    <Compile Include="QuantaeObjectId.cs" />
+    <Compile Include="QuantaeObjectIdGenerator.cs" />
+    <Compile Include="QuantaeObjectIdMemberConvention.cs" />
+    <Compile Include="Question.cs" />
+    <Compile Include="Sentence.cs" />
+    <Compile Include="Role.cs" />
+    <Compile Include="TopicHistoryItem.cs" />
+    <Compile Include="TopicRulePair.cs" />
+    <Compile Include="UserProfile.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="VerbConjugation.cs" />
+    <Compile Include="VerbConjugationHistoryItem.cs" />
+    <Compile Include="VideoRecording.cs" />
+    <Compile Include="RecordingType.cs" />
+    <Compile Include="VocabularyHistoryItem.cs" />
+    <Compile Include="Weakness.cs" />
+    <Compile Include="Word.cs" />
+    <Compile Include="WordSubtype.cs" />
+    <Compile Include="WordType.cs" />
+    <Compile Include="WordUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WordUserControl.Designer.cs">
+      <DependentUpon>WordUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WordUserControl2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WordUserControl2.Designer.cs">
+      <DependentUpon>WordUserControl2.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TransliterationLibrary\TransliterationLibrary.csproj">
+      <Project>{36AEA523-BB68-4761-B5E3-3ED14D643D62}</Project>
+      <Name>TransliterationLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SentenceEditorForm.resx">
+      <DependentUpon>SentenceEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SlideControl.resx">
+      <DependentUpon>SlideControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SlideEditorForm.resx">
+      <DependentUpon>SlideEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TopicControl.resx">
+      <DependentUpon>TopicControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TopicEditorForm.resx">
+      <DependentUpon>TopicEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VerbConjugationControl.resx">
+      <DependentUpon>VerbConjugationControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GrammarInterfaceForm.resx">
+      <DependentUpon>GrammarInterfaceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NounConjugationControl.resx">
+      <DependentUpon>NounConjugationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordUserControl.resx">
+      <DependentUpon>WordUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordUserControl2.resx">
+      <DependentUpon>WordUserControl2.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

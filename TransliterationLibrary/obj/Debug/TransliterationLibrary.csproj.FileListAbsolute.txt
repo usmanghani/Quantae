@@ -1,0 +1,10 @@
+C:\Users\Owner\documents\visual studio 2010\Projects\Quantae\TransliterationLibrary\bin\Debug\TransliterationLibrary.dll
+C:\Users\Owner\documents\visual studio 2010\Projects\Quantae\TransliterationLibrary\bin\Debug\TransliterationLibrary.pdb
+C:\Users\Owner\documents\visual studio 2010\Projects\Quantae\TransliterationLibrary\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Owner\documents\visual studio 2010\Projects\Quantae\TransliterationLibrary\obj\Debug\TransliterationLibrary.dll
+C:\Users\Owner\documents\visual studio 2010\Projects\Quantae\TransliterationLibrary\obj\Debug\TransliterationLibrary.pdb
+D:\Quantae\TransliterationLibrary\bin\Debug\TransliterationLibrary.dll
+D:\Quantae\TransliterationLibrary\bin\Debug\TransliterationLibrary.pdb
+D:\Quantae\TransliterationLibrary\obj\Debug\ResolveAssemblyReference.cache
+D:\Quantae\TransliterationLibrary\obj\Debug\TransliterationLibrary.dll
+D:\Quantae\TransliterationLibrary\obj\Debug\TransliterationLibrary.pdb
