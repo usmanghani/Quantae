@@ -24,7 +24,7 @@
   <Class Name="Quantae.Topic">
     <Position X="7.5" Y="2.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAEAEAAAAAAAAAAAAACAQ=</HashCode>
+      <HashCode>AAAAAAAAAACAAACAIAEAAEAAAAAAAAAAAAAAAAQAKAQ=</HashCode>
       <FileName>Topic.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -38,7 +38,7 @@
   <Class Name="Quantae.GrammarAnalysisElement">
     <Position X="13.5" Y="6.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAAACAAAAAQAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAgAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GrammarAnalysisElement.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -73,7 +73,7 @@
   <Class Name="Quantae.Program">
     <Position X="23.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -94,7 +94,7 @@
   <Class Name="Quantae.TopicHistoryItem">
     <Position X="7.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAgAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAA=</HashCode>
       <FileName>TopicHistoryItem.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -115,14 +115,14 @@
   <Class Name="Quantae.VocabularyHistoryItem">
     <Position X="5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAACAAAgAAgAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>VocabularyHistoryItem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quantae.Word">
     <Position X="15.75" Y="1.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>ABAAAAAAAAAAAAACgAAAAAAAAAAAAIAEAAAACAAoAAA=</HashCode>
+      <HashCode>ABAAAAAAAAAAAAACgBAAAAAAAAAAAIAEAAAACAAoAAA=</HashCode>
       <FileName>Word.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -159,19 +159,19 @@
   <Class Name="Quantae.Sentence">
     <Position X="3.25" Y="1.75" Width="3.75" />
     <TypeIdentifier>
-      <HashCode>BAAAAAQIAAAEAAAAAAAAAAAAABAAAEAEAQAEAAAgBAg=</HashCode>
+      <HashCode>BAAAAAAIAAAEAEAAAAAAABAAABAAAEAEAQAEAAAgBAg=</HashCode>
       <FileName>Sentence.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quantae.UserProfile">
     <Position X="10.25" Y="1.75" Width="5" />
     <TypeIdentifier>
-      <HashCode>AKCAAAAEgCQAAACAAACABAgBRAAABAAAAAAAAIAAAAA=</HashCode>
+      <HashCode>AKCAAAAEgCQAAACAAACABAgBRAAAFAAAAAAAAIAAAAA=</HashCode>
       <FileName>UserProfile.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quantae.AnswerChoice">
-    <Position X="18.25" Y="0.5" Width="1.5" />
+    <Position X="17.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAIAAgAAAAA=</HashCode>
       <FileName>AnswerChoice.cs</FileName>
@@ -303,17 +303,17 @@
       <FileName>TenseRule.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="Quantae.TopicComponent" Collapsed="true">
+  <Enum Name="Quantae.Role" Collapsed="true">
     <Position X="18.25" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>oAAAIAAAoAhQQCQAAgAAABAhgBABQAAAAIBBAgRCvJQ=</HashCode>
-      <FileName>TopicComponent.cs</FileName>
+      <FileName>Role.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="Quantae.Weakness" Collapsed="true">
+  <Enum Name="Quantae.WeaknessType" Collapsed="true">
     <Position X="20" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAgAAAAAAAAAAEBA=</HashCode>
+      <HashCode>AEAAAAAAAAgAAAAAAAAAAAAAAAAAAgAAAAAAAAAAEBA=</HashCode>
       <FileName>Weakness.cs</FileName>
     </TypeIdentifier>
   </Enum>

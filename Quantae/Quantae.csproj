@@ -61,6 +61,7 @@
     <Compile Include="SentenceEditorForm.Designer.cs">
       <DependentUpon>SentenceEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SentenceHistoryItem.cs" />
     <Compile Include="SlideControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -157,6 +158,7 @@
     <Compile Include="RecordingType.cs" />
     <Compile Include="VocabularyHistoryItem.cs" />
     <Compile Include="Weakness.cs" />
+    <Compile Include="Weakness_2.cs" />
     <Compile Include="Word.cs" />
     <Compile Include="WordSubtype.cs" />
     <Compile Include="WordType.cs" />

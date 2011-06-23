@@ -50,6 +50,9 @@ namespace Quantae
         #region History Vocab/Verb etc
 
         public List<TopicHistoryItem> TopicHistory { get; set; }
+
+        public List<SentenceHistoryItem> SentenceHistory { get; set; }
+
         public List<VocabularyHistoryItem> VocabHistory { get; set; }
         public List<VerbConjugationHistoryItem> VerbConjugationHistory { get; set; }
         public List<NounConjugationHistoryItem> NounConjugationHistory { get; set; }
@@ -61,6 +64,7 @@ namespace Quantae
         /// <summary>
         /// Count of each weakness per topic
         /// Majority weakness is defined by a threshold.
+        /// Understanding is always a major weakness.
         /// </summary>
         public Dictionary<Weakness, Dictionary<Topic, int>> Weaknesses { get; set; }
 

@@ -7,7 +7,7 @@ namespace Quantae
 {
     public class GrammarAnalysisElement
     {
-        public Tuple<List<int>, List<Role>> StartSegmentRolePair { get; set; }
-        public Tuple<List<int>, List<Role>> EndSegmentRolePair { get; set; }
+        public Tuple<HashSet<int>, Role> StartSegmentRolePair { get; set; }
+        public Tuple<HashSet<int>, Role> EndSegmentRolePair { get; set; }
     }
 }
