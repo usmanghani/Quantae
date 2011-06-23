@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae
 {
-    public class GrammarRole
+    public class GrammarRole : QuantaeObject<ulong>
     {
         public Role Component { get; set; }
 
@@ -14,4 +14,6 @@ namespace Quantae
         /// </summary>
         public string RoleDefinition { get; set; }
     }
+
+    public class GrammarRoleHandle : QuantaeObjectHandle<ulong> { }
 }

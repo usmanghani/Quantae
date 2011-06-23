@@ -80,12 +80,14 @@
     <Compile Include="Question.cs" />
     <Compile Include="QuestionDimension.cs" />
     <Compile Include="RecordingType.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="Sentence.cs" />
+    <Compile Include="SentenceFragment.cs" />
+    <Compile Include="SentenceHistoryItem.cs" />
     <Compile Include="SentenceType.cs" />
     <Compile Include="Slide.cs" />
     <Compile Include="TenseRule.cs" />
     <Compile Include="Topic.cs" />
-    <Compile Include="TopicComponent.cs" />
     <Compile Include="TopicHistoryItem.cs" />
     <Compile Include="TopicRulePair.cs" />
     <Compile Include="UserProfile.cs" />
@@ -95,7 +97,9 @@
     <Compile Include="VideoRecording.cs" />
     <Compile Include="VocabularyHistoryItem.cs" />
     <Compile Include="Weakness.cs" />
+    <Compile Include="WeaknessType.cs" />
     <Compile Include="Word.cs" />
+    <Compile Include="WordSubtype.cs" />
     <Compile Include="WordType.cs" />
   </ItemGroup>
   <ItemGroup>

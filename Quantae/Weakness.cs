@@ -7,6 +7,7 @@ namespace Quantae
 {
     public class Weakness
     {
-        
+        public WeaknessType WeaknessType { get; set; }
+        public string UmbrellaTopicName { get; set; }
     }
 }

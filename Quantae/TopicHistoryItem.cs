@@ -7,7 +7,7 @@ namespace Quantae
 {
     public class TopicHistoryItem : HistoryItem
     {
-        public Topic Topic { get; set; }
+        public TopicHandle Topic { get; set; }
 
         /// <summary>
         /// These are used to calculate major and minor weaknesses on the user profile.

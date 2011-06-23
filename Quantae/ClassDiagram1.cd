@@ -73,7 +73,7 @@
   <Class Name="Quantae.Program">
     <Position X="23.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -303,18 +303,11 @@
       <FileName>TenseRule.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="Quantae.Role" Collapsed="true">
-    <Position X="18.25" Y="7.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>oAAAIAAAoAhQQCQAAgAAABAhgBABQAAAAIBBAgRCvJQ=</HashCode>
-      <FileName>Role.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Enum Name="Quantae.WeaknessType" Collapsed="true">
     <Position X="20" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAgAAAAAAAAAAAAAAAAAAgAAAAAAAAAAEBA=</HashCode>
-      <FileName>Weakness.cs</FileName>
+      <FileName>WeaknessType.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="Quantae.WordType" Collapsed="true">

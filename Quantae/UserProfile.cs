@@ -66,7 +66,7 @@ namespace Quantae
         /// Majority weakness is defined by a threshold.
         /// Understanding is always a major weakness.
         /// </summary>
-        public Dictionary<Weakness, Dictionary<Topic, int>> Weaknesses { get; set; }
+        public Dictionary<Weakness, int> Weaknesses { get; set; }
 
         #endregion
     }

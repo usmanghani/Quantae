@@ -12,4 +12,10 @@ namespace Quantae
         [BsonId(IdGenerator = typeof(QuantaeObjectIdGenerator))]
         public T ObjectId { get; set; }
     }
+
+    public class QuantaeObjectHandle<T>
+    {
+        [BsonId(IdGenerator = typeof(QuantaeObjectIdGenerator))]
+        public T ObjectId { get; set; }
+    }
 }

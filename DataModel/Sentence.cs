@@ -15,7 +15,7 @@ namespace Quantae
 
         public SentenceType Type { get; set; }
 
-        public List<Word> Words { get; set; }
+        public List<WordHandle> Words { get; set; }
 
         public List<GrammarAnalysisElement> GrammarAnalysis { get; set; }
 
@@ -24,14 +24,15 @@ namespace Quantae
         // Automatic. Determined by the number of constructions in the sentence.
         // Its determined by Words.Length and Complexity(GrammarAnalysis).
         // Complexity(GrammarAnalysis) -> if (1->1) +=1; if ( N->M ) += N;
-        // Final score = words.length + complexity
+        // FUTURE: Final score = words.length + complexity
+        // NOW: Just measure word length
         public double DifficultyRank { get; set; }
 
         #endregion
 
         #region Topic and Rule Correspondence (this will be generated at input time when the grammarian inputs word attributes)
 
-        public List<TopicRulePair> TopicRulePairs { get; set; }
+        public List<Tuple<TopicHandle, NounConjugation, VerbConjugation>> TopicRulePairs { get; set; }
 
         #endregion
 
@@ -46,7 +47,6 @@ namespace Quantae
         public VideoRecording AnalyticalVideoRecording { get; set; }
         public VideoRecording ContextualVideoRecording { get; set; }
         public AudioRecording SpokenSentence { get; set; }
-
         public Picture ContextualPicture { get; set; }
 
         #endregion
@@ -56,5 +56,10 @@ namespace Quantae
         public List<string> Tags { get; set; }
 
         #endregion
+    }
+
+    public class SentenceHandle:QuantaeObjectHandle<ulong>
+    {
+
     }
 }

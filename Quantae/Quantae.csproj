@@ -61,6 +61,7 @@
     <Compile Include="SentenceEditorForm.Designer.cs">
       <DependentUpon>SentenceEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SentenceFragment.cs" />
     <Compile Include="SentenceHistoryItem.cs" />
     <Compile Include="SlideControl.cs">
       <SubType>UserControl</SubType>
@@ -137,9 +138,7 @@
     <Compile Include="PaymentTypes.cs" />
     <Compile Include="PersonRule.cs" />
     <Compile Include="Picture.cs" />
-    <Compile Include="Program.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuantaeObject.cs" />
     <Compile Include="QuantaeObjectId.cs" />
@@ -157,8 +156,8 @@
     <Compile Include="VideoRecording.cs" />
     <Compile Include="RecordingType.cs" />
     <Compile Include="VocabularyHistoryItem.cs" />
+    <Compile Include="WeaknessType.cs" />
     <Compile Include="Weakness.cs" />
-    <Compile Include="Weakness_2.cs" />
     <Compile Include="Word.cs" />
     <Compile Include="WordSubtype.cs" />
     <Compile Include="WordType.cs" />

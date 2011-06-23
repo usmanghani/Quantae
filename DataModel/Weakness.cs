@@ -5,11 +5,9 @@ using System.Text;
 
 namespace Quantae
 {
-    public enum Weakness
+    public class Weakness
     {
-        Unknown = 0,
-        NumberAgreement = 1,
-        GenderAgreement = 2,
-        Understanding = 3,
+        public WeaknessType WeaknessType { get; set; }
+        public string UmbrellaTopicName { get; set; }
     }
 }

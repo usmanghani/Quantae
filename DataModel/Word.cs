@@ -11,6 +11,7 @@ namespace Quantae
         public string Text { get; set; }
         public string Translation { get; set; }
         public WordType WordType { get; set; }
+        public WordSubtype WordSubtype { get; set; }
         public NounConjugation NounConjugation { get; set; }
         public VerbConjugation VerbConjugation { get; set; }
         public DefinitenessRule DefinitnessRule { get; set; }
@@ -24,5 +25,10 @@ namespace Quantae
         {
             return Text.GetHashCode();
         }
+    }
+
+    public class WordHandle : QuantaeObjectHandle<ulong>
+    {
+
     }
 }

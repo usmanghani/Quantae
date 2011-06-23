@@ -26,4 +26,9 @@ namespace Quantae
             return Text.GetHashCode();
         }
     }
+
+    public class WordHandle : QuantaeObjectHandle<ulong>
+    {
+
+    }
 }

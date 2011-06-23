@@ -24,13 +24,18 @@ namespace Quantae
         public string AnalyticalLocalizedTopicTitle { get; set; }
         public string ContextualLocalizedTopicTitle { get; set; }
 
-        public List<Tuple<Role, NounConjugation, VerbConjugation>> RoleConjugationPairs { get; set; }
+        public List<Tuple<GrammarRoleHandle, NounConjugation, VerbConjugation>> RoleConjugationPairs { get; set; }
 
         public bool IsPseudoTopic { get; set; }
 
-        public List<Topic> Dependencies { get; set; }
-        public List<Topic> ForwardLinks { get; set; }
-        
+        public List<TopicHandle> Dependencies { get; set; }
+        public List<TopicHandle> ForwardLinks { get; set; }
+
         public IntroSection IntroSection { get; set; }
+    }
+
+    public class TopicHandle:QuantaeObjectHandle<ulong>
+    {
+
     }
 }

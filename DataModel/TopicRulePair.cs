@@ -9,7 +9,7 @@ namespace Quantae
     public class TopicRulePair
     {
         public Topic Topic { get; set; }
-        public NounConjugation NounConjugation { get; set; }
-        public VerbConjugation VerbConjugation { get; set; }
+        public List<NounConjugation> NounConjugation { get; set; }
+        public List<VerbConjugation> VerbConjugation { get; set; }
     }
 }

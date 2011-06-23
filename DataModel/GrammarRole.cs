@@ -5,13 +5,15 @@ using System.Text;
 
 namespace Quantae
 {
-    public class GrammarRole
+    public class GrammarRole : QuantaeObject<ulong>
     {
-        public TopicComponent Component { get; set; }
+        public Role Component { get; set; }
 
         /// <summary>
         /// Used as a hint.
         /// </summary>
         public string RoleDefinition { get; set; }
     }
+
+    public class GrammarRoleHandle : QuantaeObjectHandle<ulong> { }
 }

@@ -17,8 +17,6 @@ namespace Quantae
         ///  the place where he sees it.  Add 2 for sample slids and 3 for instructions slides.
         ///  FailureScore is only updated when he is tested for vocab and gets it wrong.
         /// </summary>
-        public int SuccessCount { get; set; }
-        public int FailureCount { get; set; }
 
         public override bool Equals(object obj)
         {
