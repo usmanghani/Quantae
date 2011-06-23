@@ -51,7 +51,7 @@
     <Compile Include="AnswerDimension.cs" />
     <Compile Include="AudioRecording.cs" />
     <Compile Include="ContextualAnalysis.cs" />
-    <Compile Include="CourseLocation.cs" />
+    <Compile Include="UserCurrentState.cs" />
     <Compile Include="DefinitenessRule.cs" />
     <Compile Include="DepthScore.cs" />
     <Compile Include="DifficultyLevels.cs" />

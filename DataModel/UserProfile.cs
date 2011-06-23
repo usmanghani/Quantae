@@ -25,7 +25,7 @@ namespace Quantae
 
         #region User Session State
 
-        public CourseLocation CourseLocation { get; set; }
+        public UserCurrentState CurrentState { get; set; }
 
         #endregion
 

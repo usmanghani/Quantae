@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quantae
+namespace Repositories
 {
-    public class CourseLocation : QuantaeObject<ulong>
+    public class GrammarRolesRepository
     {
     }
 }
