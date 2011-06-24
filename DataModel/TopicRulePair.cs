@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
     public class TopicRulePair
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using MongoDB.Bson.Serialization.Conventions;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
     public class QuantaeObjectIdMemberConvention : IIdMemberConvention
     {

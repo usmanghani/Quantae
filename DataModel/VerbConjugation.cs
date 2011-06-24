@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
-    public class VerbConjugation
+    public class VerbConjugation : Conjugation
     {
-        public GenderRule Gender { get; set; }
-        public NumberRule Number { get; set; }
         public PersonRule Person { get; set; }
         public TenseRule Tense { get; set; }
 
         public override bool Equals(object obj)
         {
             VerbConjugation item = obj as VerbConjugation;
-            return Gender == item.Gender && Number == item.Number && Person == item.Person && Tense == item.Tense;
+
+            return (item.Gender == Gender)
+                && (item.Number == Number)
+                && (item.Person == Person)
+                && (item.Tense == Tense);
         }
 
         public override int GetHashCode()

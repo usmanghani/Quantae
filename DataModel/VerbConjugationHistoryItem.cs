@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
     public class VerbConjugationHistoryItem : HistoryItem
     {
@@ -11,7 +11,7 @@ namespace Quantae
 
         public override bool Equals(object obj)
         {
-            return (obj as VerbConjugation).Equals(VerbConjugation);
+            return (obj as VerbConjugationHistoryItem).VerbConjugation.Equals(VerbConjugation);
         }
 
         public override int GetHashCode()

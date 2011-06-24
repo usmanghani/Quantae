@@ -5,7 +5,7 @@ using System.Text;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
     /// <summary>
     /// These are graph nodes
@@ -24,7 +24,7 @@ namespace Quantae
         public string AnalyticalLocalizedTopicTitle { get; set; }
         public string ContextualLocalizedTopicTitle { get; set; }
 
-        public List<Tuple<GrammarRoleHandle, NounConjugation, VerbConjugation>> RoleConjugationPairs { get; set; }
+        public List<Tuple<GrammarRoleHandle, Conjugation>> RoleConjugationPairs { get; set; }
 
         public bool IsPseudoTopic { get; set; }
 
@@ -34,7 +34,7 @@ namespace Quantae
         public IntroSection IntroSection { get; set; }
     }
 
-    public class TopicHandle:QuantaeObjectHandle<ulong>
+    public class TopicHandle : QuantaeObjectHandle<ulong>
     {
 
     }

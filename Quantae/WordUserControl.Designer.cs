@@ -67,14 +67,14 @@
             // 
             // verbConjugationControl1
             // 
-            this.verbConjugationControl1.GenderRule = Quantae.GenderRule.Unknown;
+            this.verbConjugationControl1.GenderRule = Quantae.DataModel.GenderRule.Unknown;
             this.verbConjugationControl1.Location = new System.Drawing.Point(17, 284);
             this.verbConjugationControl1.Name = "verbConjugationControl1";
-            this.verbConjugationControl1.NumberRule = Quantae.NumberRule.Unknown;
-            this.verbConjugationControl1.PersonRule = Quantae.PersonRule.Unknown;
+            this.verbConjugationControl1.NumberRule = Quantae.DataModel.NumberRule.Unknown;
+            this.verbConjugationControl1.PersonRule = Quantae.DataModel.PersonRule.Unknown;
             this.verbConjugationControl1.Size = new System.Drawing.Size(290, 209);
             this.verbConjugationControl1.TabIndex = 9;
-            this.verbConjugationControl1.TenseRule = Quantae.TenseRule.Unknown;
+            this.verbConjugationControl1.TenseRule = Quantae.DataModel.TenseRule.Unknown;
             // 
             // nounConjugationControl1
             // 

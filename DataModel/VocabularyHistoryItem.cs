@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
     public class VocabularyHistoryItem : HistoryItem
     {
-        public Word Word { get; set; }
+        public VocabEntryHandle VocabEntry { get; set; }
 
         /// <summary>
-        ///  This score is updated when:
-        ///  1. In Vocab testing when the user gets the word right.
-        ///  2. In Instruction and Sample slides where he is not tested on vocabulary, 
-        ///  but still exposed to words. This will increase the success score by 2 or 3 based on
-        ///  the place where he sees it.  Add 2 for sample slids and 3 for instructions slides.
-        ///  FailureScore is only updated when he is tested for vocab and gets it wrong.
+        ///  Vocabulary Rank:
+        ///  1. 0 for unknown word.
+        ///  2. +1 for Wrong
+        ///  3. +2  when encountered in sample/question
+        ///  4. +3 Correct or shown in intro.
         /// </summary>
+        public VocabRankTypes Rank { get; set; }
 
         public override bool Equals(object obj)
         {
-            return Word.Equals(obj as Word);
+            return (obj as VocabularyHistoryItem).VocabEntry.Equals(VocabEntry);
         }
 
         public override int GetHashCode()
         {
-            return Word.GetHashCode();
+            return VocabEntry.GetHashCode();
         }
     }
 }

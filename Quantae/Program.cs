@@ -10,6 +10,7 @@ using System.Workflow;
 using System.Workflow.ComponentModel;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
+using Quantae.DataModel;
 
 namespace Quantae
 {
@@ -27,6 +28,10 @@ namespace Quantae
     //    }
     //}
 
+    class A { public string Aa; public ObjectId ID; }
+    class B : A { public string Bb;}
+    class C : A { public string Cc;}
+
     class Program
     {
         //static void DoWorkflowStuff()
@@ -42,6 +47,13 @@ namespace Quantae
 
         static void Main(string[] args)
         {
+            //int[] array = { 1, 2, 3 };
+            //Console.WriteLine(array.Where(i => i > 3).Select(i => i).Where(i => i > 3).Count());
+            //Environment.Exit(0);
+
+            //A a = new B();
+            //Console.WriteLine(a.ToJson());
+
             string id = DateTime.UtcNow.ToString("yyyyMMddHHmmssfffff");
             Console.WriteLine(id);
             ulong idAsLong = ulong.Parse(id);
@@ -49,7 +61,7 @@ namespace Quantae
             Console.WriteLine(idAsLong.ToString().CompareTo(id));
 
             var myConventions = new ConventionProfile();
-            myConventions.SetIdMemberConvention(new QuantaeObjectIdMemberConvention());
+            myConventions.SetIdMemberConvention(new Quantae.DataModel.QuantaeObjectIdMemberConvention());
             BsonClassMap.RegisterConventions(myConventions, t => t.FullName.StartsWith("Quantae."));
             BsonClassMap.RegisterClassMap<Sentence>();
 

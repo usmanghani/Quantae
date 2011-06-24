@@ -8,8 +8,8 @@
     <ProjectGuid>{84696870-FD21-43F4-9FD9-6C7D01A32FC7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataModel</RootNamespace>
-    <AssemblyName>DataModel</AssemblyName>
+    <RootNamespace>Quantae.DataModel</RootNamespace>
+    <AssemblyName>Quantae.DataModel</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -50,7 +50,10 @@
     <Compile Include="AnswerChoice.cs" />
     <Compile Include="AnswerDimension.cs" />
     <Compile Include="AudioRecording.cs" />
+    <Compile Include="Conjugation.cs" />
     <Compile Include="ContextualAnalysis.cs" />
+    <Compile Include="NounType.cs" />
+    <Compile Include="VocabEntry.cs" />
     <Compile Include="UserCurrentState.cs" />
     <Compile Include="DefinitenessRule.cs" />
     <Compile Include="DepthScore.cs" />
@@ -58,7 +61,6 @@
     <Compile Include="GenderRule.cs" />
     <Compile Include="GrammarAnalysisElement.cs" />
     <Compile Include="GrammarRole.cs" />
-    <Compile Include="GrammarRule.cs" />
     <Compile Include="HistoryItem.cs" />
     <Compile Include="IntroSection.cs" />
     <Compile Include="LearningDependencyScore.cs" />
@@ -95,10 +97,11 @@
     <Compile Include="VerbConjugation.cs" />
     <Compile Include="VerbConjugationHistoryItem.cs" />
     <Compile Include="VideoRecording.cs" />
+    <Compile Include="VocabRankTypes.cs" />
     <Compile Include="VocabularyHistoryItem.cs" />
     <Compile Include="Weakness.cs" />
     <Compile Include="WeaknessType.cs" />
-    <Compile Include="Word.cs" />
+    <Compile Include="GrammarEntry.cs" />
     <Compile Include="WordSubtype.cs" />
     <Compile Include="WordType.cs" />
   </ItemGroup>

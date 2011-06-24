@@ -8,8 +8,8 @@
     <ProjectGuid>{A1508D2D-6E65-4AB4-B34A-57AE20C73434}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Repositories</RootNamespace>
-    <AssemblyName>Repositories</AssemblyName>
+    <RootNamespace>Quantae.Repositories</RootNamespace>
+    <AssemblyName>Quantae.Repositories</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -49,7 +49,7 @@
     <Compile Include="SentenceRepository.cs" />
     <Compile Include="TopicRepository.cs" />
     <Compile Include="UserRepository.cs" />
-    <Compile Include="WordRepository.cs" />
+    <Compile Include="VocabRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

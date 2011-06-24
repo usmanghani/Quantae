@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public enum PaymentTypes
+    public enum VocabRankTypes
     {
         Unknown = 0,
-        Free = 1, 
-        Basic = 2, 
-        Premium = 3,
+        Wrong = 1,
+        SeenInSampleOrQuestion = 2,
+        CorrectOrSeenInIntro = 3,
     }
 }

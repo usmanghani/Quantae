@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using MongoDB.Driver;
 
-namespace Repositories
+namespace Quantae.Repositories
 {
     public class DataStore
     {

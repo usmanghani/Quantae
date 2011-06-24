@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
     public class UserProfile : QuantaeObject<ulong>
     {
@@ -50,9 +50,7 @@ namespace Quantae
         #region History Vocab/Verb etc
 
         public List<TopicHistoryItem> TopicHistory { get; set; }
-
         public List<SentenceHistoryItem> SentenceHistory { get; set; }
-
         public List<VocabularyHistoryItem> VocabHistory { get; set; }
         public List<VerbConjugationHistoryItem> VerbConjugationHistory { get; set; }
         public List<NounConjugationHistoryItem> NounConjugationHistory { get; set; }
@@ -69,5 +67,21 @@ namespace Quantae
         public Dictionary<Weakness, int> Weaknesses { get; set; }
 
         #endregion
+
+        public UserProfile()
+        {
+            InitNounConjugationHistory();
+            InitVerbConjugationHistory();
+        }
+
+        private void InitVerbConjugationHistory()
+        {
+            // TODO : Initialize this properly.
+        }
+
+        private void InitNounConjugationHistory()
+        {
+            NounConjugationHistory = new List<NounConjugationHistoryItem>();
+        }
     }
 }

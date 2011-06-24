@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
     public class Sentence : QuantaeObject<ulong>
     {
@@ -15,7 +15,9 @@ namespace Quantae
 
         public SentenceType Type { get; set; }
 
-        public List<WordHandle> Words { get; set; }
+        public List<VocabEntryHandle> VocabEntries { get; set; }
+
+        public List<GrammarEntry> GrammarEntries { get; set; }
 
         public List<GrammarAnalysisElement> GrammarAnalysis { get; set; }
 
@@ -24,15 +26,25 @@ namespace Quantae
         // Automatic. Determined by the number of constructions in the sentence.
         // Its determined by Words.Length and Complexity(GrammarAnalysis).
         // Complexity(GrammarAnalysis) -> if (1->1) +=1; if ( N->M ) += N;
-        // FUTURE: Final score = words.length + complexity
-        // NOW: Just measure word length
-        public double DifficultyRank { get; set; }
+        // FUTURE: Final score = vacabentries.length + complexity
+        // NOW: vocabentries.Count
+        public int DifficultyRank 
+        { 
+            get
+            {
+                return this.VocabEntries.Count;
+            }
+        }
 
         #endregion
 
         #region Topic and Rule Correspondence (this will be generated at input time when the grammarian inputs word attributes)
 
-        public List<Tuple<TopicHandle, NounConjugation, VerbConjugation>> TopicRulePairs { get; set; }
+        public TopicHandle PrimaryTopic { get; set; }
+
+        public List<TopicHandle> SecondaryTopics { get; set; }
+
+        public List<Tuple<GrammarRoleHandle, Conjugation>> RoleConjugationPairs { get; set; }
 
         #endregion
 

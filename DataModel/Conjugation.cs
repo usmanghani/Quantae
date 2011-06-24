@@ -5,11 +5,9 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public enum PaymentTypes
+    public abstract class Conjugation
     {
-        Unknown = 0,
-        Free = 1, 
-        Basic = 2, 
-        Premium = 3,
+        public GenderRule Gender { get; set; }
+        public NumberRule Number { get; set; }
     }
 }

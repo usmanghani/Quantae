@@ -8,8 +8,8 @@
     <ProjectGuid>{FDFB052E-3E57-4A39-B064-E98846A66F52}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QuantaeEngine</RootNamespace>
-    <AssemblyName>QuantaeEngine</AssemblyName>
+    <RootNamespace>Quantae.Engine</RootNamespace>
+    <AssemblyName>Quantae.Engine</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,9 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NounConjugationFilter.cs" />
+    <Compile Include="NounConjugationPolicies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecondaryTopicFilter.cs" />
     <Compile Include="PrimaryTopicFilter.cs" />
+    <Compile Include="VerbConjugationFilter.cs" />
+    <Compile Include="VerbConjugationPolicies.cs" />
+    <Compile Include="VocabFilter.cs" />
+    <Compile Include="VocabPolicies.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AlgoNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataModel\DataModel.csproj">
+      <Project>{84696870-FD21-43F4-9FD9-6C7D01A32FC7}</Project>
+      <Name>DataModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

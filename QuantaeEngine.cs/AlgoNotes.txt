@@ -1,0 +1,98 @@
+﻿Primary Topic Filter:
+--------------------
+
+Current Sentence Primary Topic Handle == User Current Topic Handle;
+
+Secondary Topic Filter:
+-----------------------
+
+foreach (var topic in current_sentence.secondary_topics):
+    if(not user_topic_history.contains(topic)):
+        return false;
+
+
+Vocabulary Ranking Algorithm / Vocab Filter:
+------------------------------
+
+current_sentence_score = 0;
+
+foreach vocabentry in the candidate_sentence:
+    current_sentence_score += score(vocabentry) -> find vocabentry in vocab history of current user and return its rank.
+
+    min_sentence_score_required = ceil(1.5 * current_Sentence_word_count);
+
+    // TODO: is this == or >= ???
+    if (current_sentence_score >= min_sentence_score_required)
+    {
+        return true;
+    }
+
+    return false;
+
+
+NounConjugationFilter:
+----------------------
+
+inputs : candidate sentence, user
+
+nounConjugations = get all noun conjugations from the sentence (extract all noun conjugations from grammarrole -> conjugation pairs)
+
+foreach ( nc in nounConjugations)
+{
+    if (user noun conjugation history does not contain nc)
+    {
+        return false;
+    }
+
+}
+
+return true;
+
+VerbConjugationFilter:
+----------------------
+
+inputs : candidate sentence, user
+
+verbConjugations = get all verb conjugations from the sentence (extract all verb conjugations from grammarrole -> conjugation pairs)
+
+foreach (vc in verbConjugations)
+{
+    if (user verb conjugation history does not contain vc)
+    {
+        return false;
+    }
+}
+
+return true;
+
+Noun Conjugation Ranking Algorithm:
+-----------------------------------
+
+Noun Conjugations are to be ranked in pairs.
+
+Noun Conjugations have three ranks 0, 1 and 2.
+
+0 is for the pair of singular masculine and singular feminine
+1 is for the pair of plural masculine and plural feminine
+2 is for the pair of dual masculine and dual feminine
+
+GetCurrentNounConjugationRank from current user state.
+Check if ConjugationHistory[GetCurrentNounConjugationRank].IsSuccess -> SuccessCount / (SuccessCount + FailureCount) >= 0.9
+if Yes then move the user to the next rank if not already at the highest.
+
+Verb Conjugation Ranking Algorithm:
+-----------------------------------
+
+Verb Conjugations have three rank dimensions one for each tense. Past, PresentFuture and Command.
+
+0 - 6 for Past.
+0 - 6 for the PresentFuture.
+0 - 2 for the Command.
+
+Each TenseRule is treated independently of each other.
+
+GetCurrentVerbConjugationRank from current user state for each TenseRule.
+Check if ConjugationHistory[GetCurrentVerbConjugationRank].IsSuccess -> SuccessCount / (SuccessCount + FailureCount) >= 0.9 for each TenseRule.
+if Yes then move the user to the next rank for that TenseRule if not already at the highest.
+
+

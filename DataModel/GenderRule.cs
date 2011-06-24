@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quantae
+namespace Quantae.DataModel
 {
     public enum GenderRule
     {
         Unknown = 0,
-        Male = 1, 
-        Female = 2,
+        Masculine = 1, 
+        Feminine = 2,
+        Neutral = 3,
     }
 }
