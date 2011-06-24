@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeAdminWebApp.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{A1508D2D-6E65-4AB4-B34A-57AE20C73434}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeEngine", "QuantaeEngine.cs\QuantaeEngine.csproj", "{FDFB052E-3E57-4A39-B064-E98846A66F52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeEngine", "QuantaeEngine\QuantaeEngine.csproj", "{FDFB052E-3E57-4A39-B064-E98846A66F52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
