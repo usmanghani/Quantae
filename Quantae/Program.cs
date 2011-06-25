@@ -11,6 +11,7 @@ using System.Workflow.ComponentModel;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using Quantae.DataModel;
+using System.IO;
 
 namespace Quantae
 {
@@ -34,6 +35,120 @@ namespace Quantae
 
     class Program
     {
+        static Dictionary<int, Tuple<string, int, List<int>>> DoFwdLinks(Dictionary<int, Tuple<string, List<int>>> graph)
+        {
+            Dictionary<int, Tuple<string, List<int>>> graph2 = new Dictionary<int, Tuple<string, List<int>>>();
+
+            foreach (var kvp in graph)
+            {
+                foreach (var dep in kvp.Value.Item2)
+                {
+                    if (!graph2.ContainsKey(dep) || graph2[dep] == null)
+                    {
+                        graph2[dep] = Tuple.Create(graph[dep].Item1, new List<int>());
+                    }
+
+                    graph2[dep].Item2.Add(kvp.Key);
+                }
+            }
+
+            var sortedGraph = graph2.OrderBy(kvp => kvp.Key).ToDictionary(kvp => kvp.Key);
+
+            Dictionary<int, Tuple<string, int, List<int>>> graph3 = new Dictionary<int, Tuple<string, int, List<int>>>();
+            foreach (var g in graph)
+            {
+                if (sortedGraph.ContainsKey(g.Key))
+                {
+                    graph3.Add(g.Key, Tuple.Create(sortedGraph[g.Key].Value.Item1, sortedGraph[g.Key].Value.Item2.Count, sortedGraph[g.Key].Value.Item2));
+                }
+                else
+                {
+                    graph3.Add(g.Key, Tuple.Create(graph[g.Key].Item1, 0, new List<int>()));
+                }
+            }
+
+            return graph3;
+        }
+
+        static Dictionary<int, string> GetAllPossibleTopics(Dictionary<int, Tuple<string, List<int>>> depGraph, Dictionary<int, bool> topicsCovered)
+        {
+            Dictionary<int, string> possibles = new Dictionary<int, string>();
+
+            var failed = topicsCovered.Where(kvp => !kvp.Value);
+            foreach (var f in failed)
+            {
+                if (depGraph[f.Key].Item2.All(t => topicsCovered.Contains(new KeyValuePair<int, bool>(t, true))))
+                {
+                    possibles.Add(f.Key, depGraph[f.Key].Item1);
+                }
+            }
+
+            foreach (var topic in depGraph.Keys)
+            {
+                if (!topicsCovered.ContainsKey(topic))
+                {
+                    if (depGraph[topic].Item2.All(t => topicsCovered.Contains(new KeyValuePair<int, bool>(t, true))))
+                    {
+                        possibles.Add(topic, depGraph[topic].Item1);
+                    }
+                }
+            }
+
+            return possibles;
+        }
+
+        static Dictionary<int, Tuple<string, List<int>>> ReadDependencyGraph(string filename)
+        {
+            Dictionary<int, Tuple<string, List<int>>> graph = new Dictionary<int, Tuple<string, List<int>>>();
+
+            var contents = File.ReadAllText(filename);
+            var lines = contents.Split("\n\r".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
+            {
+                var line1 = line.Trim();
+                if (string.IsNullOrEmpty(line1))
+                    continue;
+
+                var tokens = line1.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                int topicId = int.Parse(tokens[0]);
+                string topicName = tokens[1];
+
+                List<int> dependencies = new List<int>();
+                foreach (var token in tokens.Skip(2))
+                {
+                    string t = token.Trim();
+                    if (string.IsNullOrEmpty(t))
+                    {
+                        continue;
+                    }
+
+                    dependencies.Add(int.Parse(token));
+                }
+
+                graph[topicId] = Tuple.Create<string, List<int>>(topicName, dependencies);
+            }
+
+            return graph;
+        }
+
+        static bool IsUserValid(Dictionary<int, Tuple<string, List<int>>> topicGraph, Dictionary<int, bool> userProfile, out List<int> violations)
+        {
+            violations = new List<int>();
+            bool result = true;
+
+            foreach (var kvp in userProfile)
+            {
+                if (!kvp.Value && topicGraph[kvp.Key].Item2.Any(t => userProfile.ContainsKey(t) && !userProfile[t]))
+                {
+                    violations.Add(kvp.Key);
+                    result = false;
+                }
+            }
+
+            return result;
+        }
+
         //static void DoWorkflowStuff()
         //{
         //    MyStateMachine statemachine = new MyStateMachine();
@@ -47,6 +162,84 @@ namespace Quantae
 
         static void Main(string[] args)
         {
+            Dictionary<int, bool> userProfile = new Dictionary<int, bool>() { 
+                {1, true},
+                {2, true},
+                {3, true},
+                {4, true},
+                {5, true},
+                {6, true},
+                {7, true},
+                {8, false},
+                {10, true},
+                {11, true},
+                {12, true},
+                {13, false},
+                {15, true},
+                {16, true},
+                {17, true},
+                {18, true},
+                {19, true},
+                {20, true},
+                {21, false},
+                {22, true},
+                {23, true},
+                {24, true},
+                {25, true},
+                {26, true},
+                {27, true},
+                {28, true},
+                {29, true},
+                {30, true},
+                {31, true},
+                {32, false},
+                {33, false},
+                {34, true},
+                {35, true},
+                {36, true},
+                {37, true}
+            };
+
+            var graph = ReadDependencyGraph(@"d:\downloads\dependencies.csv");
+
+            foreach (var node in graph)
+            {
+                Console.WriteLine("{0}, {1}, {2}", node.Key, node.Value.Item1, string.Join(",", node.Value.Item2.ToArray()));
+            }
+
+            Console.WriteLine("----------------------------");
+
+            var fwdLinks = DoFwdLinks(graph);
+
+            foreach (var f in fwdLinks)
+            {
+                Console.WriteLine("{0}, {1}, {2}, {3}", f.Key, f.Value.Item2, f.Value.Item1, string.Join(",", f.Value.Item3.ToArray()));
+            }
+
+            Console.WriteLine("----------------------------");
+
+            var orderedFwdLinksByPriority = fwdLinks.OrderBy(kvp => kvp.Value.Item2);
+
+            foreach (var f in orderedFwdLinksByPriority)
+            {
+                Console.WriteLine("{0}, {1}, {2}, {3}", f.Key, f.Value.Item2, f.Value.Item1, string.Join(",", f.Value.Item3.ToArray()));
+            }
+
+            var possibles = GetAllPossibleTopics(graph, userProfile);
+
+            Console.WriteLine("----------------------------");
+
+            foreach (var kvp in possibles)
+            {
+                Console.WriteLine(kvp.Key);
+            }
+
+            List<int> violations;
+            bool isUserValid = IsUserValid(graph, userProfile, out violations);
+            Console.WriteLine("{0} -> {1}", isUserValid, string.Join(",", violations.Select(i => i.ToString()).ToArray()));
+
+            Environment.Exit(1);
+
             //int[] array = { 1, 2, 3 };
             //Console.WriteLine(array.Where(i => i > 3).Select(i => i).Where(i => i > 3).Count());
             //Environment.Exit(0);

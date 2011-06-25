@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IUserOperations.cs" />
     <Compile Include="NounConjugationFilter.cs" />
     <Compile Include="NounConjugationPolicies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="VerbConjugationPolicies.cs" />
     <Compile Include="VocabFilter.cs" />
     <Compile Include="VocabPolicies.cs" />
+    <Compile Include="VocabUpdater.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AlgoNotes.txt" />
