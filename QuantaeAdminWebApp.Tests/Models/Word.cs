@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Quantae
 {
-    public class Word : QuantaeObject<ulong>
+    public class Word : QuantaeObject<long>
     {
         public string Text { get; set; }
         public string Translation { get; set; }

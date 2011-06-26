@@ -15,6 +15,10 @@ using System.IO;
 
 namespace Quantae
 {
+    using Quantae.Engine;
+    using Quantae.DataModel;
+    using Quantae.Repositories;
+
     //class MyStateMachine : StateMachineWorkflowActivity
     //{
     //    public StateActivity state1 = new StateActivity("blah");
@@ -149,6 +153,27 @@ namespace Quantae
             return result;
         }
 
+        static void Main(string[] args)
+        {
+            DoQuantaeDataModelStuff();
+            //DoMongoStuff();
+            //DoGraphStuff();
+            //DoTransliterationStuff();
+        }
+
+        private static void DoQuantaeDataModelStuff()
+        {
+            DataStore dataStore = new DataStore("QuantaeTestDb");
+            dataStore.Connect();
+            Repositories.Repositories.Init(dataStore);
+            //Repositories.Repositories.Users.Save(new UserProfile() { ObjectId = Utils.GenerateULongQuantaeObjectId(), UserID = "usman", Email = "usman.ghani@gmail.com" });
+            UserProfile up = Repositories.Repositories.Users.GetUserByUserName("usman");
+            Console.WriteLine(up.UserID + "=>" + up.Email);
+            Repositories.Repositories.Users.UpdateUserEmail("usman", "blahingham25@yahoo.com");
+            up = Repositories.Repositories.Users.GetUserByUserName("usman");
+            Console.WriteLine(up.UserID + "=>" + up.Email);
+        }
+
         //static void DoWorkflowStuff()
         //{
         //    MyStateMachine statemachine = new MyStateMachine();
@@ -160,44 +185,30 @@ namespace Quantae
         //    }
         //}
 
-        static void Main(string[] args)
+        private static void DoTransliterationStuff()
+        {
+            string inputString = "محمد";
+            //byte[] buffer = System.Text.Encoding.Unicode.GetBytes(inputString);
+            string another = "muHamadN";
+            var encoder = new Quantae.Transliteration.Encoding.BuckwalterEncoder();
+            string encoded = encoder.Encode(inputString);
+            string decoded = encoder.Decode(encoded);
+            Console.WriteLine(encoded);
+            Console.WriteLine(decoded);
+            Console.WriteLine(inputString.Equals(decoded));
+            System.IO.File.WriteAllText("c:\\blah", decoded);
+            System.IO.File.WriteAllText("c:\\blah2", encoder.Decode(another));
+        }
+
+        private static void DoGraphStuff()
         {
             Dictionary<int, bool> userProfile = new Dictionary<int, bool>() { 
-                {1, true},
-                {2, true},
-                {3, true},
-                {4, true},
-                {5, true},
-                {6, true},
-                {7, true},
-                {8, false},
-                {10, true},
-                {11, true},
-                {12, true},
-                {13, false},
-                {15, true},
-                {16, true},
-                {17, true},
-                {18, true},
-                {19, true},
-                {20, true},
-                {21, false},
-                {22, true},
-                {23, true},
-                {24, true},
-                {25, true},
-                {26, true},
-                {27, true},
-                {28, true},
-                {29, true},
-                {30, true},
-                {31, true},
-                {32, false},
-                {33, false},
-                {34, true},
-                {35, true},
-                {36, true},
-                {37, true}
+                {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, true},
+                {7, true}, {8, false}, {10, true}, {11, true}, {12, true}, {13, false},
+                {15, true}, {16, true}, {17, true}, {18, true}, {19, true}, {20, true},
+                {21, false}, {22, true}, {23, true}, {24, true}, {25, true}, {26, true},
+                {27, true}, {28, true}, {29, true}, {30, true}, {31, true}, {32, false},
+                {33, false}, {34, true}, {35, true}, {36, true}, {37, true}
             };
 
             var graph = ReadDependencyGraph(@"d:\downloads\dependencies.csv");
@@ -237,66 +248,6 @@ namespace Quantae
             List<int> violations;
             bool isUserValid = IsUserValid(graph, userProfile, out violations);
             Console.WriteLine("{0} -> {1}", isUserValid, string.Join(",", violations.Select(i => i.ToString()).ToArray()));
-
-            Environment.Exit(1);
-
-            //int[] array = { 1, 2, 3 };
-            //Console.WriteLine(array.Where(i => i > 3).Select(i => i).Where(i => i > 3).Count());
-            //Environment.Exit(0);
-
-            //A a = new B();
-            //Console.WriteLine(a.ToJson());
-
-            string id = DateTime.UtcNow.ToString("yyyyMMddHHmmssfffff");
-            Console.WriteLine(id);
-            ulong idAsLong = ulong.Parse(id);
-            Console.WriteLine(idAsLong);
-            Console.WriteLine(idAsLong.ToString().CompareTo(id));
-
-            var myConventions = new ConventionProfile();
-            myConventions.SetIdMemberConvention(new Quantae.DataModel.QuantaeObjectIdMemberConvention());
-            BsonClassMap.RegisterConventions(myConventions, t => t.FullName.StartsWith("Quantae."));
-            BsonClassMap.RegisterClassMap<Sentence>();
-
-            var server = MongoServer.Create();
-            server.Connect();
-
-            var database = server["mydb"];
-            var collection = database["things"];
-
-            collection.Remove(new QueryDocument(new Dictionary<string, string>() { { "_id", "/^4d/" } }));
-
-            QueryDocument query = new QueryDocument(new Dictionary<string, string>() { { "_id", "201106200033439986" } });
-
-            Console.WriteLine(collection.Find(query).Count());
-            Console.WriteLine(collection.Count());
-
-            foreach (var doc in collection.FindAll())
-            {
-                Console.WriteLine(doc.ToJson());
-            }
-
-            var id1 = Utils.GenerateULongQuantaeObjectId();
-
-            Console.WriteLine(collection.Save<Sentence>(new Sentence() { ObjectId = id1 }));
-
-            QueryDocument query2 = new QueryDocument(new Dictionary<string, string>() { { "_id", string.Format("NumberLong({0})", id1.ToString()) } });
-
-            Console.WriteLine(collection.Find(query).Count());
-
-            Console.WriteLine(collection.Count());
-
-            string inputString = "محمد";
-            //byte[] buffer = System.Text.Encoding.Unicode.GetBytes(inputString);
-            string another = "muHamadN";
-            var encoder = new Quantae.Transliteration.Encoding.BuckwalterEncoder();
-            string encoded = encoder.Encode(inputString);
-            string decoded = encoder.Decode(encoded);
-            Console.WriteLine(encoded);
-            Console.WriteLine(decoded);
-            Console.WriteLine(inputString.Equals(decoded));
-            System.IO.File.WriteAllText("c:\\blah", decoded);
-            System.IO.File.WriteAllText("c:\\blah2", encoder.Decode(another));
         }
     }
 }

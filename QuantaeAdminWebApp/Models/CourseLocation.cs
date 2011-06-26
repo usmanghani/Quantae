@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae
 {
-    public class CourseLocation : QuantaeObject<ulong>
+    public class CourseLocation : QuantaeObject<long>
     {
     }
 }

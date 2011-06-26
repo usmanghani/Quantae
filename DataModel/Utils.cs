@@ -7,16 +7,10 @@ namespace Quantae.DataModel
 {
     public class Utils
     {
-        public static ulong GenerateULongQuantaeObjectId()
+        public static long GenerateULongQuantaeObjectId()
         {
-            return ulong.Parse(DateTime.UtcNow.ToString("yyyyMMddHHmmssfffff"));
-        }
-
-        public static string GetHintFromAnswerDimension(AnswerDimension ad)
-        {
-            // TODO: Fill this up.
-
-            return "USman";
+            // Used to be: return ulong.Parse(DateTime.UtcNow.ToString("yyyyMMddHHmmssfffff"));
+            return DateTime.UtcNow.ToBinary();
         }
     }
 }

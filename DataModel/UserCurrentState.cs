@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public class UserCurrentState : QuantaeObject<ulong>
+    public class UserCurrentState : QuantaeObject<long>
     {
         /// <summary>
         /// Current word length that the user is supposed to see.
@@ -42,6 +42,10 @@ namespace Quantae.DataModel
         /// The current topic.
         /// </value>
         public TopicHandle CurrentTopic { get; set; }
+
+        public CourseStateMachineState CourseStateMachineState { get; set; }
+        public TopicStateMachineState TopicStateMachineState { get; set; }
+        public SectionStateMachineState SectionStateMachineState { get; set; }
 
         public UserCurrentState()
         {

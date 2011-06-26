@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae
 {
-    public class Sentence : QuantaeObject<ulong>
+    public class Sentence : QuantaeObject<long>
     {
         public string SentenceText { get; set; }
 

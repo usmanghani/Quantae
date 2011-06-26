@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public class Sentence : QuantaeObject<ulong>
+    public class Sentence : QuantaeObject<long>
     {
         public string SentenceText { get; set; }
 
@@ -70,7 +70,7 @@ namespace Quantae.DataModel
         #endregion
     }
 
-    public class SentenceHandle:QuantaeObjectHandle<ulong>
+    public class SentenceHandle:QuantaeObjectHandle<long>
     {
 
     }

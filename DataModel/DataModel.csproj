@@ -34,8 +34,14 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson, Version=1.1.0.4184, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL" />
-    <Reference Include="MongoDB.Driver, Version=1.1.0.4184, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL" />
+    <Reference Include="MongoDB.Bson, Version=1.1.0.4184, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\mongocsharpdriver.1.1\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=1.1.0.4184, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\mongocsharpdriver.1.1\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -52,7 +58,10 @@
     <Compile Include="AudioRecording.cs" />
     <Compile Include="Conjugation.cs" />
     <Compile Include="ContextualAnalysis.cs" />
+    <Compile Include="CourseStateMachineState.cs" />
     <Compile Include="NounType.cs" />
+    <Compile Include="SectionStateMachineState.cs" />
+    <Compile Include="TopicStateMachineState.cs" />
     <Compile Include="VocabEntry.cs" />
     <Compile Include="UserCurrentState.cs" />
     <Compile Include="DefinitenessRule.cs" />
@@ -82,7 +91,6 @@
     <Compile Include="Question.cs" />
     <Compile Include="QuestionDimension.cs" />
     <Compile Include="RecordingType.cs" />
-    <Compile Include="Role.cs" />
     <Compile Include="Sentence.cs" />
     <Compile Include="SentenceFragment.cs" />
     <Compile Include="SentenceHistoryItem.cs" />

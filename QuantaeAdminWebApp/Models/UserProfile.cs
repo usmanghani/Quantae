@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae
 {
-    public class UserProfile : QuantaeObject<ulong>
+    public class UserProfile : QuantaeObject<long>
     {
         #region User Info
 

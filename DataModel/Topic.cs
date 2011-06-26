@@ -15,7 +15,7 @@ namespace Quantae.DataModel
     /// Ism Mosool Jumla Sila Wa Al Aaid (Relative and Personal Pronoun Phrase)
     /// 
     /// </summary>
-    public class Topic : QuantaeObject<ulong>
+    public class Topic : QuantaeObject<long>
     {
         public string TopicName { get; set; }
 
@@ -32,9 +32,11 @@ namespace Quantae.DataModel
         public List<TopicHandle> ForwardLinks { get; set; }
 
         public IntroSection IntroSection { get; set; }
+
+        // TODO: Add depth section here.
     }
 
-    public class TopicHandle : QuantaeObjectHandle<ulong>
+    public class TopicHandle : QuantaeObjectHandle<long>
     {
 
     }

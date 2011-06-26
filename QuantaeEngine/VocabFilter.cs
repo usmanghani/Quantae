@@ -20,6 +20,7 @@ namespace Quantae.Engine
                 currentSentenceScore += policies.GetVocabEntryRank(vocabEntry, user);
             }
 
+            // TODO: ask zeeshan about this comparison function.
             if (currentSentenceScore >= minSentenceScore)
             {
                 return true;

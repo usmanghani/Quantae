@@ -15,7 +15,7 @@ namespace Quantae
     /// Ism Mosool Jumla Sila Wa Al Aaid (Relative and Personal Pronoun Phrase)
     /// 
     /// </summary>
-    public class Topic : QuantaeObject<ulong>
+    public class Topic : QuantaeObject<long>
     {
         public string TopicName { get; set; }
         public string LocalizedTopicName { get; set; }

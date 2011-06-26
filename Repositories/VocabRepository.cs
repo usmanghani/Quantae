@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MongoDB.Driver;
+using Quantae.DataModel;
 
 namespace Quantae.Repositories
 {
-    public class VocabRepository
+    public class VocabRepository : RepositoryBase<VocabEntry>
     {
+        public VocabRepository(DataStore dataStore) : base(dataStore, "Vocabulary") { }
     }
 }

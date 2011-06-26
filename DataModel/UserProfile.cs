@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public class UserProfile : QuantaeObject<ulong>
+    public class UserProfile : QuantaeObject<long>
     {
         #region User Info
 
@@ -83,5 +83,9 @@ namespace Quantae.DataModel
         {
             NounConjugationHistory = new List<NounConjugationHistoryItem>();
         }
+    }
+
+    public class UserProfileHandle:QuantaeObjectHandle<long>
+    {
     }
 }

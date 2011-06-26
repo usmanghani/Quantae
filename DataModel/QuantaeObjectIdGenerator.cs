@@ -20,7 +20,7 @@ namespace Quantae.DataModel
                 return true;
             }
 
-            var actualId = (ulong)id;
+            var actualId = (long)id;
             return actualId == 0;
         }
     }

@@ -20,5 +20,7 @@ namespace Quantae.DataModel
 
         NounConjugation = 4,
         VerbConjugation = 5,
+
+        Revision = 6,
     }
 }

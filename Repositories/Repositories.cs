@@ -5,12 +5,21 @@ using System.Text;
 
 namespace Quantae.Repositories
 {
-    public class Repositories
+    public static class Repositories
     {
-        public SentenceRepository Sentences { get; set; }
-        public VocabRepository Vocabulary { get; set; }
-        public GrammarRolesRepository GrammarRoles { get; set; }
-        public UserRepository Users { get; set; }
-        public TopicRepository Topics { get; set; }
+        public static SentenceRepository Sentences { get; set; }
+        public static VocabRepository Vocabulary { get; set; }
+        public static GrammarRolesRepository GrammarRoles { get; set; }
+        public static UserRepository Users { get; set; }
+        public static TopicRepository Topics { get; set; }
+
+        public static void Init(DataStore dataStore)
+        {
+            Sentences = new SentenceRepository(dataStore);
+            Vocabulary = new VocabRepository(dataStore);
+            GrammarRoles = new GrammarRolesRepository(dataStore);
+            Users = new UserRepository(dataStore);
+            Topics = new TopicRepository(dataStore);
+        }
     }
 }

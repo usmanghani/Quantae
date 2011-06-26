@@ -12,6 +12,11 @@ namespace Quantae.DataModel
 
         public List<AnswerChoice> AnswerChoices { get; set; }
         public QuestionDimension Dimension { get; set; }
+
+        /// <summary>
+        /// This is exclusively used to identify the umbrella topic being covered in revision questions.
+        /// </summary>
+        public string RevisionTopicTag { get; set; }
         public List<string> AnswerSegments { get; set; }
         public int BlankPosition { get; set; }
     }
