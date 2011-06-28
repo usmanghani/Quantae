@@ -12,7 +12,7 @@ namespace Quantae.Engine
 
         public int CalculateMinSentenceScore(Sentence sentence)
         {
-            return (int)Math.Ceiling(sentence.VocabEntries.Count * 1.5);
+            return (int)Math.Ceiling(sentence.VocabEntries.Count * vocabEntryWeight);
         }
 
         public int GetVocabEntryRank(VocabEntryHandle handle, UserProfile user)

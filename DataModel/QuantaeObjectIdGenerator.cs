@@ -10,7 +10,7 @@ namespace Quantae.DataModel
     {
         public object GenerateId(object container, object document)
         {
-            return Utils.GenerateULongQuantaeObjectId();
+            return Utils.GenerateQuantaeObjectId();
         }
 
         public bool IsEmpty(object id)

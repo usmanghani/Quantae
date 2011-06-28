@@ -28,8 +28,8 @@ namespace Quantae.DataModel
         // Complexity(GrammarAnalysis) -> if (1->1) +=1; if ( N->M ) += N;
         // FUTURE: Final score = vacabentries.length + complexity
         // NOW: vocabentries.Count
-        public int DifficultyRank 
-        { 
+        public int DifficultyRank
+        {
             get
             {
                 return this.VocabEntries.Count;
@@ -44,7 +44,7 @@ namespace Quantae.DataModel
 
         public List<TopicHandle> SecondaryTopics { get; set; }
 
-        public List<Tuple<GrammarRoleHandle, Conjugation>> RoleConjugationPairs { get; set; }
+        public List<QuantaeTuple<GrammarRoleHandle, Conjugation>> RoleConjugationPairs { get; set; }
 
         #endregion
 
@@ -70,8 +70,8 @@ namespace Quantae.DataModel
         #endregion
     }
 
-    public class SentenceHandle:QuantaeObjectHandle<long>
+    public class SentenceHandle : QuantaeObjectHandle<long, Sentence>
     {
-
+        public SentenceHandle(Sentence s) : base(s) { }
     }
 }

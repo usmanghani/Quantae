@@ -5,6 +5,7 @@ using System.Text;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization;
+using Quantae.DataModel;
 
 namespace Quantae.Repositories
 {
@@ -60,6 +61,14 @@ namespace Quantae.Repositories
 
         private void InitializeClassMaps()
         {
+            //BsonSerializer.RegisterSerializer(typeof(Tuple<GrammarRoleHandle, Conjugation>), null);
+
+            BsonClassMap.RegisterClassMap<QuantaeTuple<GrammarRoleHandle, Conjugation>>(cm =>
+            {
+                cm.MapProperty(c => c.Item1);
+                cm.MapProperty(c => c.Item2);
+            });
+
             BsonClassMap.RegisterClassMap<KeyValuePair<int, int>>(cm =>
             {
                 cm.MapProperty(c => c.Key);
@@ -87,4 +96,34 @@ namespace Quantae.Repositories
 
         }
     }
+
+    //public class TupleDeserializer : IBsonSerializer
+    //{
+    //    public object Deserialize(MongoDB.Bson.IO.BsonReader bsonReader, Type nominalType, Type actualType, IBsonSerializationOptions options)
+    //    {
+    //        bsonReader.
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public object Deserialize(MongoDB.Bson.IO.BsonReader bsonReader, Type nominalType, IBsonSerializationOptions options)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public bool GetDocumentId(object document, out object id, out Type idNominalType, out IIdGenerator idGenerator)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public void Serialize(MongoDB.Bson.IO.BsonWriter bsonWriter, Type nominalType, object value, IBsonSerializationOptions options)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public void SetDocumentId(object document, object id)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
+
 }

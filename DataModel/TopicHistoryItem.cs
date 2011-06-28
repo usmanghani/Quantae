@@ -17,6 +17,25 @@ namespace Quantae.DataModel
         public Dictionary<AnswerDimension, int> AnswerDimensionSuccessCount { get; set; }
         public Dictionary<AnswerDimension, int> AnswerDimensionFailureCount { get; set; }
 
+        public Dictionary<string, int> UmbrellaTopicSuccessCount { get; set; }
+        public Dictionary<string, int> UmbrellaTopicFailureCount { get; set; }
+
+        /// <summary>
+        ///  This is only filled in when the topic moves to the user's topic history list.
+        ///  When this item exists in the current state of the user, this is false.
+        /// </summary>
+        public bool IsSuccessful { get; set; }
+
+        /// <summary>
+        /// We record the fact that the user skipped this topic. 
+        /// FUTURE: We might use this drive certain decisions.
+        /// </summary>
+        public bool IsSkipped { get; set; }
+
+        public bool IsPseudoTopic { get; set; }
+
+        public Weakness WeaknessForPseudoTopic { get; set; }
+
         public override bool Equals(object obj)
         {
             return (obj as TopicHistoryItem).Topic.Equals(Topic);

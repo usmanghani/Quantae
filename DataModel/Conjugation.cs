@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
+    [MongoDB.Bson.Serialization.Attributes.BsonKnownTypes(typeof(VerbConjugation), typeof(NounConjugation))]
     public abstract class Conjugation
     {
         public GenderRule Gender { get; set; }

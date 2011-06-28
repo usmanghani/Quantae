@@ -27,8 +27,8 @@ namespace Quantae.DataModel
         }
     }
 
-    public class VocabEntryHandle : QuantaeObjectHandle<long>
+    public class VocabEntryHandle : QuantaeObjectHandle<long, VocabEntry>
     {
-
+        public VocabEntryHandle(VocabEntry entry) : base(entry) { }
     }
 }

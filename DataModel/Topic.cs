@@ -17,6 +17,11 @@ namespace Quantae.DataModel
     /// </summary>
     public class Topic : QuantaeObject<long>
     {
+        /// <summary>
+        /// This is used  to give each topic a number. 
+        /// This is used to simplify most of our graph walking algorithms.
+        /// </summary>
+        public int Index { get; set; }
         public string TopicName { get; set; }
 
         public string AnalyticalTopicTitle { get; set; }
@@ -24,9 +29,10 @@ namespace Quantae.DataModel
         public string AnalyticalLocalizedTopicTitle { get; set; }
         public string ContextualLocalizedTopicTitle { get; set; }
 
-        public List<Tuple<GrammarRoleHandle, Conjugation>> RoleConjugationPairs { get; set; }
+        public List<QuantaeTuple<GrammarRoleHandle, Conjugation>> RoleConjugationPairs { get; set; }
 
         public bool IsPseudoTopic { get; set; }
+        public Weakness WeaknessForPseudoTopic { get; set; }
 
         public List<TopicHandle> Dependencies { get; set; }
         public List<TopicHandle> ForwardLinks { get; set; }
@@ -36,8 +42,8 @@ namespace Quantae.DataModel
         // TODO: Add depth section here.
     }
 
-    public class TopicHandle : QuantaeObjectHandle<long>
+    public class TopicHandle : QuantaeObjectHandle<long, Topic>
     {
-
+        public TopicHandle(Topic t) : base(t) { }
     }
 }

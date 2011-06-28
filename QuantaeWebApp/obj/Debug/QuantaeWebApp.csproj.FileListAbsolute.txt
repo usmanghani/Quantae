@@ -1,0 +1,7 @@
+D:\Quantae\QuantaeWebApp\bin\QuantaeWebApp.dll
+D:\Quantae\QuantaeWebApp\bin\QuantaeWebApp.pdb
+D:\Quantae\QuantaeWebApp\bin\EntityFramework.dll
+D:\Quantae\QuantaeWebApp\bin\EntityFramework.xml
+D:\Quantae\QuantaeWebApp\obj\Debug\ResolveAssemblyReference.cache
+D:\Quantae\QuantaeWebApp\obj\Debug\QuantaeWebApp.dll
+D:\Quantae\QuantaeWebApp\obj\Debug\QuantaeWebApp.pdb

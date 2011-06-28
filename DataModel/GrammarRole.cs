@@ -24,7 +24,10 @@ namespace Quantae.DataModel
         public string RoleDefinition { get; set; }
     }
 
-    public class GrammarRoleHandle : QuantaeObjectHandle<long> { }
+    public class GrammarRoleHandle : QuantaeObjectHandle<long, GrammarRole>
+    {
+        public GrammarRoleHandle(GrammarRole role) : base(role) { }
+    }
 
     public static class RoleNames
     {

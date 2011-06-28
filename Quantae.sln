@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositorie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeEngine", "QuantaeEngine\QuantaeEngine.csproj", "{FDFB052E-3E57-4A39-B064-E98846A66F52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeWebApp", "QuantaeWebApp\QuantaeWebApp.csproj", "{76743732-65F7-48EE-ADD9-7B5CBD7584AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeWebApp.Tests", "QuantaeWebApp.Tests\QuantaeWebApp.Tests.csproj", "{14327DCB-8E16-477E-A198-A2A4775A2896}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +99,26 @@ Global
 		{FDFB052E-3E57-4A39-B064-E98846A66F52}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{FDFB052E-3E57-4A39-B064-E98846A66F52}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FDFB052E-3E57-4A39-B064-E98846A66F52}.Release|x86.ActiveCfg = Release|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{14327DCB-8E16-477E-A198-A2A4775A2896}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

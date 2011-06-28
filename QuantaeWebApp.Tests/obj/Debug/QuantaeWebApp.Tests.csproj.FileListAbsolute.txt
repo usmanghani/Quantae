@@ -1,0 +1,8 @@
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\QuantaeWebApp.Tests.dll.config
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\QuantaeWebApp.Tests.dll
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\QuantaeWebApp.Tests.pdb
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\QuantaeWebApp.dll
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\QuantaeWebApp.pdb
+D:\Quantae\QuantaeWebApp.Tests\obj\Debug\ResolveAssemblyReference.cache
+D:\Quantae\QuantaeWebApp.Tests\obj\Debug\QuantaeWebApp.Tests.dll
+D:\Quantae\QuantaeWebApp.Tests\obj\Debug\QuantaeWebApp.Tests.pdb

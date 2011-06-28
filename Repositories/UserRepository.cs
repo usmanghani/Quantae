@@ -22,6 +22,11 @@ namespace Quantae.Repositories
                 throw new DuplicateUserIdException(userid);
             }
 
+            if (results.Count() <= 0)
+            {
+                return null;
+            }
+
             return results.ElementAt(0);
         }
 
@@ -34,6 +39,22 @@ namespace Quantae.Repositories
         public void UpdateUserEmail(string userId, string email)
         {
             this.collection.Update(Query.EQ("UserID", new BsonString(userId)), Update.Set("Email", new BsonString(email)));
+        }
+
+        public UserProfile GetUserByEmail(string email)
+        {
+            var results = this.collection.FindAs<UserProfile>(Query.EQ("Email", new BsonString(email)));
+            if (results.Count() > 1)
+            {
+                throw new DuplicateUserIdException(email);
+            }
+
+            if (results.Count() <= 0)
+            {
+                return null;
+            }
+
+            return results.ElementAt(0);
         }
     }
 }

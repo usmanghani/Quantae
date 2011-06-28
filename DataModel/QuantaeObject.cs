@@ -13,14 +13,19 @@ namespace Quantae.DataModel
         public T ObjectId { get; set; }
     }
 
-    public class QuantaeObjectHandle<T>
+    public class QuantaeObjectHandle<THandle, TObject> where TObject : QuantaeObject<THandle>
     {
         [BsonId(IdGenerator = typeof(QuantaeObjectIdGenerator))]
-        public T ObjectId { get; set; }
+        public THandle ObjectId { get; set; }
+
+        public QuantaeObjectHandle(TObject obj)
+        {
+            this.ObjectId = obj.ObjectId;
+        }
 
         public override bool Equals(object obj)
         {
-            return ObjectId.Equals((obj as QuantaeObjectHandle<T>).ObjectId);
+            return ObjectId.Equals((obj as QuantaeObjectHandle<THandle, TObject>).ObjectId);
         }
 
         public override int GetHashCode()

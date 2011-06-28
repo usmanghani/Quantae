@@ -35,14 +35,6 @@ namespace Quantae.DataModel
         /// </summary>
         public Dictionary<TenseRule, int> CurrentVerbConjugationRanksByTense { get; set; }
 
-        /// <summary>
-        /// Gets or sets the current topic.
-        /// </summary>
-        /// <value>
-        /// The current topic.
-        /// </value>
-        public TopicHandle CurrentTopic { get; set; }
-
         public CourseStateMachineState CourseStateMachineState { get; set; }
         public TopicStateMachineState TopicStateMachineState { get; set; }
         public SectionStateMachineState SectionStateMachineState { get; set; }

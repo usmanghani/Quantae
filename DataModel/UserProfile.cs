@@ -9,6 +9,7 @@ namespace Quantae.DataModel
     {
         #region User Info
 
+        public string Salt { get; set; }
         public string UserID { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
@@ -35,11 +36,12 @@ namespace Quantae.DataModel
         /// Analytical/Contextual as a continuum.
         /// How to calculate this score:
         /// Using Weighted Moving Average
+        /// The formula and weights are in QuantaeEngine.LearningTypeScorePolicies
         /// </summary>
-        public double LearningTypeScore { get; set; }
+        public LearningTypeScoreModel LearningTypeScore { get; set; }
 
         /// <summary>
-        /// FUTURE:
+        /// FUTURE: These might be used in the future.
         /// </summary>
         public double DepthScore { get; set; }
         public double LearningDependencyScore { get; set; }
@@ -48,6 +50,14 @@ namespace Quantae.DataModel
         #endregion
 
         #region History Vocab/Verb etc
+
+        /// <summary>
+        /// This counter list is updated for each topic seen. This is how it works.
+        /// Every time a user sees any topic (any topic new/old), the counters for all
+        /// of these topics are updated.  If any one of the counters hit the threshold (2 currently)
+        ///  we take the user back to that topic.
+        /// </summary>
+        public Dictionary<TopicHandle, int> FailureCounters { get; set; }
 
         public List<TopicHistoryItem> TopicHistory { get; set; }
         public List<SentenceHistoryItem> SentenceHistory { get; set; }
@@ -85,7 +95,8 @@ namespace Quantae.DataModel
         }
     }
 
-    public class UserProfileHandle:QuantaeObjectHandle<long>
+    public class UserProfileHandle : QuantaeObjectHandle<long, UserProfile>
     {
+        public UserProfileHandle(UserProfile profile) : base(profile) { }
     }
 }

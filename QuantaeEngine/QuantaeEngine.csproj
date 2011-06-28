@@ -48,7 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoursePolicies.cs" />
     <Compile Include="CourseStateMachine.cs" />
+    <Compile Include="CreateUserResult.cs" />
+    <Compile Include="LearningTypeScorePolicies.cs" />
+    <Compile Include="LoginUserResult.cs" />
+    <Compile Include="SessionOperations.cs" />
+    <Compile Include="TopicGraphOperations.cs" />
+    <Compile Include="TopicPolicies.cs" />
     <Compile Include="UserOperations.cs" />
     <Compile Include="NounConjugationFilter.cs" />
     <Compile Include="NounConjugationPolicies.cs" />
@@ -62,6 +69,7 @@
     <Compile Include="VocabFilter.cs" />
     <Compile Include="VocabPolicies.cs" />
     <Compile Include="VocabUpdater.cs" />
+    <Compile Include="WeaknessPolicies.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AlgoNotes.txt" />

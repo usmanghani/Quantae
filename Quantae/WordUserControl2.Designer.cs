@@ -30,7 +30,7 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvWords = new System.Windows.Forms.DataGridView();
-            this.Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WordText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Translation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.WordType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.WordSubtype = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -60,7 +60,7 @@
             this.dgvWords.AllowUserToOrderColumns = true;
             this.dgvWords.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvWords.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Text,
+            this.WordText,
             this.Translation,
             this.WordType,
             this.WordSubtype,
@@ -76,10 +76,10 @@
             this.dgvWords.Size = new System.Drawing.Size(490, 325);
             this.dgvWords.TabIndex = 0;
             // 
-            // Text
+            // WordText
             // 
-            this.Text.HeaderText = "Text";
-            this.Text.Name = "Text";
+            this.WordText.HeaderText = "Text";
+            this.WordText.Name = "WordText";
             // 
             // Translation
             // 
@@ -160,7 +160,7 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dgvWords;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Text;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WordText;
         private System.Windows.Forms.DataGridViewTextBoxColumn Translation;
         private System.Windows.Forms.DataGridViewComboBoxColumn WordType;
         private System.Windows.Forms.DataGridViewComboBoxColumn WordSubtype;

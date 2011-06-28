@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Quantae.Engine
 {
-    class TopicStateMachine
+    public class TopicStateMachine
     {
+
     }
 }

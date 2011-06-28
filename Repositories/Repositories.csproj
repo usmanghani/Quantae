@@ -55,6 +55,7 @@
     <Compile Include="Repositories.cs" />
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="SentenceRepository.cs" />
+    <Compile Include="Sessions.cs" />
     <Compile Include="TopicRepository.cs" />
     <Compile Include="UserRepository.cs" />
     <Compile Include="VocabRepository.cs" />

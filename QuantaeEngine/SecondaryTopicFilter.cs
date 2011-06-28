@@ -8,7 +8,7 @@ namespace Quantae.Engine
 {
     public class SecondaryTopicFilter
     {
-        public bool IsSentenceValid(Sentence sentence, UserProfile user)
+        public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {
             var userTopicHistory = user.TopicHistory.Select(thi => thi.Topic);
 

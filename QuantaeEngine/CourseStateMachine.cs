@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae.Engine
 {
-    class CourseStateMachine
+    public class CourseStateMachine
     {
     }
 }

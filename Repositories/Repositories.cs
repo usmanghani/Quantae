@@ -12,6 +12,7 @@ namespace Quantae.Repositories
         public static GrammarRolesRepository GrammarRoles { get; set; }
         public static UserRepository Users { get; set; }
         public static TopicRepository Topics { get; set; }
+        public static SessionRepository Sessions { get; set; }
 
         public static void Init(DataStore dataStore)
         {
@@ -20,6 +21,7 @@ namespace Quantae.Repositories
             GrammarRoles = new GrammarRolesRepository(dataStore);
             Users = new UserRepository(dataStore);
             Topics = new TopicRepository(dataStore);
+            Sessions = new SessionRepository(dataStore);
         }
     }
 }

@@ -59,9 +59,13 @@
     <Compile Include="Conjugation.cs" />
     <Compile Include="ContextualAnalysis.cs" />
     <Compile Include="CourseStateMachineState.cs" />
+    <Compile Include="LearningTypeScoreModel.cs" />
     <Compile Include="NounType.cs" />
+    <Compile Include="QuantaeTuple.cs" />
     <Compile Include="SectionStateMachineState.cs" />
+    <Compile Include="TopicSectionType.cs" />
     <Compile Include="TopicStateMachineState.cs" />
+    <Compile Include="UserSession.cs" />
     <Compile Include="VocabEntry.cs" />
     <Compile Include="UserCurrentState.cs" />
     <Compile Include="DefinitenessRule.cs" />
