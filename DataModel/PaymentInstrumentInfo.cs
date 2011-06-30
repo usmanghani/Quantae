@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace Quantae.DataModel
 {
@@ -11,7 +7,10 @@ namespace Quantae.DataModel
     {
     }
 
-    public class NullPaymentInstrumentInfo : PaymentInstrumentInfo { }
+    public class NullPaymentInstrumentInfo : PaymentInstrumentInfo
+    {
+    }
+
     public class CreditCardPaymentInstrumentInfo : PaymentInstrumentInfo
     {
         public PaymentInstrument CardType { get; set; }
@@ -28,7 +27,7 @@ namespace Quantae.DataModel
         public string AmazonCheckoutInfo { get; set; }
     }
 
-    public class GoogleCheckoutInstrumentInfo:PaymentInstrumentInfo
+    public class GoogleCheckoutInstrumentInfo : PaymentInstrumentInfo
     {
         public string GoogleCheckoutInfo { get; set; }
     }

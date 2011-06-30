@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Quantae.DataModel
 {
     public class UserProfile : QuantaeObject
     {
         #region User Info
-
         public string Salt { get; set; }
         public string UserID { get; set; }
         public string Email { get; set; }
@@ -80,25 +76,27 @@ namespace Quantae.DataModel
 
         public UserProfile()
         {
-            NounConjugationHistory = new List<NounConjugationHistoryItem>();
-            VerbConjugationHistory = new List<VerbConjugationHistoryItem>();
-            SentenceHistory = new List<SentenceHistoryItem>();
-            TopicHistory = new List<TopicHistoryItem>();
-            VocabHistory = new List<VocabularyHistoryItem>();
-            Weaknesses = new Dictionary<Weakness, int>();
-            FailureCounters = new Dictionary<TopicHandle, int>();
-            LearningTypeScore = new LearningTypeScoreModel();
+            this.NounConjugationHistory = new List<NounConjugationHistoryItem>();
+            this.VerbConjugationHistory = new List<VerbConjugationHistoryItem>();
+            this.SentenceHistory = new List<SentenceHistoryItem>();
+            this.TopicHistory = new List<TopicHistoryItem>();
+            this.VocabHistory = new List<VocabularyHistoryItem>();
+            this.Weaknesses = new Dictionary<Weakness, int>();
+            this.FailureCounters = new Dictionary<TopicHandle, int>();
+            this.LearningTypeScore = new LearningTypeScoreModel();
 
-            DepthScore = default(double);
-            LearningDependencyScore = default(double);
-            MemoryScore = default(double);
+            this.DepthScore = default(double);
+            this.LearningDependencyScore = default(double);
+            this.MemoryScore = default(double);
 
-            CurrentState = new UserCurrentState();
+            this.CurrentState = new UserCurrentState();
         }
     }
 
     public class UserProfileHandle : QuantaeObjectHandle<UserProfile>
     {
-        public UserProfileHandle(UserProfile profile) : base(profile) { }
+        public UserProfileHandle(UserProfile profile) : base(profile)
+        {
+        }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class CourseStateMachineState
     {
@@ -15,7 +10,7 @@ namespace Quantae.DataModel
         /// </value>
         public TopicHistoryItem CurrentTopic { get; set; }
 
-        public CourseStateMachineState ()
+        public CourseStateMachineState()
         {
             this.CurrentTopic = null;
         }

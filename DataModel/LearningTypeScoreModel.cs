@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Quantae.DataModel
 {
@@ -10,7 +7,7 @@ namespace Quantae.DataModel
         public double Score { get; set; }
         public List<int> Entries { get; set; }
 
-        public LearningTypeScoreModel ()
+        public LearningTypeScoreModel()
         {
             this.Score = default(double);
             this.Entries = new List<int>();

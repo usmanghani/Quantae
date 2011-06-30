@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Quantae.DataModel
 {
@@ -15,6 +12,8 @@ namespace Quantae.DataModel
 
     public class UserSessionHandle : QuantaeObjectHandle<UserSession>
     {
-        public UserSessionHandle(UserSession session) : base(session) { }
+        public UserSessionHandle(UserSession session) : base(session)
+        {
+        }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class VerbConjugation : Conjugation
     {
@@ -14,15 +9,15 @@ namespace Quantae.DataModel
         {
             VerbConjugation item = obj as VerbConjugation;
 
-            return (item.Gender == Gender)
-                && (item.Number == Number)
-                && (item.Person == Person)
-                && (item.Tense == Tense);
+            return (item.Gender == this.Gender)
+                   && (item.Number == this.Number)
+                   && (item.Person == this.Person)
+                   && (item.Tense == this.Tense);
         }
 
         public override int GetHashCode()
         {
-            return (Gender.ToString() + Number.ToString() + Person.ToString() + Tense.ToString()).GetHashCode();
+            return string.Format("{0}{1}{2}{3}", this.Gender.ToString(), this.Number.ToString(), this.Person.ToString(), this.Tense.ToString()).GetHashCode();
         }
     }
 }

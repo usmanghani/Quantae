@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Quantae.DataModel
 {
@@ -51,12 +48,12 @@ namespace Quantae.DataModel
 
         public override bool Equals(object obj)
         {
-            return (obj as TopicHistoryItem).Topic.Equals(Topic);
+            return (obj as TopicHistoryItem).Topic.Equals(this.Topic);
         }
 
         public override int GetHashCode()
         {
-            return Topic.GetHashCode();
+            return this.Topic.GetHashCode();
         }
     }
 }

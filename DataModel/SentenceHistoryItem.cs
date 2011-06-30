@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class SentenceHistoryItem : HistoryItem
     {
@@ -15,12 +10,12 @@ namespace Quantae.DataModel
 
         public override bool Equals(object obj)
         {
-            return (obj as SentenceHistoryItem).Sentence.Equals(Sentence);
+            return (obj as SentenceHistoryItem).Sentence.Equals(this.Sentence);
         }
 
         public override int GetHashCode()
         {
-            return Sentence.GetHashCode();
+            return this.Sentence.GetHashCode();
         }
     }
 }

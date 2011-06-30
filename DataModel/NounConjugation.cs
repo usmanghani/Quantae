@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class NounConjugation : Conjugation
     {
@@ -16,7 +11,7 @@ namespace Quantae.DataModel
 
         public override int GetHashCode()
         {
-            return (Gender.ToString() + Number.ToString()).GetHashCode();
+            return string.Format("{0}{1}", this.Gender.ToString(), this.Number.ToString()).GetHashCode();
         }
     }
 }

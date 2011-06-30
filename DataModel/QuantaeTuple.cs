@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Quantae.DataModel
 {
@@ -61,6 +58,5 @@ namespace Quantae.DataModel
         {
             return this.Item1.GetHashCode() + this.Item2.GetHashCode() + this.Item3.GetHashCode();
         }
-
     }
 }

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Conventions;
-using System.Diagnostics;
-using MongoDB.Bson;
+﻿using System.Collections.Generic;
 
 namespace Quantae.DataModel
 {
@@ -44,14 +37,16 @@ namespace Quantae.DataModel
 
         public Topic()
         {
-            RoleConjugationPairs = new List<QuantaeTuple<GrammarRoleHandle, Conjugation>>();
-            Dependencies = new List<TopicHandle>();
-            ForwardLinks = new List<TopicHandle>();
+            this.RoleConjugationPairs = new List<QuantaeTuple<GrammarRoleHandle, Conjugation>>();
+            this.Dependencies = new List<TopicHandle>();
+            this.ForwardLinks = new List<TopicHandle>();
         }
     }
 
     public class TopicHandle : QuantaeObjectHandle<Topic>
     {
-        public TopicHandle(Topic t) : base(t) { }
+        public TopicHandle(Topic t) : base(t)
+        {
+        }
     }
 }

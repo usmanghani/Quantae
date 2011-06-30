@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class VerbConjugationHistoryItem : HistoryItem
     {
@@ -11,12 +6,12 @@ namespace Quantae.DataModel
 
         public override bool Equals(object obj)
         {
-            return (obj as VerbConjugationHistoryItem).VerbConjugation.Equals(VerbConjugation);
+            return (obj as VerbConjugationHistoryItem).VerbConjugation.Equals(this.VerbConjugation);
         }
 
         public override int GetHashCode()
         {
-            return VerbConjugation.GetHashCode();
+            return this.VerbConjugation.GetHashCode();
         }
     }
 }

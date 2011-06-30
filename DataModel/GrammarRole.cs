@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MongoDB.Bson;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class GrammarRole : QuantaeObject
     {
@@ -27,7 +21,9 @@ namespace Quantae.DataModel
 
     public class GrammarRoleHandle : QuantaeObjectHandle<GrammarRole>
     {
-        public GrammarRoleHandle(GrammarRole role) : base(role) { }
+        public GrammarRoleHandle(GrammarRole role) : base(role)
+        {
+        }
     }
 
     public static class RoleNames

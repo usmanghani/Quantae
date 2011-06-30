@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MongoDB.Bson.Serialization;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson;
 
 namespace Quantae.DataModel
 {
@@ -27,12 +22,12 @@ namespace Quantae.DataModel
 
         public override bool Equals(object obj)
         {
-            return ObjectId.Equals((obj as QuantaeObjectHandle<TObject>).ObjectId);
+            return this.ObjectId.Equals((obj as QuantaeObjectHandle<TObject>).ObjectId);
         }
 
         public override int GetHashCode()
         {
-            return ObjectId.GetHashCode();
+            return this.ObjectId.GetHashCode();
         }
     }
 }

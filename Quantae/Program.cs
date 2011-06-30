@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using MongoDB.Driver;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Conventions;
-using System.Workflow;
-using System.Workflow.ComponentModel;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
-using Quantae.DataModel;
 using System.IO;
 
 namespace Quantae
@@ -18,9 +11,6 @@ namespace Quantae
     using Quantae.Engine;
     using Quantae.DataModel;
     using Quantae.Repositories;
-    using System.Text.RegularExpressions;
-    using System.Diagnostics;
-    using MongoDB.Driver.Builders;
 
     class A { public string Aa = null; public ObjectId ID = ObjectId.GenerateNewId(); }
     class B : A { public string Bb = null;}

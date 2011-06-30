@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class TopicStateMachineState
     {
@@ -16,13 +11,13 @@ namespace Quantae.DataModel
 
         public TopicStateMachineState()
         {
-            SampleSectionState = new SampleSectionState();
-            SampleSectionIterationCount = 0;
+            this.SampleSectionState = new SampleSectionState();
+            this.SampleSectionIterationCount = 0;
 
-            IsIntroComplete = false;
-            IntroSlideIndex = 0;
+            this.IsIntroComplete = false;
+            this.IntroSlideIndex = 0;
 
-            CurrentSection = TopicSectionType.Intro;
+            this.CurrentSection = TopicSectionType.Intro;
         }
     }
 }

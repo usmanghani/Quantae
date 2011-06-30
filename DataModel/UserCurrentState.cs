@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Quantae.DataModel
 {
@@ -56,13 +53,13 @@ namespace Quantae.DataModel
 
         public UserCurrentState()
         {
-            CurrentVerbConjugationRanksByTense = new Dictionary<TenseRule, int>() { { TenseRule.Past, 0 }, { TenseRule.PresentFuture, 0 }, { TenseRule.Command, 0 } };
-            CurrentSentenceLength = 2;
-            CurrentBatchIndex = 0;
-            CurrentNounConjugationRank = 0;
+            this.CurrentVerbConjugationRanksByTense = new Dictionary<TenseRule, int>() { { TenseRule.Past, 0 }, { TenseRule.PresentFuture, 0 }, { TenseRule.Command, 0 } };
+            this.CurrentSentenceLength = 2;
+            this.CurrentBatchIndex = 0;
+            this.CurrentNounConjugationRank = 0;
 
-            CourseStateMachineState = new CourseStateMachineState();
-            TopicStateMachineState = new TopicStateMachineState();
+            this.CourseStateMachineState = new CourseStateMachineState();
+            this.TopicStateMachineState = new TopicStateMachineState();
         }
     }
 }

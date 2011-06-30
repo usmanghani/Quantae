@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class Weakness
     {
@@ -15,14 +10,15 @@ namespace Quantae.DataModel
             Weakness w = obj as Weakness;
             return w.GetHashCode() == this.GetHashCode();
         }
+
         public override int GetHashCode()
         {
-            if (!string.IsNullOrEmpty(UmbrellaTopicName))
+            if (!string.IsNullOrEmpty(this.UmbrellaTopicName))
             {
-                return UmbrellaTopicName.GetHashCode();
+                return this.UmbrellaTopicName.GetHashCode();
             }
             
-            return (int)WeaknessType;
+            return (int)this.WeaknessType;
         }
     }
 }

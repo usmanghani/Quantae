@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class VocabEntry : QuantaeObject
     {
@@ -23,12 +17,14 @@ namespace Quantae.DataModel
 
         public override int GetHashCode()
         {
-            return RootWord.GetHashCode() + Translation.GetHashCode();
+            return this.RootWord.GetHashCode() + this.Translation.GetHashCode();
         }
     }
 
     public class VocabEntryHandle : QuantaeObjectHandle<VocabEntry>
     {
-        public VocabEntryHandle(VocabEntry entry) : base(entry) { }
+        public VocabEntryHandle(VocabEntry entry) : base(entry)
+        {
+        }
     }
 }

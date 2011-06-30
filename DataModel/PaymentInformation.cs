@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class PaymentInformation
     {
@@ -11,12 +6,11 @@ namespace Quantae.DataModel
         public PaymentInstrument Instrument { get; set; }
         public PaymentInstrumentInfo InstrumentInfo { get; set; }
 
-
         public PaymentInformation()
         {
-            PaymentType = PaymentTypes.Free;
-            Instrument = PaymentInstrument.Unknown;
-            InstrumentInfo = new NullPaymentInstrumentInfo();
+            this.PaymentType = PaymentTypes.Free;
+            this.Instrument = PaymentInstrument.Unknown;
+            this.InstrumentInfo = new NullPaymentInstrumentInfo();
         }
     }
 }

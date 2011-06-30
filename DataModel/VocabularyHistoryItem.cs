@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Quantae.DataModel
+﻿namespace Quantae.DataModel
 {
     public class VocabularyHistoryItem : HistoryItem
     {
@@ -20,12 +15,12 @@ namespace Quantae.DataModel
 
         public override bool Equals(object obj)
         {
-            return (obj as VocabularyHistoryItem).VocabEntry.Equals(VocabEntry);
+            return (obj as VocabularyHistoryItem).VocabEntry.Equals(this.VocabEntry);
         }
 
         public override int GetHashCode()
         {
-            return VocabEntry.GetHashCode();
+            return this.VocabEntry.GetHashCode();
         }
     }
 }
