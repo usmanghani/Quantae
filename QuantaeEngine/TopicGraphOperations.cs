@@ -6,6 +6,7 @@ using Quantae.DataModel;
 using Quantae.Repositories;
 using System.IO;
 using System.Text.RegularExpressions;
+using MongoDB.Driver.Builders;
 
 namespace Quantae.Engine
 {
@@ -13,13 +14,12 @@ namespace Quantae.Engine
     {
         public static void CreateForwardLinks()
         {
-            int startIndex = 1;
             int count = Repositories.Repositories.Topics.CountItems();
             foreach (var i in Enumerable.Range(1, count))
             {
                 Topic t = Repositories.Repositories.Topics.GetTopicByIndex(i);
 
-                if (t.Dependencies == null || t.Dependencies.Count == 0)
+                if (t == null || t.Dependencies == null || t.Dependencies.Count == 0)
                 {
                     continue;
                 }
@@ -32,7 +32,11 @@ namespace Quantae.Engine
                         f.ForwardLinks = new List<TopicHandle>();
                     }
 
-                    f.ForwardLinks.Add(new TopicHandle(t));
+                    var h = new TopicHandle(t);
+                    if (!f.ForwardLinks.Contains(h))
+                    {
+                        f.ForwardLinks.Add(h);
+                    }
 
                     Repositories.Repositories.Topics.Save(f);
                 }
@@ -70,6 +74,12 @@ namespace Quantae.Engine
                 if (!Repositories.Repositories.Topics.TopicExists(name) && !Repositories.Repositories.Topics.TopicExists(index))
                 {
                     Repositories.Repositories.Topics.Save(t);
+                }
+                else // update dependency handles
+                {
+                    Topic t2 = Repositories.Repositories.Topics.GetTopicByIndex(index);
+                    t2.Dependencies = t.Dependencies;
+                    Repositories.Repositories.Topics.Save(t2);
                 }
             }
         }
@@ -206,7 +216,7 @@ namespace Quantae.Engine
 
         public static bool IsTense(string str)
         {
-            return str.Equals("Past") || str.Equals("PresentFuture");
+            return str.Equals("Past") || str.Equals("PresentFuture") || str.Equals("Command");
         }
 
         public static TopicHandle GetNextTopic(UserProfile userProfile)
@@ -223,49 +233,123 @@ namespace Quantae.Engine
                 }
             }
 
-            // Read the last topic in user history.
-            TopicHistoryItem thi = userProfile.TopicHistory.Last();
+            // Read the last topic in user history that is not a pseudo topic.
+            // The list is reversed.
+            TopicHistoryItem thi = userProfile.TopicHistory.FirstOrDefault(h => !h.IsPseudoTopic);
 
+            // First try to move to the topic immediately following this one.
             Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(thi.Topic);
             Topic nextTopic = Repositories.Repositories.Topics.GetTopicByIndex(currentTopic.Index + 1);
+            Topic targetTopic = null;
 
-            if (TopicPolicies.IsTopicSuccessful(thi))
+            bool dependenciesDone = TopicPolicies.AreDependenciesSatisfied(userProfile, nextTopic);
+
+            if (dependenciesDone)
             {
-                bool dependenciesDone = TopicPolicies.AreDependenciesSatisfied(userProfile, nextTopic);
-
-                if (dependenciesDone)
+                targetTopic = nextTopic;
+            }
+            else
+            {
+                // When we come here, it means the next immediate topic is out.
+                // Let's try the last successful topic and keep going until we are successful or we run out of topics in the history.
+                foreach (var historyItem in userProfile.TopicHistory)
                 {
-                    UpdateFailedTopicsCount(userProfile);
-                    UpdateCurrentTopicState(userProfile, nextTopic);
-                    return new TopicHandle(nextTopic);
+                    if (historyItem.IsSuccessful)
+                    {
+                        TopicHandle th = SelectForwardLink(userProfile, Repositories.Repositories.Topics.GetItemByHandle(historyItem.Topic));
+                        if (th != null)
+                        {
+                            targetTopic = Repositories.Repositories.Topics.GetItemByHandle(th);
+                            break;
+                        }
+                    }
                 }
 
-                // Next topic's dependencies were not satisfied.
-                // Get forward links and try to find a candidate node.
-                foreach (var candidateTopic in currentTopic.ForwardLinks)
+                int costOfMovingBack = int.MaxValue;
+
+                if (targetTopic != null)
                 {
-                    var candidate = Repositories.Repositories.Topics.GetItemByHandle(candidateTopic);
+                    if (currentTopic.Index > targetTopic.Index)
+                        costOfMovingBack = currentTopic.Index - targetTopic.Index;
+                    else
+                        costOfMovingBack = targetTopic.Index - currentTopic.Index;
+                }
 
-                    if (candidateTopic.Equals(new TopicHandle(nextTopic)))
+                // try to move fwd by selecting all topics with zero dependencies.
+                var cursor = Repositories.Repositories.Topics.Collection.Find(Query.And(Query.Size("Dependencies", 0), Query.GT("Index", currentTopic.Index)));
+                foreach (var topic in cursor)
+                {
+                    if (topic.Index - currentTopic.Index < costOfMovingBack)
                     {
-                        continue;
+                        targetTopic = topic;
+                        break;
                     }
+                }
 
-                    dependenciesDone = TopicPolicies.AreDependenciesSatisfied(userProfile, candidate);
-
-                    if (dependenciesDone)
+                if (cursor.Count() == 0)
+                {
+                    bool found = false;
+                    while (!found)
                     {
-                        return candidateTopic;
+                        nextTopic = Repositories.Repositories.Topics.GetTopicByIndex(nextTopic.Index + 1);
+
+                        if (nextTopic == null)
+                        {
+                            break;
+                        }
+
+                        bool dependenciesSatisfied = TopicPolicies.AreDependenciesSatisfied(userProfile, nextTopic);
+
+                        if (!dependenciesSatisfied)
+                        {
+                            continue;
+                        }
+
+                        if (nextTopic.Index - currentTopic.Index < costOfMovingBack)
+                        {
+                            targetTopic = nextTopic;
+                            found = true;
+                        }
                     }
+                }
+            }
+
+            if (targetTopic != null)
+            {
+                UpdateFailedTopicsCount(userProfile);
+                UpdateCurrentTopicState(userProfile, new TopicHandle(targetTopic));
+                return new TopicHandle(targetTopic);
+            }
+
+            return null;
+        }
+
+        private static TopicHandle SelectForwardLink(UserProfile userProfile, Topic currentTopic)
+        {
+            // Next topic's dependencies were not satisfied.
+            // Get forward links and try to find a candidate node.
+            foreach (var candidateTopic in currentTopic.ForwardLinks)
+            {
+                var candidate = Repositories.Repositories.Topics.GetItemByHandle(candidateTopic);
+
+                if (TopicPolicies.AreDependenciesSatisfied(userProfile, candidate) &&
+                    !HasUserSuccessfullyDoneTopic(userProfile, candidateTopic))
+                {
+                    return candidateTopic;
                 }
             }
 
             return null;
         }
 
-        public static void UpdateCurrentTopicState(UserProfile userProfile, Topic nextTopic)
+        private static bool HasUserSuccessfullyDoneTopic(UserProfile userProfile, TopicHandle topic)
         {
-            userProfile.CurrentState.CourseStateMachineState.CurrentTopic = new TopicHistoryItem() { Topic = new TopicHandle(nextTopic) };
+            return userProfile.TopicHistory.Any(thi => thi.Topic.Equals(topic) && thi.IsSuccessful);
+        }
+
+        public static void UpdateCurrentTopicState(UserProfile userProfile, TopicHandle nextTopic)
+        {
+            userProfile.CurrentState.CourseStateMachineState.CurrentTopic = new TopicHistoryItem() { Topic = nextTopic };
         }
 
         public static void UpdateFailedTopicsCount(UserProfile userProfile)
@@ -315,7 +399,10 @@ namespace Quantae.Engine
                 }
             }
 
-            userProfile.TopicHistory.Add(userProfile.CurrentState.CourseStateMachineState.CurrentTopic);
+            // Make it behave like a stack.
+            userProfile.TopicHistory.Insert(0, userProfile.CurrentState.CourseStateMachineState.CurrentTopic);
+            userProfile.TopicHistory.First().LastTimestamp = DateTime.UtcNow;
+            userProfile.TopicHistory.First().IsSuccessful = isSuccess;
 
             userProfile.CurrentState.CourseStateMachineState.CurrentTopic = null;
         }

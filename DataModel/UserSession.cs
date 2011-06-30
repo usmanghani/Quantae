@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public class UserSession : QuantaeObject<long>
+    public class UserSession : QuantaeObject
     {
         public string Token { get; set; }
         public DateTime Timestamp { get; set; }
@@ -13,7 +13,7 @@ namespace Quantae.DataModel
         public UserProfileHandle UserProfile { get; set; }
     }
 
-    public class UserSessionHandle : QuantaeObjectHandle<long, UserSession>
+    public class UserSessionHandle : QuantaeObjectHandle<UserSession>
     {
         public UserSessionHandle(UserSession session) : base(session) { }
     }

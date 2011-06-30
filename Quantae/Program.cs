@@ -19,6 +19,12 @@ namespace Quantae
     using Quantae.DataModel;
     using Quantae.Repositories;
     using System.Text.RegularExpressions;
+    using System.Diagnostics;
+    using MongoDB.Driver.Builders;
+
+    class A { public string Aa = null; public ObjectId ID = ObjectId.GenerateNewId(); }
+    class B : A { public string Bb = null;}
+    class C : A { public string Cc = null;}
 
     class MyStateMachine : StateMachineWorkflowActivity
     {
@@ -34,32 +40,105 @@ namespace Quantae
         }
     }
 
-    class A { public string Aa = null; public ObjectId ID = ObjectId.GenerateNewId(); }
-    class B : A { public string Bb = null;}
-    class C : A { public string Cc = null;}
 
     class Program
     {
         static void Main(string[] args)
         {
+
+            //var server = MongoServer.Create();
+            //server.Connect();
+            //var result = server.RunAdminCommand(new CommandDocument(new BsonElement("fsync", new BsonInt32(1))));
+
+            //System.Diagnostics.TraceSource ts = new System.Diagnostics.TraceSource("QuantaeTestTraceSource", SourceLevels.All);
+
+            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo", "format", new object[] { "arg1", "arg2" });
+            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo");
+            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo");
+            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo");
+            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo");
+
+            //ts.Flush();
+            //ts.Close();
+
             DataStore dataStore = new DataStore("QuantaeTestDb");
             dataStore.Connect();
             Repositories.Repositories.Init(dataStore);
-
-            //var roles = Repositories.Repositories.GrammarRoles.GetGrammarRolesByName("Mufrad");
-            //foreach (var r in roles)
-            //{
-            //    Console.WriteLine(r.ToJson());
-            //}
+            FilterManager.CreateFilters();
 
             //TopicGraphOperations.PopulateTopics("d:\\downloads\\dependencies-parseable.txt");
             //TopicGraphOperations.CreateForwardLinks();
             //EnumerateTopics();
-            CheckUserValidity();
+
+            UserProfile profile = CreateUserTopicHistory(userTopicHistory12);
+            TopicHandle topicHandle = TopicGraphOperations.GetNextTopic(profile);
+
+            if (topicHandle != null)
+            {
+                Console.WriteLine(Repositories.Repositories.Topics.GetItemByHandle(topicHandle).Index);
+            }
+            else
+            {
+                Console.WriteLine("STUCK");
+            }
+
+            var topics = Repositories.Repositories.Topics.GetAllItems().OrderByDescending(t => t.Index);
+
+            StreamWriter writer = new StreamWriter("d:\\chains.txt");
+
+            Dictionary<int, int> countsByTopic = new Dictionary<int, int>();
+            foreach (var topic in topics)
+            {
+                countsByTopic[topic.Index] = ShowChain(topic.Index, 0, writer);
+
+                writer.WriteLine("===========");
+                writer.WriteLine(countsByTopic[topic.Index].ToString());
+                writer.WriteLine("==========");
+            }
+
+            writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<<<");
+
+            var topicsByCountSorted = countsByTopic.OrderByDescending(kvp => kvp.Value);
+            foreach (var kvp in topicsByCountSorted)
+            {
+                writer.WriteLine(kvp.Key + " => " + kvp.Value);
+            }
+
+            writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<");
+            writer.Flush();
+            writer.Close();
+
+            //Topic topic = Repositories.Repositories.Topics.GetItemByHandle(topicHandle);
+
+            //if (topic == null)
+            //{
+            //    Console.WriteLine("<null>");
+            //}
+            //else
+            //{
+            //    Console.WriteLine(topic.Index + " -> " + topic.TopicName);
+            //}
+
+            //CheckUserValidity();
             //DoQuantaeDataModelStuff();
-            //DoMongoStuff();
             //DoGraphStuff();
             //DoTransliterationStuff();
+        }
+
+        private static int ShowChain(int p, int indent, StreamWriter writer)
+        {
+            int sum = 0;
+            var topic = Repositories.Repositories.Topics.GetTopicByIndex(p);
+
+            writer.WriteLine(new string(' ', indent) + p);
+
+            foreach (var d in topic.Dependencies)
+            {
+                var t = Repositories.Repositories.Topics.GetItemByHandle(d);
+                sum += ShowChain(t.Index, indent + 4, writer);
+            }
+
+            return ++ sum;
         }
 
         private static Dictionary<int, Tuple<string, int, List<int>>> DoFwdLinks(Dictionary<int, Tuple<string, List<int>>> graph)
@@ -180,7 +259,7 @@ namespace Quantae
         private static void EnumerateTopics()
         {
             var topics = Repositories.Repositories.Topics.GetAllItems().OrderBy(t => t.Index);
-            using (StreamWriter writer = new StreamWriter(File.OpenWrite("d:\\testingit.txt")))
+            using (StreamWriter writer = new StreamWriter(new FileStream("d:\\testingit.txt", FileMode.Create)))
             {
                 foreach (var topic in topics)
                 {
@@ -189,7 +268,7 @@ namespace Quantae
             }
 
             topics = Repositories.Repositories.Topics.GetAllItems().OrderBy(t => t.Index);
-            using (StreamWriter writer = new StreamWriter(File.OpenWrite("d:\\testingit2.txt")))
+            using (StreamWriter writer = new StreamWriter(new FileStream("d:\\testingit2.txt", FileMode.Create)))
             {
                 foreach (var topic in topics)
                 {
@@ -199,6 +278,12 @@ namespace Quantae
                     foreach (var d in topic.Dependencies)
                     {
                         deps.Add(Repositories.Repositories.Topics.GetItemByHandle(d).Index);
+                    }
+
+                    List<int> fwdLinks = new List<int>();
+                    foreach (var f in topic.ForwardLinks)
+                    {
+                        fwdLinks.Add(Repositories.Repositories.Topics.GetItemByHandle(f).Index);
                     }
 
                     writer.Write(index.ToString());
@@ -236,12 +321,20 @@ namespace Quantae
                         writer.Write(",");
                     }
 
+                    writer.Write("\t");
+
+                    foreach (var f in fwdLinks)
+                    {
+                        writer.Write(f);
+                        writer.Write(",");
+                    }
+
                     writer.WriteLine();
                 }
             }
 
             var grammarRoles = Repositories.Repositories.GrammarRoles.GetAllItems();
-            using (StreamWriter writer = new StreamWriter(File.OpenWrite("d:\\testingit3.txt")))
+            using (StreamWriter writer = new StreamWriter(new FileStream("d:\\testingit3.txt", FileMode.Create)))
             {
                 foreach (var grammarRole in grammarRoles)
                 {
@@ -250,7 +343,7 @@ namespace Quantae
             }
 
             grammarRoles = Repositories.Repositories.GrammarRoles.GetAllItems();
-            using (StreamWriter writer = new StreamWriter(File.OpenWrite("d:\\testingit4.txt")))
+            using (StreamWriter writer = new StreamWriter(new FileStream("d:\\testingit4.txt", FileMode.Create)))
             {
                 foreach (var grammarRole in grammarRoles)
                 {
@@ -299,9 +392,12 @@ namespace Quantae
         {
             UserProfile profile = new UserProfile();
 
-            foreach (var item in userTopicHistory2.Keys)
+            foreach (var item in topicHistory.Keys)
             {
-
+                TopicHistoryItem thi = new TopicHistoryItem();
+                thi.IsSuccessful = topicHistory[item];
+                thi.Topic = new TopicHandle(Repositories.Repositories.Topics.GetTopicByIndex(item));
+                profile.TopicHistory.Insert(0, thi);
             }
 
             return profile;
@@ -370,5 +466,55 @@ namespace Quantae
                 {7, true}, {8, false}, {10, true}, {11, true}, {12, true}, {13, false},
                 {15, true}, {16, true}, {17, true}, {18, true}, {19, true}, {20, true}
             };
+
+        private static Dictionary<int, bool> userTopicHistory3 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, false}, {14, true}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory4 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, false}, {14, false}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory5 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, false}, {14, false}, {17, false}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory6 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, false}, {14, false}, {17, true}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory7 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, false}, {5, true}, {6, true}, {8, true}, {10, true}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory8 = new Dictionary<int, bool>()
+        {
+            {1, false}, {3, true}, {6, true}, {8, true}, {10, true}, {12, true}, {13, true}, {14, true}, {17, true}, {18, true}, {19, true}, {20, true}, {21, true}, {22, true}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory9 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, false}, {14, true}, {15, true}, {17, true}, {18, true}, {19, true}, {22, true}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory10 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, false}, {7, true}, {8, true}, {9, true}, {10, true}, {11, true}, {12, true}, {13, true}, {14, true}, {15, true}, {16, true}, {17, true}, {18, true}, {19, true}, {20,true}, {21, true}, {22, true}, {23, false}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory11 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, false}, {7, true}, {8, true}, {9, true}, {10, true}, {11, true}, {12, true}, {13, true}, {14, true}, {15, true}, {16, true}, {17, true}, {18, true}, {19, true}, {20,true}, {21, true}, {22, true}, {23, false}, {24, false}, {25, false}
+        };
+
+        private static Dictionary<int, bool> userTopicHistory12 = new Dictionary<int, bool>()
+        {
+            {1, true}, {2, true}, {3, true}, {4, true}, {5, true}, {6, false}, {7, true}, {8, true}, {9, true}, {10, true}, {11, true}, {12, true}, {13, true}, {14, true}, {15, true}, {16, true}, {17, true}, {18, true}, {19, true}, {20,true}, {21, true}, {22, true}, {23, true}, {24, true}, {25, true}
+        };
     }
 }

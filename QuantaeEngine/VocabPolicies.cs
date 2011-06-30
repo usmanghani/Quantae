@@ -8,14 +8,14 @@ namespace Quantae.Engine
 {
     public class VocabPolicies
     {
-        private double vocabEntryWeight = 1.5;
+        private static double vocabEntryWeight = 1.5;
 
-        public int CalculateMinSentenceScore(Sentence sentence)
+        public static int CalculateMinSentenceScore(Sentence sentence)
         {
             return (int)Math.Ceiling(sentence.VocabEntries.Count * vocabEntryWeight);
         }
 
-        public int GetVocabEntryRank(VocabEntryHandle handle, UserProfile user)
+        public static int GetVocabEntryRank(UserProfile user, VocabEntryHandle handle)
         {
             var historyItem = user.VocabHistory.Where(vhi => vhi.VocabEntry.Equals(handle)).FirstOrDefault();
             if (historyItem == null)

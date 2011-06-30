@@ -9,43 +9,49 @@ using MongoDB.Driver.Builders;
 
 namespace Quantae.Repositories
 {
-    public abstract class RepositoryBase<TObject> where TObject : QuantaeObject<long>
+    public abstract class RepositoryBase<TObject> where TObject : QuantaeObject
     {
-        protected DataStore dataStore = null;
-        protected string collectionName = string.Empty;
-        protected MongoCollection<TObject> collection = null;
+        public DataStore DataStore { get; set; }
+        public string CollectionName { get; set; }
+        public MongoCollection<TObject> Collection { get; set; }
 
         public RepositoryBase(DataStore store, string collectionName)
         {
-            this.dataStore = store;
-            this.collectionName = collectionName;
-            this.collection = store.GetCollection<TObject>(collectionName);
+            this.DataStore = store;
+            this.CollectionName = collectionName;
+            this.Collection = store.GetCollection<TObject>(collectionName);
         }
 
-        public TObject GetItemByHandle<HandleType>(HandleType handle) where HandleType : QuantaeObjectHandle<long, TObject>
+        public TObject GetItemByHandle<HandleType>(HandleType handle) where HandleType : QuantaeObjectHandle<TObject>
         {
-            return this.collection.FindOneByIdAs<TObject>(new BsonInt64(handle.ObjectId));
+            return this.Collection.FindOneByIdAs<TObject>(new BsonObjectId(handle.ObjectId.Value));
         }
 
         public void Save(TObject doc)
         {
-            this.collection.Save<TObject>(doc);
+            SafeModeResult result = this.Collection.Save<TObject>(doc, SafeMode.True);
+
+            if (!result.Ok)
+            {
+                string errorMessage = result.HasLastErrorMessage ? result.LastErrorMessage : string.Empty;
+                throw new ApplicationException(string.Format("Failed to save {0} to the database. Error Message: {1}", doc.ToJson(), errorMessage));
+            }
         }
 
         public IEnumerable<TObject> GetAllItems()
         {
-            var cursor = this.collection.FindAllAs<TObject>();
+            var cursor = this.Collection.FindAllAs<TObject>();
             return cursor.AsEnumerable<TObject>();
         }
 
-        public void Remove<HandleType>(HandleType handle) where HandleType : QuantaeObjectHandle<long, TObject>
+        public void Remove<HandleType>(HandleType handle) where HandleType : QuantaeObjectHandle<TObject>
         {
-            this.collection.Remove(Query.EQ("ObjectID", new BsonInt64(handle.ObjectId)));
+            this.Collection.Remove(Query.EQ("ObjectID", new BsonObjectId(handle.ObjectId.Value)));
         }
 
         public int CountItems()
         {
-            return this.collection.Count();
+            return this.Collection.Count();
         }
     }
 }

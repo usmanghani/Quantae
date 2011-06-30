@@ -11,5 +11,18 @@ namespace Quantae.DataModel
         public int IntroSlideIndex { get; set; }
         public TopicSectionType CurrentSection { get; set; }
 
+        public SampleSectionState SampleSectionState { get; set; }
+        public int SampleSectionIterationCount { get; set; }
+
+        public TopicStateMachineState()
+        {
+            SampleSectionState = new SampleSectionState();
+            SampleSectionIterationCount = 0;
+
+            IsIntroComplete = false;
+            IntroSlideIndex = 0;
+
+            CurrentSection = TopicSectionType.Intro;
+        }
     }
 }

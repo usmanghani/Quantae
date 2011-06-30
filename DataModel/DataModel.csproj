@@ -46,6 +46,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,12 +60,16 @@
     <Compile Include="Conjugation.cs" />
     <Compile Include="ContextualAnalysis.cs" />
     <Compile Include="CourseStateMachineState.cs" />
+    <Compile Include="DepthSection.cs" />
     <Compile Include="LearningTypeScoreModel.cs" />
     <Compile Include="NounType.cs" />
     <Compile Include="QuantaeTuple.cs" />
+    <Compile Include="SampleSectionState.cs" />
     <Compile Include="SectionStateMachineState.cs" />
+    <Compile Include="StaticSection.cs" />
     <Compile Include="TopicSectionType.cs" />
     <Compile Include="TopicStateMachineState.cs" />
+    <Compile Include="Tristate.cs" />
     <Compile Include="UserSession.cs" />
     <Compile Include="VocabEntry.cs" />
     <Compile Include="UserCurrentState.cs" />

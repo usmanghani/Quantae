@@ -5,8 +5,10 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public class IntroSection : StaticSection
+    public enum Tristate
     {
-        public List<Slide> Slides { get; set; }
+        False = 0,
+        True = 1,
+        DontCare = 2
     }
 }

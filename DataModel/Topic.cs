@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using System.Diagnostics;
+using MongoDB.Bson;
 
 namespace Quantae.DataModel
 {
@@ -15,7 +17,7 @@ namespace Quantae.DataModel
     /// Ism Mosool Jumla Sila Wa Al Aaid (Relative and Personal Pronoun Phrase)
     /// 
     /// </summary>
-    public class Topic : QuantaeObject<long>
+    public class Topic : QuantaeObject
     {
         /// <summary>
         /// This is used  to give each topic a number. 
@@ -37,12 +39,18 @@ namespace Quantae.DataModel
         public List<TopicHandle> Dependencies { get; set; }
         public List<TopicHandle> ForwardLinks { get; set; }
 
-        public IntroSection IntroSection { get; set; }
+        public StaticSection IntroSection { get; set; }
+        public StaticSection DepthSection { get; set; }
 
-        // TODO: Add depth section here.
+        public Topic()
+        {
+            RoleConjugationPairs = new List<QuantaeTuple<GrammarRoleHandle, Conjugation>>();
+            Dependencies = new List<TopicHandle>();
+            ForwardLinks = new List<TopicHandle>();
+        }
     }
 
-    public class TopicHandle : QuantaeObjectHandle<long, Topic>
+    public class TopicHandle : QuantaeObjectHandle<Topic>
     {
         public TopicHandle(Topic t) : base(t) { }
     }

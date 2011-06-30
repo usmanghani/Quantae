@@ -4,19 +4,21 @@ using System.Linq;
 using System.Text;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson;
 
 namespace Quantae.DataModel
 {
-    public class QuantaeObject<T>
+    public class QuantaeObject
     {
-        [BsonId(IdGenerator = typeof(QuantaeObjectIdGenerator))]
-        public T ObjectId { get; set; }
+        [BsonId(IdGenerator = typeof(BsonObjectIdGenerator))]
+        public BsonObjectId ObjectId { get; set; }
     }
 
-    public class QuantaeObjectHandle<THandle, TObject> where TObject : QuantaeObject<THandle>
+    public class QuantaeObjectHandle<TObject> where TObject : QuantaeObject
     {
-        [BsonId(IdGenerator = typeof(QuantaeObjectIdGenerator))]
-        public THandle ObjectId { get; set; }
+        [BsonId(IdGenerator = typeof(BsonObjectIdGenerator))]
+        public BsonObjectId ObjectId { get; set; }
 
         public QuantaeObjectHandle(TObject obj)
         {
@@ -25,7 +27,7 @@ namespace Quantae.DataModel
 
         public override bool Equals(object obj)
         {
-            return ObjectId.Equals((obj as QuantaeObjectHandle<THandle, TObject>).ObjectId);
+            return ObjectId.Equals((obj as QuantaeObjectHandle<TObject>).ObjectId);
         }
 
         public override int GetHashCode()

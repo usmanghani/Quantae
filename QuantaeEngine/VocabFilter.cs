@@ -6,18 +6,16 @@ using Quantae.DataModel;
 
 namespace Quantae.Engine
 {
-    public class VocabFilter
+    public class VocabFilter : ISentenceFilter
     {
-        public bool IsSentenceValid(Sentence sentence, UserProfile user)
+        public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {
-            VocabPolicies policies = new VocabPolicies();
-
-            int minSentenceScore = policies.CalculateMinSentenceScore(sentence);
+            int minSentenceScore = VocabPolicies.CalculateMinSentenceScore(sentence);
 
             int currentSentenceScore = 0;
             foreach (var vocabEntry in sentence.VocabEntries)
             {
-                currentSentenceScore += policies.GetVocabEntryRank(vocabEntry, user);
+                currentSentenceScore += VocabPolicies.GetVocabEntryRank(user, vocabEntry);
             }
 
             // TODO: ask zeeshan about this comparison function.

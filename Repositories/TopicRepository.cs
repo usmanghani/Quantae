@@ -14,12 +14,12 @@ namespace Quantae.Repositories
 
         public Topic GetTopicByIndex(int index)
         {
-            return this.collection.FindOneAs<Topic>(Query.EQ("Index", new BsonInt32(index)));
+            return this.Collection.FindOneAs<Topic>(Query.EQ("Index", new BsonInt32(index)));
         }
 
         public Topic GetTopicByName(string name)
         {
-            return this.collection.FindOneAs<Topic>(Query.EQ("TopicName", new BsonString(name)));
+            return this.Collection.FindOneAs<Topic>(Query.EQ("TopicName", new BsonString(name)));
         }
 
         public bool TopicExists(int index)

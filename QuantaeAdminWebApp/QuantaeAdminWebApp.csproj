@@ -70,56 +70,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\AnswerChoice.cs" />
-    <Compile Include="Models\AnswerDimension.cs" />
-    <Compile Include="Models\AudioRecording.cs" />
-    <Compile Include="Models\ContextualAnalysis.cs" />
-    <Compile Include="Models\CourseLocation.cs" />
-    <Compile Include="Models\DefinitenessRule.cs" />
-    <Compile Include="Models\DepthScore.cs" />
-    <Compile Include="Models\DifficultyLevels.cs" />
-    <Compile Include="Models\GenderRule.cs" />
-    <Compile Include="Models\GrammarAnalysisElement.cs" />
-    <Compile Include="Models\GrammarRole.cs" />
-    <Compile Include="Models\GrammarRule.cs" />
-    <Compile Include="Models\HistoryItem.cs" />
-    <Compile Include="Models\IntroSection.cs" />
-    <Compile Include="Models\LearningDependencyScore.cs" />
-    <Compile Include="Models\LearningTypeScore.cs" />
-    <Compile Include="Models\NounConjugation.cs" />
-    <Compile Include="Models\NounConjugationHistoryItem.cs" />
-    <Compile Include="Models\NumberRule.cs" />
-    <Compile Include="Models\PaymentInformation.cs" />
-    <Compile Include="Models\PaymentInstrument.cs" />
-    <Compile Include="Models\PaymentInstrumentInfo.cs" />
-    <Compile Include="Models\PaymentTypes.cs" />
-    <Compile Include="Models\PersonRule.cs" />
-    <Compile Include="Models\Picture.cs" />
-    <Compile Include="Models\QuantaeAdminWebAppContext.cs" />
-    <Compile Include="Models\QuantaeObject.cs" />
-    <Compile Include="Models\QuantaeObjectId.cs" />
-    <Compile Include="Models\QuantaeObjectIdGenerator.cs" />
-    <Compile Include="Models\QuantaeObjectIdMemberConvention.cs" />
-    <Compile Include="Models\Question.cs" />
-    <Compile Include="Models\QuestionDimension.cs" />
-    <Compile Include="Models\RecordingType.cs" />
-    <Compile Include="Models\Sentence.cs" />
-    <Compile Include="Models\SentenceType.cs" />
-    <Compile Include="Models\Slide.cs" />
-    <Compile Include="Models\TenseRule.cs" />
-    <Compile Include="Models\Topic.cs" />
-    <Compile Include="Models\TopicComponent.cs" />
-    <Compile Include="Models\TopicHistoryItem.cs" />
-    <Compile Include="Models\TopicRulePair.cs" />
-    <Compile Include="Models\UserProfile.cs" />
-    <Compile Include="Models\Utils.cs" />
-    <Compile Include="Models\VerbConjugation.cs" />
-    <Compile Include="Models\VerbConjugationHistoryItem.cs" />
-    <Compile Include="Models\VideoRecording.cs" />
-    <Compile Include="Models\VocabularyHistoryItem.cs" />
-    <Compile Include="Models\Weakness.cs" />
-    <Compile Include="Models\Word.cs" />
-    <Compile Include="Models\WordType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +146,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataModel\DataModel.csproj">
+      <Project>{84696870-FD21-43F4-9FD9-6C7D01A32FC7}</Project>
+      <Name>DataModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

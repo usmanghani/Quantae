@@ -14,5 +14,10 @@ namespace Quantae.DataModel
         /// The current topic.
         /// </value>
         public TopicHistoryItem CurrentTopic { get; set; }
+
+        public CourseStateMachineState ()
+        {
+            this.CurrentTopic = null;
+        }
     }
 }

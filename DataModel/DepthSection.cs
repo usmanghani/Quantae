@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quantae.Engine
+namespace Quantae.DataModel
 {
-    class VocabUpdater
+    public class DepthSection : StaticSection
     {
     }
 }

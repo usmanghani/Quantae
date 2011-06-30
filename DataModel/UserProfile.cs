@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public class UserProfile : QuantaeObject<long>
+    public class UserProfile : QuantaeObject
     {
         #region User Info
 
@@ -80,22 +80,24 @@ namespace Quantae.DataModel
 
         public UserProfile()
         {
-            InitNounConjugationHistory();
-            InitVerbConjugationHistory();
-        }
-
-        private void InitVerbConjugationHistory()
-        {
-            // TODO : Initialize this properly.
-        }
-
-        private void InitNounConjugationHistory()
-        {
             NounConjugationHistory = new List<NounConjugationHistoryItem>();
+            VerbConjugationHistory = new List<VerbConjugationHistoryItem>();
+            SentenceHistory = new List<SentenceHistoryItem>();
+            TopicHistory = new List<TopicHistoryItem>();
+            VocabHistory = new List<VocabularyHistoryItem>();
+            Weaknesses = new Dictionary<Weakness, int>();
+            FailureCounters = new Dictionary<TopicHandle, int>();
+            LearningTypeScore = new LearningTypeScoreModel();
+
+            DepthScore = default(double);
+            LearningDependencyScore = default(double);
+            MemoryScore = default(double);
+
+            CurrentState = new UserCurrentState();
         }
     }
 
-    public class UserProfileHandle : QuantaeObjectHandle<long, UserProfile>
+    public class UserProfileHandle : QuantaeObjectHandle<UserProfile>
     {
         public UserProfileHandle(UserProfile profile) : base(profile) { }
     }

@@ -6,9 +6,9 @@ using Quantae.DataModel;
 
 namespace Quantae.Engine
 {
-    public class NounConjugationFilter
+    public class NounConjugationFilter : ISentenceFilter
     {
-        public bool IsSentenceValid(Sentence sentence, UserProfile user)
+        public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {
             var nounConjugations = sentence.RoleConjugationPairs.Where(t => t.Item2.GetType() == typeof(NounConjugation)).Select(t => t.Item2 as NounConjugation);
             var userNounConjugations = user.NounConjugationHistory.Select(nchi => nchi.NounConjugation);

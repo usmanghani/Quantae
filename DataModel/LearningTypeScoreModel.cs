@@ -9,5 +9,11 @@ namespace Quantae.DataModel
     {
         public double Score { get; set; }
         public List<int> Entries { get; set; }
+
+        public LearningTypeScoreModel ()
+        {
+            this.Score = default(double);
+            this.Entries = new List<int>();
+        }
     }
 }

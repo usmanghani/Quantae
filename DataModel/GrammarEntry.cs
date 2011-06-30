@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace Quantae.DataModel
 {
-    public class GrammarEntry : QuantaeObject<long>
+    public class GrammarEntry : QuantaeObject
     {
         public string Text { get; set; }
         public string Translation { get; set; }

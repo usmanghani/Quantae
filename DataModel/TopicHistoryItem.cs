@@ -36,6 +36,19 @@ namespace Quantae.DataModel
 
         public Weakness WeaknessForPseudoTopic { get; set; }
 
+        public TopicHistoryItem()
+        {
+            this.Topic = null;
+            this.AnswerDimensionFailureCount = new Dictionary<AnswerDimension, int>();
+            this.AnswerDimensionSuccessCount = new Dictionary<AnswerDimension, int>();
+            this.UmbrellaTopicFailureCount = new Dictionary<string, int>();
+            this.UmbrellaTopicSuccessCount = new Dictionary<string, int>();
+            this.IsPseudoTopic = false;
+            this.IsSkipped = false;
+            this.IsSuccessful = false;
+            this.WeaknessForPseudoTopic = null;
+        }
+
         public override bool Equals(object obj)
         {
             return (obj as TopicHistoryItem).Topic.Equals(Topic);

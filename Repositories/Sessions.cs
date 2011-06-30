@@ -20,14 +20,14 @@ namespace Quantae.Repositories
                 return null;
             }
 
-            var cursor = this.collection.FindAs<UserSession>(Query.EQ("Token", new BsonString(token)));
+            var cursor = this.Collection.FindAs<UserSession>(Query.EQ("Token", new BsonString(token)));
 
             return cursor.OrderByDescending(session => session.Timestamp).FirstOrDefault();
         }
 
         public void RemoveSessionIfExists(string token)
         {
-            this.collection.FindAndRemove(Query.EQ("Token", new BsonString(token)), SortBy.Null);
+            this.Collection.FindAndRemove(Query.EQ("Token", new BsonString(token)), SortBy.Null);
         }
     }
 }

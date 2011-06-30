@@ -10,5 +10,13 @@ namespace Quantae.DataModel
         public PaymentTypes PaymentType { get; set; }
         public PaymentInstrument Instrument { get; set; }
         public PaymentInstrumentInfo InstrumentInfo { get; set; }
+
+
+        public PaymentInformation()
+        {
+            PaymentType = PaymentTypes.Free;
+            Instrument = PaymentInstrument.Unknown;
+            InstrumentInfo = new NullPaymentInstrumentInfo();
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace Quantae.Engine
         {
             return nextTopic.Dependencies.All(th =>
             {
-                var topicHistoryEntry = userProfile.TopicHistory.Where(thi => thi.Topic == th).FirstOrDefault();
+                var topicHistoryEntry = userProfile.TopicHistory.Where(thi => thi.Topic.Equals(th)).FirstOrDefault();
                 if (topicHistoryEntry != null && topicHistoryEntry.IsSuccessful)
                 {
                     return true;

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MongoDB.Bson;
 
 namespace Quantae.DataModel
 {
-    public class Sentence : QuantaeObject<long>
+    public class Sentence : QuantaeObject
     {
         public string SentenceText { get; set; }
 
@@ -68,9 +69,17 @@ namespace Quantae.DataModel
         public List<string> Tags { get; set; }
 
         #endregion
+
+        public Sentence()
+        {
+            SecondaryTopics = new List<TopicHandle>();
+            RoleConjugationPairs = new List<QuantaeTuple<GrammarRoleHandle, Conjugation>>();
+            Questions = new List<Question>();
+            Tags = new List<string>();
+        }
     }
 
-    public class SentenceHandle : QuantaeObjectHandle<long, Sentence>
+    public class SentenceHandle : QuantaeObjectHandle<Sentence>
     {
         public SentenceHandle(Sentence s) : base(s) { }
     }

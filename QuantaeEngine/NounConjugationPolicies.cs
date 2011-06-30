@@ -8,16 +8,16 @@ namespace Quantae.Engine
 {
     public class NounConjugationPolicies
     {
-        private double PassPercentage = 0.9;
-        private int MinSuccessRequired = 9;
+        private const double PassPercentage = 0.9;
+        private const int MinSuccessRequired = 9;
 
-        private Dictionary<int, Tuple<NounConjugation, NounConjugation>> nounConjugationRankingMap = new Dictionary<int, Tuple<NounConjugation, NounConjugation>>{
+        private static Dictionary<int, Tuple<NounConjugation, NounConjugation>> nounConjugationRankingMap = new Dictionary<int, Tuple<NounConjugation, NounConjugation>>{
             {0, new Tuple<NounConjugation, NounConjugation>(new NounConjugation(){Number = NumberRule.Singular, Gender = GenderRule.Masculine}, new NounConjugation(){Number = NumberRule.Singular, Gender = GenderRule.Feminine})},
             {1, new Tuple<NounConjugation, NounConjugation>(new NounConjugation(){Number = NumberRule.Plural, Gender = GenderRule.Masculine}, new NounConjugation(){Number = NumberRule.Plural, Gender = GenderRule.Feminine})},
             {2, new Tuple<NounConjugation, NounConjugation>(new NounConjugation(){Number = NumberRule.Dual, Gender = GenderRule.Masculine}, new NounConjugation(){Number = NumberRule.Dual, Gender = GenderRule.Feminine})}
         };
 
-        public IEnumerable<NounConjugationHistoryItem> GetCurrentNounConjugations(UserProfile user)
+        public static IEnumerable<NounConjugationHistoryItem> GetCurrentNounConjugations(UserProfile user)
         {
             var nounConjugationsToFind = nounConjugationRankingMap[user.CurrentState.CurrentNounConjugationRank];
 
@@ -34,7 +34,7 @@ namespace Quantae.Engine
             return nounConjugationsFound;
         }
 
-        public bool CanMoveToNextNounConjugation(UserProfile user)
+        public static bool CanMoveToNextNounConjugation(UserProfile user)
         {
             var currentNounConjugations = GetCurrentNounConjugations(user);
 
@@ -55,7 +55,7 @@ namespace Quantae.Engine
             return true;
         }
 
-        public bool IsNounConjugationSuccessful(NounConjugationHistoryItem nchi)
+        public static bool IsNounConjugationSuccessful(NounConjugationHistoryItem nchi)
         {
             if (nchi.SuccessCount < MinSuccessRequired)
             {
@@ -68,6 +68,33 @@ namespace Quantae.Engine
             }
 
             return (nchi.SuccessCount / (nchi.FailureCount + nchi.SuccessCount)) >= PassPercentage;
+        }
+
+        public static bool IsValidNumberRuleWithCurrentRank(UserProfile profile, NumberRule numberRule)
+        {
+            switch (profile.CurrentState.CurrentNounConjugationRank)
+            {
+                case 0:
+                    if (numberRule != NumberRule.Singular)
+                    {
+                        return false;
+                    }
+                    break;
+                case 1:
+                    if (numberRule != NumberRule.Plural || numberRule != NumberRule.Singular)
+                    {
+                        return false;
+                    }
+                    break;
+                case 2:
+                    if (numberRule != NumberRule.Dual)
+                    {
+                        return false;
+                    }
+                    break;
+            }
+
+            return true;
         }
     }
 }

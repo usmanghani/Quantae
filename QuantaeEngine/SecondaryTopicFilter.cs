@@ -6,7 +6,7 @@ using Quantae.DataModel;
 
 namespace Quantae.Engine
 {
-    public class SecondaryTopicFilter
+    public class SecondaryTopicFilter : ISentenceFilter
     {
         public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {

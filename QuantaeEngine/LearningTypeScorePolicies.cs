@@ -31,4 +31,13 @@ namespace Quantae.Engine
             return defaultLearningTypeScore;
         }
     }
+
+    public class LearningTypeOperations
+    {
+        public static void UpdateLearningTypeScore(UserProfile profile, Sentence sentence, int succesCount, int failureCount)
+        {
+
+        }
+    }
+
 }

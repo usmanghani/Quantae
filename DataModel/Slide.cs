@@ -8,6 +8,6 @@ namespace Quantae.DataModel
     public class Slide
     {
         public string Content { get; set; }
-        public List<VocabEntry> VocabEntries { get; set; }
+        public List<VocabEntryHandle> VocabEntries { get; set; }
     }
 }

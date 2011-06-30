@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Quantae.DataModel
 {
-    public class UserCurrentState : QuantaeObject<long>
+    /// <summary>
+    /// 
+    /// </summary>
+    public class UserCurrentState : QuantaeObject
     {
         /// <summary>
         /// Current word length that the user is supposed to see.
@@ -35,13 +38,31 @@ namespace Quantae.DataModel
         /// </summary>
         public Dictionary<TenseRule, int> CurrentVerbConjugationRanksByTense { get; set; }
 
+        /// <summary>
+        /// Gets or sets the state of the course state machine.
+        /// </summary>
+        /// <value>
+        /// The state of the course state machine.
+        /// </value>
         public CourseStateMachineState CourseStateMachineState { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the state of the topic state machine.
+        /// </summary>
+        /// <value>
+        /// The state of the topic state machine.
+        /// </value>
         public TopicStateMachineState TopicStateMachineState { get; set; }
-        public SectionStateMachineState SectionStateMachineState { get; set; }
 
         public UserCurrentState()
         {
             CurrentVerbConjugationRanksByTense = new Dictionary<TenseRule, int>() { { TenseRule.Past, 0 }, { TenseRule.PresentFuture, 0 }, { TenseRule.Command, 0 } };
+            CurrentSentenceLength = 2;
+            CurrentBatchIndex = 0;
+            CurrentNounConjugationRank = 0;
+
+            CourseStateMachineState = new CourseStateMachineState();
+            TopicStateMachineState = new TopicStateMachineState();
         }
     }
 }

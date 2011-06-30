@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Quantae.DataModel
 {
-    public class VocabEntry : QuantaeObject<long>
+    public class VocabEntry : QuantaeObject
     {
         public string RootWord { get; set; }
         public string Text { get; set; }
@@ -27,7 +27,7 @@ namespace Quantae.DataModel
         }
     }
 
-    public class VocabEntryHandle : QuantaeObjectHandle<long, VocabEntry>
+    public class VocabEntryHandle : QuantaeObjectHandle<VocabEntry>
     {
         public VocabEntryHandle(VocabEntry entry) : base(entry) { }
     }
