@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Quantae.DataModel
 {
@@ -25,6 +26,7 @@ namespace Quantae.DataModel
         // Complexity(GrammarAnalysis) -> if (1->1) +=1; if ( N->M ) += N;
         // FUTURE: Final score = vacabentries.length + complexity
         // NOW: vocabentries.Count
+        [BsonIgnore]
         public int DifficultyRank
         {
             get
@@ -47,7 +49,7 @@ namespace Quantae.DataModel
 
         #region Questions
 
-        public List<Question> Questions { get; set; }
+        public Dictionary<QuestionDimension, Question> Questions { get; set; }
 
         #endregion
 
@@ -70,7 +72,7 @@ namespace Quantae.DataModel
         {
             this.SecondaryTopics = new List<TopicHandle>();
             this.RoleConjugationPairs = new List<QuantaeTuple<GrammarRoleHandle, Conjugation>>();
-            this.Questions = new List<Question>();
+            this.Questions = new Dictionary<QuestionDimension, Question>();
             this.Tags = new List<string>();
         }
     }

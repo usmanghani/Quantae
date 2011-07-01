@@ -39,9 +39,9 @@ namespace Quantae.DataModel
         /// <summary>
         /// FUTURE: These might be used in the future.
         /// </summary>
-        public double DepthScore { get; set; }
-        public double LearningDependencyScore { get; set; }
-        public double MemoryScore { get; set; }
+        public DepthScoreModel DepthScore { get; set; }
+        public DependencyScoreModel LearningDependencyScore { get; set; }
+        public MemoryScoreModel MemoryScore { get; set; }
 
         #endregion
 
@@ -83,11 +83,11 @@ namespace Quantae.DataModel
             this.VocabHistory = new List<VocabularyHistoryItem>();
             this.Weaknesses = new Dictionary<Weakness, int>();
             this.FailureCounters = new Dictionary<TopicHandle, int>();
-            this.LearningTypeScore = new LearningTypeScoreModel();
 
-            this.DepthScore = default(double);
-            this.LearningDependencyScore = default(double);
-            this.MemoryScore = default(double);
+            this.LearningTypeScore = new LearningTypeScoreModel();
+            this.DepthScore = new DepthScoreModel();
+            this.LearningDependencyScore = new DependencyScoreModel();
+            this.MemoryScore = new MemoryScoreModel();
 
             this.CurrentState = new UserCurrentState();
         }
@@ -95,7 +95,8 @@ namespace Quantae.DataModel
 
     public class UserProfileHandle : QuantaeObjectHandle<UserProfile>
     {
-        public UserProfileHandle(UserProfile profile) : base(profile)
+        public UserProfileHandle(UserProfile profile)
+            : base(profile)
         {
         }
     }

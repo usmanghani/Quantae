@@ -9,13 +9,6 @@ namespace Quantae.Engine
 {
     public class UserOperations
     {
-
-        public static void UpdateLearningTypeScore(UserProfile userProfile, LearningTypeScoreAnswerScores score)
-        {
-            userProfile.LearningTypeScore.Entries.Add((int)score);
-            userProfile.LearningTypeScore.Score = LearningTypeScorePolicies.CalculateLearningTypeScore(userProfile, score);
-        }
-
         /// <summary>
         /// Creates a new user and returns a token that can be used to track a user's session.
         /// </summary>

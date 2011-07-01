@@ -2,7 +2,7 @@
 {
     public enum SentenceFragment
     {
-        Unkown = 0,
+        Unknown = 0,
         Sample = 1,
         Question = 2,
     }

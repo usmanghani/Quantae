@@ -17,6 +17,11 @@ namespace Quantae.Engine
             {2, new Tuple<NounConjugation, NounConjugation>(new NounConjugation(){Number = NumberRule.Dual, Gender = GenderRule.Masculine}, new NounConjugation(){Number = NumberRule.Dual, Gender = GenderRule.Feminine})}
         };
 
+        /// <summary>
+        /// Returns the noun conjugations that are at the current rank. Nothing lower or above.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns></returns>
         public static IEnumerable<NounConjugationHistoryItem> GetCurrentNounConjugations(UserProfile user)
         {
             var nounConjugationsToFind = nounConjugationRankingMap[user.CurrentState.CurrentNounConjugationRank];
@@ -25,7 +30,7 @@ namespace Quantae.Engine
 
             foreach (var nchi in user.NounConjugationHistory)
             {
-                if ((nchi.NounConjugation == nounConjugationsToFind.Item1) || (nchi.NounConjugation == nounConjugationsToFind.Item2))
+                if ((nchi.NounConjugation.Equals(nounConjugationsToFind.Item1)) || (nchi.NounConjugation.Equals(nounConjugationsToFind.Item2)))
                 {
                     nounConjugationsFound.Add(nchi);
                 }
@@ -70,31 +75,22 @@ namespace Quantae.Engine
             return (nchi.SuccessCount / (nchi.FailureCount + nchi.SuccessCount)) >= PassPercentage;
         }
 
-        public static bool IsValidNumberRuleWithCurrentRank(UserProfile profile, NumberRule numberRule)
+        public static bool DoesTheUserKnowNounConjugation(UserProfile profile, NounConjugation conj)
         {
-            switch (profile.CurrentState.CurrentNounConjugationRank)
+            foreach (var nchi in profile.NounConjugationHistory)
             {
-                case 0:
-                    if (numberRule != NumberRule.Singular)
-                    {
-                        return false;
-                    }
-                    break;
-                case 1:
-                    if (numberRule != NumberRule.Plural || numberRule != NumberRule.Singular)
-                    {
-                        return false;
-                    }
-                    break;
-                case 2:
-                    if (numberRule != NumberRule.Dual)
-                    {
-                        return false;
-                    }
-                    break;
+                if (!nchi.NounConjugation.Equals(conj))
+                {
+                    continue;
+                }
+
+                if (IsNounConjugationSuccessful(nchi))
+                {
+                    return true;
+                }
             }
 
-            return true;
+            return false;
         }
     }
 }

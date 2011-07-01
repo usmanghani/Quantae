@@ -2,15 +2,12 @@
 
 namespace Quantae.DataModel
 {
-    public class LearningTypeScoreModel
+    public class LearningTypeScoreModel : ScoreModel
     {
-        public double Score { get; set; }
-        public List<int> Entries { get; set; }
-
         public LearningTypeScoreModel()
         {
             this.Score = default(double);
-            this.Entries = new List<int>();
+            this.Entries = new List<double>();
         }
     }
 }

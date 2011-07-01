@@ -3,10 +3,6 @@
     public class SentenceHistoryItem : HistoryItem
     {
         public SentenceHandle Sentence { get; set; }
-        public SentenceFragment Intent { get; set; }
-
-        // only used if the Intent was to show the question.
-        public QuestionDimension QuestionDimension { get; set; }
 
         public override bool Equals(object obj)
         {

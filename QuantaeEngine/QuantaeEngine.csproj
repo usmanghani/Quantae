@@ -48,11 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnswerScore.cs" />
     <Compile Include="CreateUserResult.cs" />
     <Compile Include="FilterManager.cs" />
+    <Compile Include="HistoryItemOperations.cs" />
     <Compile Include="ISentenceFilter.cs" />
+    <Compile Include="LearningTypeOperations.cs" />
     <Compile Include="LearningTypeScorePolicies.cs" />
     <Compile Include="LoginUserResult.cs" />
+    <Compile Include="NounConjugationOperations.cs" />
     <Compile Include="PseudoTopicFilter.cs" />
     <Compile Include="PseudoTopicPolicies.cs" />
     <Compile Include="RollingFileAppenderTextWriter.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="PrimaryTopicFilter.cs" />
     <Compile Include="TopicStateMachine.cs" />
     <Compile Include="VerbConjugationFilter.cs" />
+    <Compile Include="VerbConjugationOperations.cs" />
     <Compile Include="VerbConjugationPolicies.cs" />
     <Compile Include="VocabFilter.cs" />
     <Compile Include="VocabPolicies.cs" />

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.Serialization;
+using System;
 
 namespace Quantae.DataModel
 {
@@ -6,7 +7,7 @@ namespace Quantae.DataModel
     {
         public object GenerateId(object container, object document)
         {
-            return Utils.GenerateQuantaeObjectId();
+            return DateTime.UtcNow.ToBinary();
         }
 
         public bool IsEmpty(object id)

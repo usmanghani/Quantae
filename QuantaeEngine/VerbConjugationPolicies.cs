@@ -37,6 +37,11 @@ namespace Quantae.Engine
             {2, new Tuple<VerbConjugation, VerbConjugation>(new VerbConjugation(){Tense = TenseRule.Command, Number = NumberRule.Dual, Gender = GenderRule.Masculine, Person = PersonRule.Second},      new VerbConjugation(){Tense = TenseRule.Command, Number = NumberRule.Dual, Gender = GenderRule.Feminine, Person = PersonRule.Second})}
         };
 
+        /// <summary>
+        /// Gets the current verb conjugations at the current rank nothing lower or above.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns></returns>
         public static IDictionary<TenseRule, List<VerbConjugationHistoryItem>> GetCurrentVerbConjugations(UserProfile user)
         {
             Dictionary<TenseRule, Tuple<VerbConjugation, VerbConjugation>> verbConjugationsToFind = new Dictionary<TenseRule, Tuple<VerbConjugation, VerbConjugation>>();
@@ -101,5 +106,24 @@ namespace Quantae.Engine
 
             return (vchi.SuccessCount / (vchi.FailureCount + vchi.SuccessCount)) >= PassPercentage;
         }
+
+        public static bool DoesTheUserKnowVerbConjugation(UserProfile profile, VerbConjugation conj)
+        {
+            foreach (var vchi in profile.VerbConjugationHistory)
+            {
+                if (!vchi.VerbConjugation.Equals(conj))
+                {
+                    continue;
+                }
+
+                if (IsVerbConjugationSuccessful(vchi))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }

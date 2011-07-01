@@ -34,46 +34,55 @@ namespace Quantae.Engine
             return string.Empty;
         }
 
-        public static SentenceHandle GetNextSentence(UserProfile profile, Tristate success)
+        public static SentenceHandle GetNextSentence(UserProfile profile, AnswerDimension answerDimension, AnswerScore score)
         {
-            if (profile.CurrentState.TopicStateMachineState.CurrentSection == TopicSectionType.SentenceAndQuestion)
+            // this means we are just starting this section.
+            // TODO: Figure out if there is something special to do at the start of the section.
+            if (profile.CurrentState.TopicStateMachineState.SampleSectionIterationCount == 0)
             {
-                UpdateUserProfileWithCurrentSentenceResponse(profile, success);
+
+            }
+
+            if (profile.CurrentState.TopicStateMachineState.CurrentSection == TopicSectionType.SentenceAndQuestion ||
+                profile.CurrentState.TopicStateMachineState.CurrentSection == TopicSectionType.Revision)
+            {
+                UpdateUserProfileWithCurrentSentenceResponse(profile, answerDimension, score);
+
+                // TODO: More stuff here.
+
+
             }
 
             return null;
         }
 
-        private static void UpdateUserProfileWithCurrentSentenceResponse(UserProfile profile, Tristate success)
+        private static void UpdateUserProfileWithCurrentSentenceResponse(UserProfile profile, AnswerDimension answerDimension, AnswerScore score)
         {
             var topicStateMachineState = profile.CurrentState.TopicStateMachineState;
             var sampleSectionState = topicStateMachineState.SampleSectionState;
             var currentSentence = Repositories.Repositories.Sentences.GetItemByHandle(sampleSectionState.CurrentSentence);
 
-            if (profile.CurrentState.TopicStateMachineState.SampleSectionState.IsQuestion)
-            {
-                switch(profile.CurrentState.TopicStateMachineState.SampleSectionState.CurrentQuestionDimension)
-                {
-                    case QuestionDimension.Vocab:
-                        VocabOperations.UpdateVocabulary(profile, currentSentence.VocabEntries, VocabRankTypes.SeenInSampleOrQuestion, success);
-                        break;
-                    case QuestionDimension.Understanding:
+            var currentSentenceHistoryItem = profile.SentenceHistory.Find(shi => shi.Sentence.Equals(sampleSectionState.CurrentSentence));
 
-                        break;
-                    case QuestionDimension.Grammar:
-                        break;
-                    case QuestionDimension.NounConjugation:
-                    case QuestionDimension.VerbConjugation:
-                        break;
-                    case QuestionDimension.Revision:
-                        break;
-                }
+            if (currentSentenceHistoryItem == null)
+            {
+                currentSentenceHistoryItem = new SentenceHistoryItem() { Sentence = sampleSectionState.CurrentSentence };
+                profile.SentenceHistory.Insert(0, currentSentenceHistoryItem);
             }
 
-            // this means we are just starting this section.
-            if (profile.CurrentState.TopicStateMachineState.SampleSectionIterationCount == 0)
-            {
+            HistoryItemOperations.UpdateHistoryItemWithSuccessFailureAndTimestamp(currentSentenceHistoryItem, score);
+            VocabOperations.UpdateVocabulary(profile, currentSentence.VocabEntries, VocabRankTypes.SeenInSampleOrQuestion, score);
+            NounConjugationOperations.UpdateNounConjugationHistoryFromSentence(profile, currentSentence, score);
+            VerbConjugationOperations.UpdateVerbConjugationHistoryFromSentence(profile, currentSentence, score);
 
+            if (profile.CurrentState.TopicStateMachineState.SampleSectionState.IsQuestion)
+            {
+                TopicOperations.UpdateAnswerDimensionCounts(profile, answerDimension, score);
+
+                if( sampleSectionState.CurrentQuestionDimension ==  QuestionDimension.Grammar)
+                {
+                    LearningTypeOperations.UpdateLearningTypeScore(profile, score);
+                }
             }
         }
     }

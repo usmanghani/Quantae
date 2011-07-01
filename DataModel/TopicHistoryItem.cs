@@ -29,8 +29,16 @@ namespace Quantae.DataModel
         /// </summary>
         public bool IsSkipped { get; set; }
 
+        /// <summary>
+        /// Gets or sets the is pseudo topic.
+        /// </summary>
+        /// <value>The is pseudo topic.</value>
         public bool IsPseudoTopic { get; set; }
 
+        /// <summary>
+        /// Gets or sets the weakness for pseudo topic.
+        /// </summary>
+        /// <value>The weakness for pseudo topic.</value>
         public Weakness WeaknessForPseudoTopic { get; set; }
 
         public TopicHistoryItem()

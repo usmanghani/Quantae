@@ -5,13 +5,13 @@ using MongoDB.Bson;
 using System.Workflow.Runtime;
 using System.Workflow.Activities;
 using System.IO;
+using Quantae.Engine;
+using Quantae.DataModel;
+using Quantae.Repositories;
+using MongoDB.Driver.Builders;
 
 namespace Quantae
 {
-    using Quantae.Engine;
-    using Quantae.DataModel;
-    using Quantae.Repositories;
-
     class A { public string Aa = null; public ObjectId ID = ObjectId.GenerateNewId(); }
     class B : A { public string Bb = null;}
     class C : A { public string Cc = null;}
@@ -55,6 +55,18 @@ namespace Quantae
             dataStore.Connect();
             Repositories.Repositories.Init(dataStore);
             FilterManager.CreateFilters();
+
+            for (int i = 0; i < 100; i++)
+            {
+                var cursor = Repositories.Repositories.Topics.Collection.FindAll();
+
+                cursor.SetSkip(i).SetSortOrder(SortBy.Ascending("Index")).SetFields("Index");
+
+                if (cursor.Size() > 0)
+                {
+                    Console.WriteLine(cursor.Size() + "::" + cursor.ElementAt(0).Index);
+                }
+            }
 
             //TopicGraphOperations.PopulateTopics("d:\\downloads\\dependencies-parseable.txt");
             //TopicGraphOperations.CreateForwardLinks();

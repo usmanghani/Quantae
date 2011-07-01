@@ -8,29 +8,19 @@ namespace Quantae.Engine
 {
     public class VocabOperations
     {
-        public static void UpdateVocabulary(UserProfile userProfile, List<VocabEntryHandle> entries, VocabRankTypes rankType, Tristate success = Tristate.DontCare)
+        public static void UpdateVocabulary(UserProfile userProfile, List<VocabEntryHandle> entries, VocabRankTypes rankType, AnswerScore score = AnswerScore.Unknown)
         {
             foreach (var entry in entries)
             {
-                UpdateVocabulary(userProfile, entry, rankType, success);
+                UpdateVocabulary(userProfile, entry, rankType, score);
             }
         }
 
-        public static void UpdateVocabulary(UserProfile userProfile, VocabEntryHandle entry, VocabRankTypes rankType, Tristate success = Tristate.DontCare)
+        public static void UpdateVocabulary(UserProfile userProfile, VocabEntryHandle entry, VocabRankTypes rankType, AnswerScore score = AnswerScore.Unknown)
         {
-            VocabularyHistoryItem vhi = new VocabularyHistoryItem() { Rank = rankType, VocabEntry = entry, LastTimestamp = DateTime.UtcNow };
-
-            if (success == Tristate.True)
-            {
-                vhi.SuccessCount++;
-            }
-            
-            if (success == Tristate.False)
-            {
-                vhi.FailureCount++;
-            }
-
-            userProfile.VocabHistory.Add(vhi);
+            VocabularyHistoryItem vhi = new VocabularyHistoryItem() { Rank = rankType, VocabEntry = entry };
+            HistoryItemOperations.UpdateHistoryItemWithSuccessFailureAndTimestamp(vhi, score);
+            userProfile.VocabHistory.Insert(0, vhi);
         }
     }
 }

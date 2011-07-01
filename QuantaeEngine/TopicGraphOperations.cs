@@ -342,7 +342,10 @@ namespace Quantae.Engine
 
         private static bool HasUserSuccessfullyDoneTopic(UserProfile userProfile, TopicHandle topic)
         {
-            return userProfile.TopicHistory.Any(thi => thi.Topic.Equals(topic) && thi.IsSuccessful);
+            // TODO: Figure out if IsSuccessful condition is required or not. This might potentially lead to infinite
+            // loops since we will keep forcing the user to cover failed topics. Those are already taken care of by
+            // failure counters.
+            return userProfile.TopicHistory.Any(thi => thi.Topic.Equals(topic) /*&& thi.IsSuccessful*/);
         }
 
         public static void UpdateCurrentTopicState(UserProfile userProfile, TopicHandle nextTopic)
