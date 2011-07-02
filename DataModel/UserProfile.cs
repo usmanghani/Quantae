@@ -20,7 +20,7 @@ namespace Quantae.DataModel
 
         #endregion
 
-        #region User Session State
+        #region User Current State
 
         public UserCurrentState CurrentState { get; set; }
 

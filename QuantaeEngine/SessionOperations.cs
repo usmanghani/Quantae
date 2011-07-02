@@ -12,16 +12,14 @@ namespace Quantae.Engine
         {
             string token = UserOperations.CreateToken(profile);
 
-            UserSession session = Repositories.Repositories.Sessions.GetSessionFromToken(token);
-
-            if (session != null)
+            if (SessionManager.Current.SessionExists(token))
             {
-                return session.Token;
+                return token;
             }
 
-            session = new UserSession() { Token = token, Timestamp = DateTime.UtcNow, UserID = profile.UserID, UserProfile = new UserProfileHandle(profile) };
+            UserSession session = new UserSession() { Token = token, CreationTimestamp = DateTime.UtcNow, UserID = profile.UserID, UserProfile = new UserProfileHandle(profile) };
 
-            Repositories.Repositories.Sessions.Save(session);
+            SessionManager.Current.CreateOrReturnSession(session);
 
             return session.Token;
         }

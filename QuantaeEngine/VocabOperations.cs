@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Quantae.DataModel;
 
 namespace Quantae.Engine
@@ -18,9 +15,15 @@ namespace Quantae.Engine
 
         public static void UpdateVocabulary(UserProfile userProfile, VocabEntryHandle entry, VocabRankTypes rankType, AnswerScore score = AnswerScore.Unknown)
         {
-            VocabularyHistoryItem vhi = new VocabularyHistoryItem() { Rank = rankType, VocabEntry = entry };
+            VocabularyHistoryItem vhi = userProfile.VocabHistory.Find(h => h.VocabEntry.Equals(entry));
+
+            if (vhi == null)
+            {
+                vhi = new VocabularyHistoryItem() { Rank = rankType, VocabEntry = entry };
+                userProfile.VocabHistory.Insert(0, vhi);
+            }
+
             HistoryItemOperations.UpdateHistoryItemWithSuccessFailureAndTimestamp(vhi, score);
-            userProfile.VocabHistory.Insert(0, vhi);
         }
     }
 }

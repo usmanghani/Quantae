@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Quantae.DataModel;
 using System.Security.Cryptography;
+using MongoDB.Driver.Builders;
+using MongoDB.Bson;
 
 namespace Quantae.Engine
 {
@@ -23,6 +25,13 @@ namespace Quantae.Engine
             CreateUserResult result = new CreateUserResult();
 
             string salt = ComputeSalt(password);
+
+            // HACK: Really scary. Put a time-bound here.
+            while (SaltExists(salt))
+            {
+                salt = ComputeSalt(password);
+            }
+
             string encryptedPassword = EncryptPassword(password, salt);
             string token = CreateToken(username, salt);
 
@@ -53,9 +62,15 @@ namespace Quantae.Engine
 
             Repositories.Repositories.Users.Save(profile);
 
-            result.Token = SessionOperations.CreateOrReturnSession(profile);
+            //result.Token = SessionOperations.CreateOrReturnSession(profile);
             result.Success = true;
             return result;
+        }
+
+        public static bool SaltExists(string salt)
+        {
+            var cursor = Repositories.Repositories.Users.Collection.Find(Query.EQ("PasswordHash", new BsonString(salt)));
+            return cursor.Count() > 0;
         }
 
         public static LoginUserResult LoginUser(string usernameOrEmail, string password)
@@ -91,7 +106,14 @@ namespace Quantae.Engine
 
         public static void LogoutUser(string token)
         {
-            Repositories.Repositories.Sessions.RemoveSessionIfExists(token);
+            try
+            {
+                SessionManager.Current.RemoveSession(token);
+            }
+            catch (SessionNotFoundException)
+            {
+                // ignore.
+            }
         }
 
         private static string CalculateHash(string str)

@@ -219,6 +219,8 @@ namespace Quantae.Engine
 
         public static TopicHandle GetNextTopic(UserProfile userProfile)
         {
+            // TODO: Figure out Pseudo Topic trigger logic.
+
             // First make sure no failed topics are due.
             foreach (var t in userProfile.FailureCounters.Keys)
             {
@@ -331,21 +333,13 @@ namespace Quantae.Engine
                 var candidate = Repositories.Repositories.Topics.GetItemByHandle(candidateTopic);
 
                 if (TopicPolicies.AreDependenciesSatisfied(userProfile, candidate) &&
-                    !HasUserSuccessfullyDoneTopic(userProfile, candidateTopic))
+                    !TopicPolicies.HasUserSuccessfullyDoneTopic(userProfile, candidateTopic))
                 {
                     return candidateTopic;
                 }
             }
 
             return null;
-        }
-
-        private static bool HasUserSuccessfullyDoneTopic(UserProfile userProfile, TopicHandle topic)
-        {
-            // TODO: Figure out if IsSuccessful condition is required or not. This might potentially lead to infinite
-            // loops since we will keep forcing the user to cover failed topics. Those are already taken care of by
-            // failure counters.
-            return userProfile.TopicHistory.Any(thi => thi.Topic.Equals(topic) /*&& thi.IsSuccessful*/);
         }
 
         public static void UpdateCurrentTopicState(UserProfile userProfile, TopicHandle nextTopic)

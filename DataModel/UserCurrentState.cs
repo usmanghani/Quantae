@@ -26,6 +26,14 @@ namespace Quantae.DataModel
         public int CurrentBatchIndex { get; set; }
 
         /// <summary>
+        /// Gets or sets the current index within batch.
+        /// </summary>
+        /// <value>
+        /// The current index within batch.
+        /// </value>
+        public int CurrentIndexWithinBatch { get; set; }
+
+        /// <summary>
         /// Current Noun Conjugation Rank. It could be 0,1 or 2 based on which Number Rule the user is currently allowed to see.
         /// </summary>
         public int CurrentNounConjugationRank { get; set; }
@@ -51,6 +59,9 @@ namespace Quantae.DataModel
         /// </value>
         public TopicStateMachineState TopicStateMachineState { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserCurrentState" /> class.
+        /// </summary>
         public UserCurrentState()
         {
             this.CurrentVerbConjugationRanksByTense = new Dictionary<TenseRule, int>() { { TenseRule.Past, 0 }, { TenseRule.PresentFuture, 0 }, { TenseRule.Command, 0 } };

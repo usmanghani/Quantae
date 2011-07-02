@@ -9,6 +9,7 @@ using Quantae.Engine;
 using Quantae.DataModel;
 using Quantae.Repositories;
 using MongoDB.Driver.Builders;
+using FluentCassandra.Types;
 
 namespace Quantae
 {
@@ -35,7 +36,7 @@ namespace Quantae
     {
         static void Main(string[] args)
         {
-
+            //DoCassandraStuff();
             //var server = MongoServer.Create();
             //server.Connect();
             //var result = server.RunAdminCommand(new CommandDocument(new BsonElement("fsync", new BsonInt32(1))));
@@ -125,6 +126,14 @@ namespace Quantae
             //DoQuantaeDataModelStuff();
             //DoGraphStuff();
             //DoTransliterationStuff();
+        }
+
+        private static void DoCassandraStuff()
+        {
+            using (var db = new FluentCassandra.CassandraContext(keyspace: "quantae", host: "localhost"))
+            {
+                var family = db.GetColumnFamily<UTF8Type, UTF8Type>("userprofiles");
+            }
         }
 
         private static int ShowChain(int p, int indent, StreamWriter writer)
