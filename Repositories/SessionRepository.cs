@@ -17,7 +17,7 @@ namespace Quantae.Repositories
 
         public SessionRepository(DataStore dataStore)
         {
-            this.DataStore = DataStore;
+            this.DataStore = dataStore;
             this.CollectionName = "UserSessions";
             this.Collection = this.DataStore.GetCollection<UserSession>(this.CollectionName);
         }
