@@ -8,11 +8,11 @@ namespace Quantae.Engine
         {
             if (score == AnswerScore.Right)
             {
-                profile.CurrentState.CourseStateMachineState.CurrentTopic.AnswerDimensionSuccessCount[answerDimension]++;
+                profile.CurrentState.CourseLocationInfo.CurrentTopic.AnswerDimensionSuccessCount[answerDimension]++;
             }
             else if (score == AnswerScore.Wrong)
             {
-                profile.CurrentState.CourseStateMachineState.CurrentTopic.AnswerDimensionFailureCount[answerDimension]++;
+                profile.CurrentState.CourseLocationInfo.CurrentTopic.AnswerDimensionFailureCount[answerDimension]++;
             }
         }
     }

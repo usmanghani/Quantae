@@ -220,7 +220,9 @@ namespace Quantae.Engine
         public static TopicHandle GetNextTopic(UserProfile userProfile)
         {
             // TODO: Figure out Pseudo Topic trigger logic.
-
+            // BUG: Update failure counters before return for all failed topics,
+            // return target topic from here. and at the end of the function,
+            // update the failure counters.
             // First make sure no failed topics are due.
             foreach (var t in userProfile.FailureCounters.Keys)
             {
@@ -228,25 +230,26 @@ namespace Quantae.Engine
                 {
                     // reset the counter because we are hitting this topic now.
                     userProfile.FailureCounters[t] = 0;
-
                     return t;
                 }
             }
 
             // Read the last topic in user history that is not a pseudo topic.
             // The list is reversed.
+            // BUG: FirstOrDefault is not supposed to return the absolute first, only the first
+            // it sees. Change topic history to a stack.
             TopicHistoryItem thi = userProfile.TopicHistory.FirstOrDefault(h => !h.IsPseudoTopic);
 
             // First try to move to the topic immediately following this one.
             Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(thi.Topic);
-            Topic nextTopic = Repositories.Repositories.Topics.GetTopicByIndex(currentTopic.Index + 1);
+            Topic candidateTopic = Repositories.Repositories.Topics.GetTopicByIndex(currentTopic.Index + 1);
             Topic targetTopic = null;
 
-            bool dependenciesDone = TopicPolicies.AreDependenciesSatisfied(userProfile, nextTopic);
+            bool dependenciesDone = TopicPolicies.AreDependenciesSatisfied(userProfile, candidateTopic);
 
             if (dependenciesDone)
             {
-                targetTopic = nextTopic;
+                targetTopic = candidateTopic;
             }
             else
             {
@@ -254,6 +257,7 @@ namespace Quantae.Engine
                 // Let's try the last successful topic and keep going until we are successful or we run out of topics in the history.
                 foreach (var historyItem in userProfile.TopicHistory)
                 {
+                    // BUG: Check for pseudo topic.
                     if (historyItem.IsSuccessful)
                     {
                         TopicHandle th = SelectForwardLink(userProfile, Repositories.Repositories.Topics.GetItemByHandle(historyItem.Topic));
@@ -269,14 +273,18 @@ namespace Quantae.Engine
 
                 if (targetTopic != null)
                 {
-                    if (currentTopic.Index > targetTopic.Index)
-                        costOfMovingBack = currentTopic.Index - targetTopic.Index;
-                    else
-                        costOfMovingBack = targetTopic.Index - currentTopic.Index;
+                    costOfMovingBack = Math.Abs(currentTopic.Index - targetTopic.Index);
+                    //if (currentTopic.Index > targetTopic.Index)
+                    //    costOfMovingBack = currentTopic.Index - targetTopic.Index;
+                    //else
+                    //    costOfMovingBack = targetTopic.Index - currentTopic.Index;
                 }
 
-                // try to move fwd by selecting all topics with zero dependencies.
+                // try to move fwd by selecting all topics with zero dependencies  and whose index is
+                // great than the current topic's index.
                 var cursor = Repositories.Repositories.Topics.Collection.Find(Query.And(Query.Size("Dependencies", 0), Query.GT("Index", currentTopic.Index)));
+
+                // BUG: Check to see if any of them has been successful.
                 foreach (var topic in cursor)
                 {
                     if (topic.Index - currentTopic.Index < costOfMovingBack)
@@ -291,23 +299,23 @@ namespace Quantae.Engine
                     bool found = false;
                     while (!found)
                     {
-                        nextTopic = Repositories.Repositories.Topics.GetTopicByIndex(nextTopic.Index + 1);
+                        candidateTopic = Repositories.Repositories.Topics.GetTopicByIndex(candidateTopic.Index + 1);
 
-                        if (nextTopic == null)
+                        if (candidateTopic == null)
                         {
                             break;
                         }
 
-                        bool dependenciesSatisfied = TopicPolicies.AreDependenciesSatisfied(userProfile, nextTopic);
+                        bool dependenciesSatisfied = TopicPolicies.AreDependenciesSatisfied(userProfile, candidateTopic);
 
                         if (!dependenciesSatisfied)
                         {
                             continue;
                         }
 
-                        if (nextTopic.Index - currentTopic.Index < costOfMovingBack)
+                        if (candidateTopic.Index - currentTopic.Index < costOfMovingBack)
                         {
-                            targetTopic = nextTopic;
+                            targetTopic = candidateTopic;
                             found = true;
                         }
                     }
@@ -321,6 +329,8 @@ namespace Quantae.Engine
                 return new TopicHandle(targetTopic);
             }
 
+            // TODO: Figure out what to do in the orchestrator when we are stuck.
+            // FIX: Return a rich result type that tells you the reason.
             return null;
         }
 
@@ -344,7 +354,7 @@ namespace Quantae.Engine
 
         public static void UpdateCurrentTopicState(UserProfile userProfile, TopicHandle nextTopic)
         {
-            userProfile.CurrentState.CourseStateMachineState.CurrentTopic = new TopicHistoryItem() { Topic = nextTopic };
+            userProfile.CurrentState.CourseLocationInfo.CurrentTopic = new TopicHistoryItem() { Topic = nextTopic };
         }
 
         public static void UpdateFailedTopicsCount(UserProfile userProfile)
@@ -357,7 +367,7 @@ namespace Quantae.Engine
 
         public static void MarkTopicComplete(UserProfile userProfile, TopicHandle topicHandle)
         {
-            bool isSuccess = TopicPolicies.IsTopicSuccessful(userProfile.CurrentState.CourseStateMachineState.CurrentTopic);
+            bool isSuccess = TopicPolicies.IsTopicSuccessful(userProfile.CurrentState.CourseLocationInfo.CurrentTopic);
 
             // update each failed topic count. This is the count that will trigger a back path.
             foreach (var k in userProfile.FailureCounters.Keys)
@@ -371,11 +381,13 @@ namespace Quantae.Engine
             }
             else
             {
+                // BUG: Check if it exists in the failure counters.
                 userProfile.FailureCounters.Remove(topicHandle);
             }
 
             // NOTE: we dont need to update the final grammar score since it will be updated after each topic.
-
+            // Update all counters here.
+            // TODO: Pull these into a separate function.
             if (WeaknessPolicies.IsGenderWeak(userProfile))
             {
                 userProfile.Weaknesses[new Weakness() { WeaknessType = WeaknessType.GenderAgreement }]++;
@@ -386,7 +398,7 @@ namespace Quantae.Engine
                 userProfile.Weaknesses[new Weakness() { WeaknessType = WeaknessType.NumberAgreement }]++;
             }
 
-            foreach (var umbrellaTopic in userProfile.CurrentState.CourseStateMachineState.CurrentTopic.UmbrellaTopicSuccessCount.Keys)
+            foreach (var umbrellaTopic in userProfile.CurrentState.CourseLocationInfo.CurrentTopic.UmbrellaTopicSuccessCount.Keys)
             {
                 if (WeaknessPolicies.IsUmbrellaTopicWeak(userProfile, umbrellaTopic))
                 {
@@ -395,11 +407,11 @@ namespace Quantae.Engine
             }
 
             // Make it behave like a stack.
-            userProfile.TopicHistory.Insert(0, userProfile.CurrentState.CourseStateMachineState.CurrentTopic);
+            userProfile.TopicHistory.Insert(0, userProfile.CurrentState.CourseLocationInfo.CurrentTopic);
             userProfile.TopicHistory.First().LastTimestamp = DateTime.UtcNow;
             userProfile.TopicHistory.First().IsSuccessful = isSuccess;
 
-            userProfile.CurrentState.CourseStateMachineState.CurrentTopic = null;
+            userProfile.CurrentState.CourseLocationInfo.CurrentTopic = null;
         }
     }
 }

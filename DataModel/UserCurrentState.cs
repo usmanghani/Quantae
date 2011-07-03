@@ -14,7 +14,7 @@ namespace Quantae.DataModel
         /// <value>
         /// The length of the current sentence.
         /// </value>
-        public int CurrentSentenceLength { get; set; }
+        public int LongestSentenceSeen { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the current batch.
@@ -49,7 +49,7 @@ namespace Quantae.DataModel
         /// <value>
         /// The state of the course state machine.
         /// </value>
-        public CourseStateMachineState CourseStateMachineState { get; set; }
+        public CourseLocationInfo CourseLocationInfo { get; set; }
         
         /// <summary>
         /// Gets or sets the state of the topic state machine.
@@ -57,7 +57,7 @@ namespace Quantae.DataModel
         /// <value>
         /// The state of the topic state machine.
         /// </value>
-        public TopicStateMachineState TopicStateMachineState { get; set; }
+        public TopicLocationInfo TopicLocationInfo { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserCurrentState" /> class.
@@ -65,12 +65,12 @@ namespace Quantae.DataModel
         public UserCurrentState()
         {
             this.CurrentVerbConjugationRanksByTense = new Dictionary<TenseRule, int>() { { TenseRule.Past, 0 }, { TenseRule.PresentFuture, 0 }, { TenseRule.Command, 0 } };
-            this.CurrentSentenceLength = 2;
+            this.LongestSentenceSeen = 2;
             this.CurrentBatchIndex = 0;
             this.CurrentNounConjugationRank = 0;
 
-            this.CourseStateMachineState = new CourseStateMachineState();
-            this.TopicStateMachineState = new TopicStateMachineState();
+            this.CourseLocationInfo = new CourseLocationInfo();
+            this.TopicLocationInfo = new TopicLocationInfo();
         }
     }
 }

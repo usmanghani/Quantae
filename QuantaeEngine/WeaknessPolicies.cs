@@ -14,8 +14,8 @@ namespace Quantae.Engine
 
         public static bool IsGenderWeak(UserProfile userProfile)
         {
-            var successes = userProfile.CurrentState.CourseStateMachineState.CurrentTopic.AnswerDimensionSuccessCount.Where(a => a.Key == AnswerDimension.NounConjugationGender || a.Key == AnswerDimension.VerbConjugationGender).Sum(kvp => kvp.Value);
-            var failures = userProfile.CurrentState.CourseStateMachineState.CurrentTopic.AnswerDimensionFailureCount.Where(a => a.Key == AnswerDimension.NounConjugationGender || a.Key == AnswerDimension.VerbConjugationGender).Sum(kvp => kvp.Value);
+            var successes = userProfile.CurrentState.CourseLocationInfo.CurrentTopic.AnswerDimensionSuccessCount.Where(a => a.Key == AnswerDimension.NounConjugationGender || a.Key == AnswerDimension.VerbConjugationGender).Sum(kvp => kvp.Value);
+            var failures = userProfile.CurrentState.CourseLocationInfo.CurrentTopic.AnswerDimensionFailureCount.Where(a => a.Key == AnswerDimension.NounConjugationGender || a.Key == AnswerDimension.VerbConjugationGender).Sum(kvp => kvp.Value);
 
             double score = (double)successes / (successes + failures);
             return score >= genderMinPassPercentage;
@@ -23,8 +23,8 @@ namespace Quantae.Engine
 
         public static bool IsNumberWeak(UserProfile userProfile)
         {
-            var successes = userProfile.CurrentState.CourseStateMachineState.CurrentTopic.AnswerDimensionSuccessCount.Where(a => a.Key == AnswerDimension.NounConjugationNumber || a.Key == AnswerDimension.VerbConjugationNumber).Sum(kvp => kvp.Value);
-            var failures = userProfile.CurrentState.CourseStateMachineState.CurrentTopic.AnswerDimensionFailureCount.Where(a => a.Key == AnswerDimension.NounConjugationNumber || a.Key == AnswerDimension.VerbConjugationNumber).Sum(kvp => kvp.Value);
+            var successes = userProfile.CurrentState.CourseLocationInfo.CurrentTopic.AnswerDimensionSuccessCount.Where(a => a.Key == AnswerDimension.NounConjugationNumber || a.Key == AnswerDimension.VerbConjugationNumber).Sum(kvp => kvp.Value);
+            var failures = userProfile.CurrentState.CourseLocationInfo.CurrentTopic.AnswerDimensionFailureCount.Where(a => a.Key == AnswerDimension.NounConjugationNumber || a.Key == AnswerDimension.VerbConjugationNumber).Sum(kvp => kvp.Value);
 
             double score = (double)successes / (successes + failures);
             return score >= numberMinPassPercentage;
@@ -33,8 +33,8 @@ namespace Quantae.Engine
 
         public static bool IsUmbrellaTopicWeak(UserProfile userProfile, string umbrellaTopic)
         {
-            var successes = userProfile.CurrentState.CourseStateMachineState.CurrentTopic.UmbrellaTopicSuccessCount[umbrellaTopic];
-            var failures = userProfile.CurrentState.CourseStateMachineState.CurrentTopic.UmbrellaTopicFailureCount[umbrellaTopic];
+            var successes = userProfile.CurrentState.CourseLocationInfo.CurrentTopic.UmbrellaTopicSuccessCount[umbrellaTopic];
+            var failures = userProfile.CurrentState.CourseLocationInfo.CurrentTopic.UmbrellaTopicFailureCount[umbrellaTopic];
 
             double score = (double)successes / (successes + failures);
             return score >= umbrellaTopicPassPercentage;

@@ -1,6 +1,6 @@
 ﻿namespace Quantae.DataModel
 {
-    public class TopicStateMachineState
+    public class TopicLocationInfo
     {
         public bool IsIntroComplete { get; set; }
         public int IntroSlideIndex { get; set; }
@@ -9,7 +9,7 @@
         public int SampleSectionIterationCount { get; set; }
         public int QuestionCount { get; set; }
 
-        public TopicStateMachineState()
+        public TopicLocationInfo()
         {
             this.SampleSectionState = new SampleSectionState();
             this.SampleSectionIterationCount = 0;

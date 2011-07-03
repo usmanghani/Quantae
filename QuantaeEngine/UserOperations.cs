@@ -62,7 +62,7 @@ namespace Quantae.Engine
 
             Repositories.Repositories.Users.Save(profile);
 
-            //result.Token = SessionOperations.CreateOrReturnSession(profile);
+            result.Token = SessionOperations.CreateOrReturnSession(profile);
             result.Success = true;
             return result;
         }

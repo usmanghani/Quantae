@@ -16,7 +16,8 @@ namespace Quantae.Engine
             sentenceFilters.Add(1, new SecondaryTopicFilter());
             sentenceFilters.Add(2, new VerbConjugationFilter());
             sentenceFilters.Add(3, new NounConjugationFilter());
-            sentenceFilters.Add(4, new PseudoTopicFilter());
+            sentenceFilters.Add(4, new VocabFilter());
+            sentenceFilters.Add(5, new PseudoTopicFilter());
         }
 
         public static bool ApplyFilters(UserProfile profile, Sentence sentence)

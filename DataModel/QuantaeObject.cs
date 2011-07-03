@@ -12,7 +12,6 @@ namespace Quantae.DataModel
 
     public class QuantaeObjectHandle<TObject> where TObject : QuantaeObject
     {
-        [BsonId(IdGenerator = typeof(BsonObjectIdGenerator))]
         public BsonObjectId ObjectId { get; set; }
 
         public QuantaeObjectHandle(TObject obj)

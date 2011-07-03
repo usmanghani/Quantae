@@ -8,37 +8,39 @@ namespace Quantae.Engine
     {
         public static TopicSectionType GetCurrentSection(UserProfile userProfile)
         {
-            if (userProfile.CurrentState.TopicStateMachineState.CurrentSection == TopicSectionType.Intro &&
-                userProfile.CurrentState.CourseStateMachineState.CurrentTopic.IsPseudoTopic)
+            if (userProfile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
+                userProfile.CurrentState.CourseLocationInfo.CurrentTopic.IsPseudoTopic)
             {
-                userProfile.CurrentState.TopicStateMachineState.CurrentSection = TopicSectionType.SentenceAndQuestion;
+                userProfile.CurrentState.TopicLocationInfo.CurrentSection = TopicSectionType.SentenceAndQuestion;
             }
 
-            return userProfile.CurrentState.TopicStateMachineState.CurrentSection;
+            return userProfile.CurrentState.TopicLocationInfo.CurrentSection;
         }
 
         public static string GetNextIntroSlideContent(UserProfile userProfile)
         {
-            Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(userProfile.CurrentState.CourseStateMachineState.CurrentTopic.Topic);
+            Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(userProfile.CurrentState.CourseLocationInfo.CurrentTopic.Topic);
 
-            if (userProfile.CurrentState.TopicStateMachineState.CurrentSection == TopicSectionType.Intro &&
-               !userProfile.CurrentState.TopicStateMachineState.IsIntroComplete &&
-                userProfile.CurrentState.TopicStateMachineState.IntroSlideIndex < currentTopic.IntroSection.Slides.Count)
+            if (userProfile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
+               !userProfile.CurrentState.TopicLocationInfo.IsIntroComplete &&
+                userProfile.CurrentState.TopicLocationInfo.IntroSlideIndex < currentTopic.IntroSection.Slides.Count)
             {
-                int idx = ++userProfile.CurrentState.TopicStateMachineState.IntroSlideIndex;
+                int idx = ++userProfile.CurrentState.TopicLocationInfo.IntroSlideIndex;
+
+                // BUG: Separate this out.
                 VocabOperations.UpdateVocabulary(userProfile, currentTopic.IntroSection.Slides[idx].VocabEntries, VocabRankTypes.CorrectOrSeenInIntro);
                 return currentTopic.IntroSection.Slides[idx].Content;
             }
 
-            userProfile.CurrentState.TopicStateMachineState.IsIntroComplete = true;
-            userProfile.CurrentState.TopicStateMachineState.CurrentSection = TopicSectionType.SentenceAndQuestion;
+            userProfile.CurrentState.TopicLocationInfo.IsIntroComplete = true;
+            userProfile.CurrentState.TopicLocationInfo.CurrentSection = TopicSectionType.SentenceAndQuestion;
 
             return string.Empty;
         }
 
         public static Sentence GetNextSentence(UserProfile profile, AnswerDimension answerDimension, AnswerScore score)
         {
-            var topicStateMachineState = profile.CurrentState.TopicStateMachineState;
+            var topicStateMachineState = profile.CurrentState.TopicLocationInfo;
             var sampleSectionState = topicStateMachineState.SampleSectionState;
             var currentSentence = Repositories.Repositories.Sentences.GetItemByHandle(sampleSectionState.CurrentSentence);
 
@@ -51,9 +53,11 @@ namespace Quantae.Engine
 
             //}
 
-            if (profile.CurrentState.TopicStateMachineState.CurrentSection == TopicSectionType.SentenceAndQuestion ||
-                profile.CurrentState.TopicStateMachineState.CurrentSection == TopicSectionType.Revision)
+            if (profile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.SentenceAndQuestion ||
+                profile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Revision)
             {
+                // BUG: BUG: BUG: Figure out transactionality of updates throughout the system.
+                // TODO: Figure out double updates or repeated updates to the same entity.
                 UpdateUserProfileWithCurrentSentenceResponse(profile, answerDimension, score);
 
                 // TODO: More stuff here.
@@ -94,7 +98,7 @@ namespace Quantae.Engine
 
                     if (TopicPolicies.IsSampleSectionComplete(profile))
                     {
-                        if (!profile.CurrentState.CourseStateMachineState.CurrentTopic.IsPseudoTopic)
+                        if (!profile.CurrentState.CourseLocationInfo.CurrentTopic.IsPseudoTopic)
                         {
                             topicStateMachineState.CurrentSection = TopicSectionType.Revision;
                         }
@@ -111,14 +115,14 @@ namespace Quantae.Engine
                 }
             }
 
-            profile.CurrentState.TopicStateMachineState.SampleSectionState.CurrentSentence = new SentenceHandle(targetSentence);
+            profile.CurrentState.TopicLocationInfo.SampleSectionState.CurrentSentence = new SentenceHandle(targetSentence);
 
             return targetSentence;
         }
 
         private static void UpdateUserProfileWithCurrentSentenceResponse(UserProfile profile, AnswerDimension answerDimension, AnswerScore score)
         {
-            var topicStateMachineState = profile.CurrentState.TopicStateMachineState;
+            var topicStateMachineState = profile.CurrentState.TopicLocationInfo;
             var sampleSectionState = topicStateMachineState.SampleSectionState;
             var currentSentence = Repositories.Repositories.Sentences.GetItemByHandle(sampleSectionState.CurrentSentence);
 
@@ -150,7 +154,7 @@ namespace Quantae.Engine
                 }
             }
 
-            if (profile.CurrentState.TopicStateMachineState.SampleSectionState.IsQuestion)
+            if (profile.CurrentState.TopicLocationInfo.SampleSectionState.IsQuestion)
             {
                 TopicOperations.UpdateAnswerDimensionCounts(profile, answerDimension, score);
 

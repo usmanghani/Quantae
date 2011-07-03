@@ -15,11 +15,12 @@ namespace Quantae.DataModel
 
         public List<VocabEntryHandle> VocabEntries { get; set; }
 
+        // TODO: figure out a way to combine these if possible.
+        //////////////////////////////////////////////////
         public List<GrammarEntry> GrammarEntries { get; set; }
-
         public List<GrammarAnalysisElement> GrammarAnalysis { get; set; }
-
         public List<int[]> ContextualAnalysis { get; set; }
+        /////////////////////////////////////////////////////
 
         // Automatic. Determined by the number of constructions in the sentence.
         // Its determined by Words.Length and Complexity(GrammarAnalysis).

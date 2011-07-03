@@ -48,12 +48,12 @@ namespace Quantae.Engine
         /// <returns></returns>
         public static bool IsSampleSectionComplete(UserProfile profile)
         {
-            if (profile.CurrentState.TopicStateMachineState.QuestionCount < minQuestions)
+            if (profile.CurrentState.TopicLocationInfo.QuestionCount < minQuestions)
             {
                 return false;
             }
 
-            if (profile.CurrentState.TopicStateMachineState.QuestionCount >= maxQuestions)
+            if (profile.CurrentState.TopicLocationInfo.QuestionCount >= maxQuestions)
             {
                 return true;
             }
@@ -68,8 +68,8 @@ namespace Quantae.Engine
 
         public static double GetUnderstandingScore(UserProfile profile)
         {
-            int successCount = profile.CurrentState.CourseStateMachineState.CurrentTopic.AnswerDimensionSuccessCount[AnswerDimension.Understanding];
-            int failureCount = profile.CurrentState.CourseStateMachineState.CurrentTopic.AnswerDimensionFailureCount[AnswerDimension.Understanding];
+            int successCount = profile.CurrentState.CourseLocationInfo.CurrentTopic.AnswerDimensionSuccessCount[AnswerDimension.Understanding];
+            int failureCount = profile.CurrentState.CourseLocationInfo.CurrentTopic.AnswerDimensionFailureCount[AnswerDimension.Understanding];
 
             return (double)successCount / (successCount + failureCount);
         }

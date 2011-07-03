@@ -10,7 +10,7 @@ namespace Quantae.Engine
     {
         public bool IsSentenceValid(UserProfile profile, Sentence sentence)
         {
-            TopicHistoryItem thi = profile.CurrentState.CourseStateMachineState.CurrentTopic;
+            TopicHistoryItem thi = profile.CurrentState.CourseLocationInfo.CurrentTopic;
 
             if (!thi.IsPseudoTopic)
             {

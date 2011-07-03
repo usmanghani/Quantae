@@ -24,7 +24,7 @@ namespace Quantae.Engine
             // 2. see if its not in history.
             // 3. return it.
 
-            foreach(var sentence in currentBatch.Skip(profile.CurrentState.CurrentIndexWithinBatch))
+            foreach (var sentence in currentBatch.Skip(profile.CurrentState.CurrentIndexWithinBatch))
             {
                 bool result = FilterManager.ApplyFilters(profile, sentence);
 
@@ -40,6 +40,7 @@ namespace Quantae.Engine
             }
 
             // TODO: Reload batches and stuff when we run out.
+            // and re-run this logic.
 
             return targetSentence;
         }
@@ -56,8 +57,8 @@ namespace Quantae.Engine
             // secondary topics (Either conjugations or tags)
 
             var sentences = Repositories.Repositories.Sentences.GetSentencesByTopic(
-                profile.CurrentState.CourseStateMachineState.CurrentTopic.Topic, 
-                profile.CurrentState.CurrentBatchIndex * BatchSize, 
+                profile.CurrentState.CourseLocationInfo.CurrentTopic.Topic,
+                profile.CurrentState.CurrentBatchIndex * BatchSize,
                 BatchSize);
 
             profile.CurrentState.CurrentIndexWithinBatch = 0;

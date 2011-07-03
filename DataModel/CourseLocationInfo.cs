@@ -1,6 +1,6 @@
 ﻿namespace Quantae.DataModel
 {
-    public class CourseStateMachineState
+    public class CourseLocationInfo
     {
         /// <summary>
         /// Gets or sets the current topic.
@@ -10,7 +10,7 @@
         /// </value>
         public TopicHistoryItem CurrentTopic { get; set; }
 
-        public CourseStateMachineState()
+        public CourseLocationInfo()
         {
             this.CurrentTopic = null;
         }
