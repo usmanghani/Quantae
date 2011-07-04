@@ -36,6 +36,16 @@ namespace Quantae
     {
         static void Main(string[] args)
         {
+            //using (var db = new Quantae.DataModel.Sql.QuantaeDbContext())
+            //{
+            //    var user = new Quantae.DataModel.Sql.UserProfile() { Email = "usman.ghani@gmail.com", ObjectId = 1 };
+            //    db.Users.Add(user);
+            //    int recordsAffected = db.SaveChanges();
+            //    Console.WriteLine(recordsAffected);
+            //}
+
+            //Environment.Exit(1);
+
             //DoCassandraStuff();
             //var server = MongoServer.Create();
             //server.Connect();
@@ -73,43 +83,43 @@ namespace Quantae
             //TopicGraphOperations.CreateForwardLinks();
             //EnumerateTopics();
 
-            UserProfile profile = CreateUserTopicHistory(userTopicHistory12);
-            TopicHandle topicHandle = TopicGraphOperations.GetNextTopic(profile);
+            //UserProfile profile = CreateUserTopicHistory(userTopicHistory12);
+            //TopicHandle topicHandle = TopicGraphOperations.GetNextTopic(profile);
 
-            if (topicHandle != null)
-            {
-                Console.WriteLine(Repositories.Repositories.Topics.GetItemByHandle(topicHandle).Index);
-            }
-            else
-            {
-                Console.WriteLine("STUCK");
-            }
+            //if (topicHandle != null)
+            //{
+            //    Console.WriteLine(Repositories.Repositories.Topics.GetItemByHandle(topicHandle).Index);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("STUCK");
+            //}
 
-            var topics = Repositories.Repositories.Topics.GetAllItems().OrderByDescending(t => t.Index);
+            //var topics = Repositories.Repositories.Topics.GetAllItems().OrderByDescending(t => t.Index);
 
-            StreamWriter writer = new StreamWriter("d:\\chains.txt");
+            //StreamWriter writer = new StreamWriter("d:\\chains.txt");
 
-            Dictionary<int, int> countsByTopic = new Dictionary<int, int>();
-            foreach (var topic in topics)
-            {
-                countsByTopic[topic.Index] = ShowChain(topic.Index, 0, writer);
+            //Dictionary<int, int> countsByTopic = new Dictionary<int, int>();
+            //foreach (var topic in topics)
+            //{
+            //    countsByTopic[topic.Index] = ShowChain(topic.Index, 0, writer);
 
-                writer.WriteLine("===========");
-                writer.WriteLine(countsByTopic[topic.Index].ToString());
-                writer.WriteLine("==========");
-            }
+            //    writer.WriteLine("===========");
+            //    writer.WriteLine(countsByTopic[topic.Index].ToString());
+            //    writer.WriteLine("==========");
+            //}
 
-            writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<<<");
+            //writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<<<");
 
-            var topicsByCountSorted = countsByTopic.OrderByDescending(kvp => kvp.Value);
-            foreach (var kvp in topicsByCountSorted)
-            {
-                writer.WriteLine(kvp.Key + " => " + kvp.Value);
-            }
+            //var topicsByCountSorted = countsByTopic.OrderByDescending(kvp => kvp.Value);
+            //foreach (var kvp in topicsByCountSorted)
+            //{
+            //    writer.WriteLine(kvp.Key + " => " + kvp.Value);
+            //}
 
-            writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<");
-            writer.Flush();
-            writer.Close();
+            //writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<");
+            //writer.Flush();
+            //writer.Close();
 
             //Topic topic = Repositories.Repositories.Topics.GetItemByHandle(topicHandle);
 
@@ -399,7 +409,7 @@ namespace Quantae
             System.IO.File.WriteAllText("c:\\blah2", encoder.Decode(another));
         }
 
-        private static UserProfile CreateUserTopicHistory(Dictionary<int, bool> topicHistory)
+        private static Quantae.DataModel.UserProfile CreateUserTopicHistory(Dictionary<int, bool> topicHistory)
         {
             UserProfile profile = new UserProfile();
 

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{84696870-FD21-43F4-9FD9-6C7D01A32FC7}</ProjectGuid>
+    <ProjectGuid>{22933172-F97F-4B57-9C1B-7E88600A23C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Quantae.DataModel</RootNamespace>
-    <AssemblyName>Quantae.DataModel</AssemblyName>
+    <RootNamespace>Quantae.DataModel.Sql</RootNamespace>
+    <AssemblyName>Quantae.DataModel.Sql</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -42,9 +42,6 @@
       <Private>True</Private>
       <HintPath>..\packages\mongocsharpdriver.1.1\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>..\packages\MySql.Data.6.3.6\lib\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -69,6 +66,7 @@
     <Compile Include="LearningTypeScoreModel.cs" />
     <Compile Include="MemoryScoreModel.cs" />
     <Compile Include="NounType.cs" />
+    <Compile Include="QuantaeDbContext.cs" />
     <Compile Include="QuantaeTuple.cs" />
     <Compile Include="SampleSectionState.cs" />
     <Compile Include="ScoreModel.cs" />
@@ -129,9 +127,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="EFCodeFirstReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
