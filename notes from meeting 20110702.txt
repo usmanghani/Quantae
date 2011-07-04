@@ -1,0 +1,23 @@
+topic1, 0 (x)
+
+topic2, 2 (failed)
+
+
+topic3, Pass
+
+we tried to go to topic 4
+topic4, Pass (x)
+topic5, 
+topic6 (x)
+
+two stacks,
+
+next stack,
+prev stack,
+
+every time a view model is generated it is pushed to the prev stack.
+every time a user presses prev, a view model is popped from the prev
+stack and pushed to the next stack.
+every time the user presses next, we check if there is a view model
+in the next stack and present it, otherwise go to the engine and 
+generate it.

@@ -1,0 +1,118 @@
+Questions:
+Skip Topic on every slide?
+Home Button and other buttons where do they take you?
+
+I know this stuff already!
+
+Three Layers
+User -> UI Layer -> Orchestration Layer -> Quantae Engine
+
+Landing Page -> Sign In
+	1. LoginUser
+		a. CreateSession -> token
+		
+LogoutUser           
+SkipSlide
+GetNextSlide
+
+NOTE:
+We are introducing a concept of hubs which acts as a launching pad and allows
+us to go to multiple different paths based on the user response.
+This is a non-sentence interactive element with its own response types.
+There are two types of hubs currently:
+
+1. Lesson Hub, which acts as the landing page for the user and also shows up after every topic.
+2. Extras Hub, which sits inside a topic and shows up when the user is done with Exercise and 
+Review section, unless its a pseudo-topic.
+
+
+Controller in MVC Parlance.
+Service Endpoint
+Orchestration Layer:
+---------------------
+(External facing interface)
+
+CreateUser *Register
+UpdateUser
+
+LogIn(string username, string password) [Land on Lesson Hub]  -> CreateSession -> token in a cookie.
+LogOut
+
+StartSession -> Always return a slide.
+RestartTopic -> resetting some counters and current state. -> returns a slide.
+SkipTopic -> 
+
+GetNextSlide(UserResponse) -> Slide [Of Different Types]
+// SkipSlide -> return next Slide (Obsolete).
+
+GetNextSlide and GetPrevSlide
+
+every time a view model is generated it is pushed to the prev stack.
+every time a user presses prev, a view model is popped from the prev
+stack and pushed to the next stack.
+every time the user presses next, we check if there is a view model
+in the next stack and present it, otherwise go to the engine and 
+generate it.
+
+Slide:
+------
+Type,
+History,
+LessonPlan,
+CurrenTopicName,
+LocalizedTopicName,
+TopicStartedDate,
+IntroSlideContent,
+ExerciseSentence,
+	Text, 
+	Translation, 
+	GrammarEntries, 
+	GrammarAnalysis (Arrows),
+	ContextualPicture, 
+	ContextualAnalysis (Boxes),
+	Audio, 
+	QuestionText, 
+	QuestionSubText, 
+	[AnswerChoices, Hint], 
+	AnswerSegments, 
+	BlankPosition, 
+	CorrectAnswerIndex,
+	
+
+
+
+Quantae Glue
+	
+Engine Orchetration:
+--------------------
+(Inward facing interface)
+
+Topics
+Pseudo Topics
+Exercise Sentences (Sample + Question)
+Revision Questions
+
+Graph Navigator
+Sentence Selection Engine
+User Operations
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

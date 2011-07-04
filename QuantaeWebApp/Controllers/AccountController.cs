@@ -28,6 +28,7 @@ namespace QuantaeWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                // TODO: Add our code here to create session.
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);

@@ -5,3 +5,9 @@ D:\Quantae\QuantaeWebApp\bin\EntityFramework.xml
 D:\Quantae\QuantaeWebApp\obj\Debug\ResolveAssemblyReference.cache
 D:\Quantae\QuantaeWebApp\obj\Debug\QuantaeWebApp.dll
 D:\Quantae\QuantaeWebApp\obj\Debug\QuantaeWebApp.pdb
+D:\Quantae\QuantaeWebApp\bin\Quantae.DataModel.dll
+D:\Quantae\QuantaeWebApp\bin\Quantae.Engine.dll
+D:\Quantae\QuantaeWebApp\bin\Quantae.Repositories.dll
+D:\Quantae\QuantaeWebApp\bin\Quantae.DataModel.pdb
+D:\Quantae\QuantaeWebApp\bin\Quantae.Engine.pdb
+D:\Quantae\QuantaeWebApp\bin\Quantae.Repositories.pdb

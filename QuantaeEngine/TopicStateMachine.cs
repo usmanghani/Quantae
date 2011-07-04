@@ -11,7 +11,7 @@ namespace Quantae.Engine
             if (userProfile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
                 userProfile.CurrentState.CourseLocationInfo.CurrentTopic.IsPseudoTopic)
             {
-                userProfile.CurrentState.TopicLocationInfo.CurrentSection = TopicSectionType.SentenceAndQuestion;
+                userProfile.CurrentState.TopicLocationInfo.CurrentSection = TopicSectionType.Exercise;
             }
 
             return userProfile.CurrentState.TopicLocationInfo.CurrentSection;
@@ -33,7 +33,7 @@ namespace Quantae.Engine
             }
 
             userProfile.CurrentState.TopicLocationInfo.IsIntroComplete = true;
-            userProfile.CurrentState.TopicLocationInfo.CurrentSection = TopicSectionType.SentenceAndQuestion;
+            userProfile.CurrentState.TopicLocationInfo.CurrentSection = TopicSectionType.Exercise;
 
             return string.Empty;
         }
@@ -53,8 +53,8 @@ namespace Quantae.Engine
 
             //}
 
-            if (profile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.SentenceAndQuestion ||
-                profile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Revision)
+            if (profile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Exercise ||
+                profile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Review)
             {
                 // BUG: BUG: BUG: Figure out transactionality of updates throughout the system.
                 // TODO: Figure out double updates or repeated updates to the same entity.
@@ -68,7 +68,7 @@ namespace Quantae.Engine
                 {
                     sampleSectionState.IsQuestion = true;
 
-                    if (topicStateMachineState.CurrentSection == TopicSectionType.Revision)
+                    if (topicStateMachineState.CurrentSection == TopicSectionType.Review)
                     {
                         sampleSectionState.CurrentQuestionDimension = QuestionDimension.Understanding;
                     }
@@ -83,7 +83,7 @@ namespace Quantae.Engine
                 else
                 {
                     topicStateMachineState.QuestionCount++;
-                    if (topicStateMachineState.CurrentSection != TopicSectionType.Revision)
+                    if (topicStateMachineState.CurrentSection != TopicSectionType.Review)
                     {
                         if ((int)sampleSectionState.CurrentQuestionDimension < Enum.GetValues(typeof(QuestionDimension)).Length - 1)
                         {
@@ -100,7 +100,7 @@ namespace Quantae.Engine
                     {
                         if (!profile.CurrentState.CourseLocationInfo.CurrentTopic.IsPseudoTopic)
                         {
-                            topicStateMachineState.CurrentSection = TopicSectionType.Revision;
+                            topicStateMachineState.CurrentSection = TopicSectionType.Review;
                         }
                     }
 

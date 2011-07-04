@@ -33,6 +33,9 @@ namespace Quantae.DataModel
         public List<TopicHandle> ForwardLinks { get; set; }
 
         public StaticSection IntroSection { get; set; }
+
+        // TODO: Introduce a depth gateway slide here.
+
         public StaticSection DepthSection { get; set; }
 
         public Topic()

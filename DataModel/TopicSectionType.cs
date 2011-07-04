@@ -3,9 +3,11 @@
     public enum TopicSectionType
     {
         Unknown = 0,
-        Intro = 1,
-        SentenceAndQuestion = 2,
-        Revision = 3,
-        Depth = 4,
+        Complete = 1,
+        Intro = 2,
+        Exercise = 3,
+        Review = 4,
+        Extras = 5,
+        Depth = 6,
     }
 }
