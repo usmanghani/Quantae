@@ -15,7 +15,7 @@ namespace Quantae.Engine
 
         public static int GetVocabEntryRank(UserProfile user, VocabEntryHandle handle)
         {
-            var historyItem = user.VocabHistory.Where(vhi => vhi.VocabEntry.Equals(handle)).FirstOrDefault();
+            var historyItem = user.History.VocabHistory.Where(vhi => vhi.VocabEntry.Equals(handle)).FirstOrDefault();
             if (historyItem == null)
             {
                 return 0;

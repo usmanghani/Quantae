@@ -10,7 +10,7 @@ namespace Quantae.Engine
     {
         public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {
-            var userTopicHistory = user.TopicHistory.Select(thi => thi.Topic);
+            var userTopicHistory = user.History.TopicHistory.Select(thi => thi.Topic);
 
             foreach (var topic in sentence.SecondaryTopics)
             {

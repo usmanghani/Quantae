@@ -54,7 +54,7 @@ namespace Quantae.Engine
 
             foreach (var key in verbConjugationsToFind.Keys)
             {
-                foreach (var vchi in user.VerbConjugationHistory)
+                foreach (var vchi in user.History.VerbConjugationHistory)
                 {
                     if ((vchi.VerbConjugation == verbConjugationsToFind[key].Item1) || (vchi.VerbConjugation == verbConjugationsToFind[key].Item2))
                     {
@@ -109,7 +109,7 @@ namespace Quantae.Engine
 
         public static bool DoesTheUserKnowVerbConjugation(UserProfile profile, VerbConjugation conj)
         {
-            foreach (var vchi in profile.VerbConjugationHistory)
+            foreach (var vchi in profile.History.VerbConjugationHistory)
             {
                 if (!vchi.VerbConjugation.Equals(conj))
                 {

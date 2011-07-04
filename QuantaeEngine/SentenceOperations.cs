@@ -30,7 +30,7 @@ namespace Quantae.Engine
 
                 if (result)
                 {
-                    var hi = profile.SentenceHistory.Find(shi => shi.Sentence.ObjectId.Equals(sentence.ObjectId));
+                    var hi = profile.History.SentenceHistory.Find(shi => shi.Sentence.ObjectId.Equals(sentence.ObjectId));
                     if (hi == null)
                     {
                         targetSentence = sentence;

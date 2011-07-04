@@ -10,12 +10,12 @@ namespace Quantae.Engine
     {
         public static void UpdateNounConjugationHistory(UserProfile profile, NounConjugation conj, AnswerScore score)
         {
-            var nchi = profile.NounConjugationHistory.Find(n => n.NounConjugation.Equals(conj));
+            var nchi = profile.History.NounConjugationHistory.Find(n => n.NounConjugation.Equals(conj));
 
             if (nchi == null)
             {
                 nchi = new NounConjugationHistoryItem() { NounConjugation = conj };
-                profile.NounConjugationHistory.Insert(0, nchi);
+                profile.History.NounConjugationHistory.Insert(0, nchi);
             }
 
             HistoryItemOperations.UpdateHistoryItemWithSuccessFailureAndTimestamp(nchi, score);

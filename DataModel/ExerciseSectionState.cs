@@ -1,6 +1,6 @@
 ﻿namespace Quantae.DataModel
 {
-    public class SampleSectionState
+    public class ExerciseSectionState
     {
         public SentenceHandle CurrentSentence { get; set; }
         public bool IsQuestion { get; set; }

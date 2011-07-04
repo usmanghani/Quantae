@@ -11,12 +11,12 @@ namespace Quantae.Engine
 
         public static void UpdateVerbConjugationHistory(UserProfile profile, VerbConjugation conj, AnswerScore score)
         {
-            var vchi = profile.VerbConjugationHistory.Find(v => v.VerbConjugation.Equals(conj));
+            var vchi = profile.History.VerbConjugationHistory.Find(v => v.VerbConjugation.Equals(conj));
 
             if (vchi == null)
             {
                 vchi = new VerbConjugationHistoryItem() { VerbConjugation = conj };
-                profile.VerbConjugationHistory.Insert(0, vchi);
+                profile.History.VerbConjugationHistory.Insert(0, vchi);
             }
 
             HistoryItemOperations.UpdateHistoryItemWithSuccessFailureAndTimestamp(vchi, score);

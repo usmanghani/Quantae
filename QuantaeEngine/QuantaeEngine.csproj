@@ -64,7 +64,8 @@
     <Compile Include="SessionManager.cs" />
     <Compile Include="SessionNotFoundException.cs" />
     <Compile Include="SessionOperations.cs" />
-    <Compile Include="TopicGraphOperations.cs" />
+    <Compile Include="TopicGraphNavigator.cs" />
+    <Compile Include="TopicGraphUtilities.cs" />
     <Compile Include="TopicOperations.cs" />
     <Compile Include="TopicPolicies.cs" />
     <Compile Include="UserOperations.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecondaryTopicFilter.cs" />
     <Compile Include="PrimaryTopicFilter.cs" />
-    <Compile Include="TopicStateMachine.cs" />
+    <Compile Include="SentenceSelectionEngine.cs" />
     <Compile Include="VerbConjugationFilter.cs" />
     <Compile Include="VerbConjugationOperations.cs" />
     <Compile Include="VerbConjugationPolicies.cs" />

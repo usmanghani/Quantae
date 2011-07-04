@@ -14,9 +14,9 @@ namespace Quantae.Engine
 
         public static double CalculateLearningTypeScore(UserProfile userProfile)
         {
-            if (userProfile.LearningTypeScore.Entries.Count >= windowSize)
+            if (userProfile.Learning.LearningTypeScore.Entries.Count >= windowSize)
             {
-                var lastNScores = userProfile.LearningTypeScore.Entries.Skip(Math.Max(0, userProfile.LearningTypeScore.Entries.Count() - windowSize)).Take(windowSize);
+                var lastNScores = userProfile.Learning.LearningTypeScore.Entries.Skip(Math.Max(0, userProfile.Learning.LearningTypeScore.Entries.Count() - windowSize)).Take(windowSize);
                 return Enumerable.Sum(Enumerable.Zip(lastNScores, weights, (s, w) => s * w));
             }
 
@@ -25,7 +25,7 @@ namespace Quantae.Engine
 
         public static bool IsAnalytical(UserProfile profile)
         {
-            return profile.LearningTypeScore.Score >= analyticalThreshold;
+            return profile.Learning.LearningTypeScore.Score >= analyticalThreshold;
         }
     }
 }

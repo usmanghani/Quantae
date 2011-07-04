@@ -82,17 +82,20 @@ namespace QuantaeWebApp.Controllers
             //  2.a.if Intro Section then GetNextIntroSlide
             //      2.a.i Set Slide Type to Intro
             //      2.a.ii. Return slide.
-            //  2.b.else if Current Section is Exercise || Review then GetNextSentence
+            //  2.b.else if Current Section is Exercise then GetNextSentence
             //      2.b.i Set Slide Type to Question or Sample Sentence accordingly.
             //      2.b.ii Return slide.
-            //  2.c. If the Current Section is Extras, then GetExtrasHubContent
-            //      2.c.i. Set Slide Type to Extras Hub.
-            //      2.c.ii. Return slide.
-            //  2.d. If Current section is Depth then GetNextDepthSlide
-            //      2.d.i. Set Slide Type to Dept.
+            //  2.c.else if Current Section is Review then GetNextSentence
+            //      2.c.i Set Slide Type to Question or Sample Sentence accordingly.
+            //      2.c.ii Return slide.
+            //  2.d. If the Current Section is Extras, then GetExtrasHubContent
+            //      2.d.i. Set Slide Type to Extras Hub.
             //      2.d.ii. Return slide.
-            //  2.e. If Current section type is Completed
-            //      2.e.i. Goto Lesson Hub.
+            //  2.e. If Current section is Depth then GetNextDepthSlide
+            //      2.e.i. Set Slide Type to Dept.
+            //      2.e.ii. Return slide.
+            //  2.f. If Current section type is Completed
+            //      2.f.i. Goto Lesson Hub.
             // POST: Returns intro, depth, extras hub, sentence, question slides or lesson hub.
 
             return Json(null);

@@ -1,11 +1,23 @@
 ﻿using Quantae.DataModel;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Quantae.Engine
 {
-    public class TopicStateMachine
+    public interface ISentenceSelectionEngine
     {
+        Sentence GetNextSentence(UserProfile profile);
+    }
+
+    public interface IUserProfileManager
+    {
+        void SubmitSentenceResponse(AnswerDimension answerDimension, AnswerScore score);
+    }
+
+    public class SentenceSelectionEngine
+    {
+        // Take it out.
         public static TopicSectionType GetCurrentSection(UserProfile userProfile)
         {
             if (userProfile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
@@ -17,19 +29,20 @@ namespace Quantae.Engine
             return userProfile.CurrentState.TopicLocationInfo.CurrentSection;
         }
 
+        // This is out also.
         public static string GetNextIntroSlideContent(UserProfile userProfile)
         {
             Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(userProfile.CurrentState.CourseLocationInfo.CurrentTopic.Topic);
 
             if (userProfile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
                !userProfile.CurrentState.TopicLocationInfo.IsIntroComplete &&
-                userProfile.CurrentState.TopicLocationInfo.IntroSlideIndex < currentTopic.IntroSection.Slides.Count)
+                userProfile.CurrentState.TopicLocationInfo.IntroSlideIndex < currentTopic.IntroSection.Pages.Count)
             {
                 int idx = ++userProfile.CurrentState.TopicLocationInfo.IntroSlideIndex;
 
                 // BUG: Separate this out.
-                VocabOperations.UpdateVocabulary(userProfile, currentTopic.IntroSection.Slides[idx].VocabEntries, VocabRankTypes.CorrectOrSeenInIntro);
-                return currentTopic.IntroSection.Slides[idx].Content;
+                VocabOperations.UpdateVocabulary(userProfile, currentTopic.IntroSection.Pages[idx].VocabEntries, VocabRankTypes.CorrectOrSeenInIntro);
+                return currentTopic.IntroSection.Pages[idx].Content;
             }
 
             userProfile.CurrentState.TopicLocationInfo.IsIntroComplete = true;
@@ -40,8 +53,13 @@ namespace Quantae.Engine
 
         public static Sentence GetNextSentence(UserProfile profile, AnswerDimension answerDimension, AnswerScore score)
         {
+            // ALGO: 
+            // What we need: 
+            // 1. All histories
+            // 2. All user current state.
+            // 3. 
             var topicStateMachineState = profile.CurrentState.TopicLocationInfo;
-            var sampleSectionState = topicStateMachineState.SampleSectionState;
+            var sampleSectionState = topicStateMachineState.ExerciseSectionState;
             var currentSentence = Repositories.Repositories.Sentences.GetItemByHandle(sampleSectionState.CurrentSentence);
 
             Sentence targetSentence = null;
@@ -58,6 +76,7 @@ namespace Quantae.Engine
             {
                 // BUG: BUG: BUG: Figure out transactionality of updates throughout the system.
                 // TODO: Figure out double updates or repeated updates to the same entity.
+                // TODO: Move this to its rightful place. 
                 UpdateUserProfileWithCurrentSentenceResponse(profile, answerDimension, score);
 
                 // TODO: More stuff here.
@@ -92,7 +111,7 @@ namespace Quantae.Engine
                         else
                         {
                             topicStateMachineState.SampleSectionIterationCount++;
-                            topicStateMachineState.SampleSectionState = new SampleSectionState();
+                            topicStateMachineState.ExerciseSectionState = new ExerciseSectionState();
                         }
                     }
 
@@ -115,23 +134,24 @@ namespace Quantae.Engine
                 }
             }
 
-            profile.CurrentState.TopicLocationInfo.SampleSectionState.CurrentSentence = new SentenceHandle(targetSentence);
+            profile.CurrentState.TopicLocationInfo.ExerciseSectionState.CurrentSentence = new SentenceHandle(targetSentence);
 
             return targetSentence;
         }
 
+        // Make a UserProfileManager and move this there along with other update functionality related to the user.
         private static void UpdateUserProfileWithCurrentSentenceResponse(UserProfile profile, AnswerDimension answerDimension, AnswerScore score)
         {
             var topicStateMachineState = profile.CurrentState.TopicLocationInfo;
-            var sampleSectionState = topicStateMachineState.SampleSectionState;
+            var sampleSectionState = topicStateMachineState.ExerciseSectionState;
             var currentSentence = Repositories.Repositories.Sentences.GetItemByHandle(sampleSectionState.CurrentSentence);
 
-            var currentSentenceHistoryItem = profile.SentenceHistory.Find(shi => shi.Sentence.Equals(sampleSectionState.CurrentSentence));
+            var currentSentenceHistoryItem = profile.History.SentenceHistory.Find(shi => shi.Sentence.Equals(sampleSectionState.CurrentSentence));
 
             if (currentSentenceHistoryItem == null)
             {
                 currentSentenceHistoryItem = new SentenceHistoryItem() { Sentence = sampleSectionState.CurrentSentence };
-                profile.SentenceHistory.Insert(0, currentSentenceHistoryItem);
+                profile.History.SentenceHistory.Insert(0, currentSentenceHistoryItem);
             }
 
             // TODO: Potential pitfall to investigate. 
@@ -154,11 +174,11 @@ namespace Quantae.Engine
                 }
             }
 
-            if (profile.CurrentState.TopicLocationInfo.SampleSectionState.IsQuestion)
+            if (profile.CurrentState.TopicLocationInfo.ExerciseSectionState.IsQuestion)
             {
                 TopicOperations.UpdateAnswerDimensionCounts(profile, answerDimension, score);
 
-                if( sampleSectionState.CurrentQuestionDimension ==  QuestionDimension.Grammar)
+                if (sampleSectionState.CurrentQuestionDimension == QuestionDimension.Grammar)
                 {
                     LearningTypeOperations.UpdateLearningTypeScore(profile, score);
                 }

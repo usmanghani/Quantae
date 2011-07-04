@@ -11,8 +11,8 @@ namespace Quantae.Engine
                 return;
             }
 
-            profile.LearningTypeScore.Entries.Insert(0, (double)score);
-            profile.LearningTypeScore.Score = LearningTypeScorePolicies.CalculateLearningTypeScore(profile);
+            profile.Learning.LearningTypeScore.Entries.Insert(0, (double)score);
+            profile.Learning.LearningTypeScore.Score = LearningTypeScorePolicies.CalculateLearningTypeScore(profile);
         }
     }
 }

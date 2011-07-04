@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace QuantaeWebApp.Models
+namespace Quantae.ViewModels
 {
 
     public class ChangePasswordModel

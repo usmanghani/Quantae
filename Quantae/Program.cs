@@ -418,7 +418,7 @@ namespace Quantae
                 TopicHistoryItem thi = new TopicHistoryItem();
                 thi.IsSuccessful = topicHistory[item];
                 thi.Topic = new TopicHandle(Repositories.Repositories.Topics.GetTopicByIndex(item));
-                profile.TopicHistory.Insert(0, thi);
+                profile.History.TopicHistory.Insert(0, thi);
             }
 
             return profile;

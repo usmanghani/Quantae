@@ -28,7 +28,7 @@ namespace Quantae.Engine
 
             var nounConjugationsFound = new List<NounConjugationHistoryItem>();
 
-            foreach (var nchi in user.NounConjugationHistory)
+            foreach (var nchi in user.History.NounConjugationHistory)
             {
                 if ((nchi.NounConjugation.Equals(nounConjugationsToFind.Item1)) || (nchi.NounConjugation.Equals(nounConjugationsToFind.Item2)))
                 {
@@ -77,7 +77,7 @@ namespace Quantae.Engine
 
         public static bool DoesTheUserKnowNounConjugation(UserProfile profile, NounConjugation conj)
         {
-            foreach (var nchi in profile.NounConjugationHistory)
+            foreach (var nchi in profile.History.NounConjugationHistory)
             {
                 if (!nchi.NounConjugation.Equals(conj))
                 {

@@ -5,8 +5,9 @@ namespace Quantae.DataModel
     public class UserProfile : QuantaeObject
     {
         #region User Info
-        public string Salt { get; set; }
+
         public string UserID { get; set; }
+        public string Salt { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string FacebookToken { get; set; }
@@ -22,44 +23,37 @@ namespace Quantae.DataModel
 
         #region User Current State
 
+        /// <summary>
+        /// Gets or sets the state of the current.
+        /// </summary>
+        /// <value>
+        /// The state of the current.
+        /// </value>
         public UserCurrentState CurrentState { get; set; }
 
         #endregion
 
-        #region User Learning Scores
+        #region User Learning State
 
         /// <summary>
-        /// Analytical/Contextual as a continuum.
-        /// How to calculate this score:
-        /// Using Weighted Moving Average
-        /// The formula and weights are in QuantaeEngine.LearningTypeScorePolicies
+        /// Gets or sets the learning.
         /// </summary>
-        public LearningTypeScoreModel LearningTypeScore { get; set; }
-
-        /// <summary>
-        /// FUTURE: These might be used in the future.
-        /// </summary>
-        public DepthScoreModel DepthScore { get; set; }
-        public DependencyScoreModel LearningDependencyScore { get; set; }
-        public MemoryScoreModel MemoryScore { get; set; }
+        /// <value>
+        /// The learning.
+        /// </value>
+        public UserLearningState Learning { get; set; }
 
         #endregion
 
-        #region History Vocab/Verb etc
+        #region User History State
 
         /// <summary>
-        /// This counter list is updated for each topic seen. This is how it works.
-        /// Every time a user sees any topic (any topic new/old), the counters for all
-        /// of these topics are updated.  If any one of the counters hit the threshold (2 currently)
-        ///  we take the user back to that topic.
+        /// Gets or sets the history.
         /// </summary>
-        public Dictionary<TopicHandle, int> FailureCounters { get; set; }
-
-        public List<TopicHistoryItem> TopicHistory { get; set; }
-        public List<SentenceHistoryItem> SentenceHistory { get; set; }
-        public List<VocabularyHistoryItem> VocabHistory { get; set; }
-        public List<VerbConjugationHistoryItem> VerbConjugationHistory { get; set; }
-        public List<NounConjugationHistoryItem> NounConjugationHistory { get; set; }
+        /// <value>
+        /// The history.
+        /// </value>
+        public UserHistoryState History { get; set; }
 
         #endregion
 
@@ -76,20 +70,11 @@ namespace Quantae.DataModel
 
         public UserProfile()
         {
-            this.NounConjugationHistory = new List<NounConjugationHistoryItem>();
-            this.VerbConjugationHistory = new List<VerbConjugationHistoryItem>();
-            this.SentenceHistory = new List<SentenceHistoryItem>();
-            this.TopicHistory = new List<TopicHistoryItem>();
-            this.VocabHistory = new List<VocabularyHistoryItem>();
-            this.Weaknesses = new Dictionary<Weakness, int>();
-            this.FailureCounters = new Dictionary<TopicHandle, int>();
-
-            this.LearningTypeScore = new LearningTypeScoreModel();
-            this.DepthScore = new DepthScoreModel();
-            this.LearningDependencyScore = new DependencyScoreModel();
-            this.MemoryScore = new MemoryScoreModel();
-
+            this.History = new UserHistoryState();
+            this.Learning = new UserLearningState();
             this.CurrentState = new UserCurrentState();
+
+            this.Weaknesses = new Dictionary<Weakness, int>();
         }
     }
 
