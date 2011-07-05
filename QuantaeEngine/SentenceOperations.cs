@@ -10,10 +10,9 @@ namespace Quantae.Engine
     {
         private static int BatchSize = 50;
 
-        public static Sentence FindSentence(UserProfile profile)
+        internal static Sentence FindSentence(UserProfile profile)
         {
             // TODO: This is where the sentence selection logic goes. 
-            // In essence this and TopicGraphOperations.GetNextTopic is the core of Quantae.
 
             Sentence targetSentence = null;
 

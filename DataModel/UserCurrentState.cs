@@ -50,14 +50,6 @@ namespace Quantae.DataModel
         /// The state of the course state machine.
         /// </value>
         public CourseLocationInfo CourseLocationInfo { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the state of the topic state machine.
-        /// </summary>
-        /// <value>
-        /// The state of the topic state machine.
-        /// </value>
-        public TopicLocationInfo TopicLocationInfo { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserCurrentState" /> class.
@@ -70,7 +62,6 @@ namespace Quantae.DataModel
             this.CurrentNounConjugationRank = 0;
 
             this.CourseLocationInfo = new CourseLocationInfo();
-            this.TopicLocationInfo = new TopicLocationInfo();
         }
     }
 }

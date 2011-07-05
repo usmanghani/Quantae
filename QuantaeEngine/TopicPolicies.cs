@@ -48,12 +48,13 @@ namespace Quantae.Engine
         /// <returns></returns>
         public static bool IsSampleSectionComplete(UserProfile profile)
         {
-            if (profile.CurrentState.TopicLocationInfo.QuestionCount < minQuestions)
+            var questionCount = profile.CurrentState.CourseLocationInfo.TopicLocationInfo.QuestionCountByQuestionDimension.Sum(kvp => kvp.Value);
+            if (questionCount < minQuestions)
             {
                 return false;
             }
 
-            if (profile.CurrentState.TopicLocationInfo.QuestionCount >= maxQuestions)
+            if (questionCount >= maxQuestions)
             {
                 return true;
             }

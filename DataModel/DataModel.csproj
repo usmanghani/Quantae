@@ -62,6 +62,7 @@
     <Compile Include="AudioRecording.cs" />
     <Compile Include="Conjugation.cs" />
     <Compile Include="ContextualAnalysis.cs" />
+    <Compile Include="CourseLocation.cs" />
     <Compile Include="CourseLocationInfo.cs" />
     <Compile Include="DependencyScoreModel.cs" />
     <Compile Include="DepthScoreModel.cs" />

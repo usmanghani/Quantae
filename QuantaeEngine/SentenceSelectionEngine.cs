@@ -20,13 +20,13 @@ namespace Quantae.Engine
         // Take it out.
         public static TopicSectionType GetCurrentSection(UserProfile userProfile)
         {
-            if (userProfile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
+            if (userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
                 userProfile.CurrentState.CourseLocationInfo.CurrentTopic.IsPseudoTopic)
             {
-                userProfile.CurrentState.TopicLocationInfo.CurrentSection = TopicSectionType.Exercise;
+                userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection = TopicSectionType.Exercise;
             }
 
-            return userProfile.CurrentState.TopicLocationInfo.CurrentSection;
+            return userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection;
         }
 
         // This is out also.
@@ -34,19 +34,19 @@ namespace Quantae.Engine
         {
             Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(userProfile.CurrentState.CourseLocationInfo.CurrentTopic.Topic);
 
-            if (userProfile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
-               !userProfile.CurrentState.TopicLocationInfo.IsIntroComplete &&
-                userProfile.CurrentState.TopicLocationInfo.IntroSlideIndex < currentTopic.IntroSection.Pages.Count)
+            if (userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
+               !userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IsIntroComplete &&
+                userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IntroSlideIndex < currentTopic.IntroSection.Pages.Count)
             {
-                int idx = ++userProfile.CurrentState.TopicLocationInfo.IntroSlideIndex;
+                int idx = ++userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IntroSlideIndex;
 
                 // BUG: Separate this out.
                 VocabOperations.UpdateVocabulary(userProfile, currentTopic.IntroSection.Pages[idx].VocabEntries, VocabRankTypes.CorrectOrSeenInIntro);
                 return currentTopic.IntroSection.Pages[idx].Content;
             }
 
-            userProfile.CurrentState.TopicLocationInfo.IsIntroComplete = true;
-            userProfile.CurrentState.TopicLocationInfo.CurrentSection = TopicSectionType.Exercise;
+            userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IsIntroComplete = true;
+            userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection = TopicSectionType.Exercise;
 
             return string.Empty;
         }
@@ -54,95 +54,146 @@ namespace Quantae.Engine
         public static Sentence GetNextSentence(UserProfile profile, AnswerDimension answerDimension, AnswerScore score)
         {
             // ALGO: 
+            // PRE: Session exists
+            // PRE: We are in Exercise or Review Section.
             // What we need: 
             // 1. All histories
             // 2. All user current state.
-            // 3. 
-            var topicStateMachineState = profile.CurrentState.TopicLocationInfo;
-            var sampleSectionState = topicStateMachineState.ExerciseSectionState;
-            var currentSentence = Repositories.Repositories.Sentences.GetItemByHandle(sampleSectionState.CurrentSentence);
+            // 3. Access to sentence repository.
+            // What do we do:
+            // 1. Assert correct section.
+            // 2. Handle Exercise section. OR
+            // 3. Handle Review Section.
+
+            var currentSection = profile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection;
+            if(currentSection != TopicSectionType.Review && currentSection != TopicSectionType.Exercise)
+            {
+                // BUG: Clean this up.
+                throw new Exception("Invalid section");
+            }
 
             Sentence targetSentence = null;
 
-            // this means we are just starting this section.
-            // TODO: Figure out if there is something special to do at the start of the section.
-            //if (profile.CurrentState.TopicStateMachineState.SampleSectionIterationCount == 0)
-            //{
-
-            //}
-
-            if (profile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Exercise ||
-                profile.CurrentState.TopicLocationInfo.CurrentSection == TopicSectionType.Review)
+            if(currentSection == TopicSectionType.Exercise)
             {
-                // BUG: BUG: BUG: Figure out transactionality of updates throughout the system.
-                // TODO: Figure out double updates or repeated updates to the same entity.
-                // TODO: Move this to its rightful place. 
-                UpdateUserProfileWithCurrentSentenceResponse(profile, answerDimension, score);
-
-                // TODO: More stuff here.
-                // Figure out the next sentence and its mode.
-
-                // This wasnt the question, so lets start asking questions now.
-                if (!sampleSectionState.IsQuestion)
-                {
-                    sampleSectionState.IsQuestion = true;
-
-                    if (topicStateMachineState.CurrentSection == TopicSectionType.Review)
-                    {
-                        sampleSectionState.CurrentQuestionDimension = QuestionDimension.Understanding;
-                    }
-                    else
-                    {
-                        sampleSectionState.CurrentQuestionDimension = (QuestionDimension)1;
-
-                        // for the first question we are going to re-use this sentence.
-                        targetSentence = SentenceOperations.GetSentenceFromHandle(sampleSectionState.CurrentSentence);
-                    }
-                }
-                else
-                {
-                    topicStateMachineState.QuestionCount++;
-                    if (topicStateMachineState.CurrentSection != TopicSectionType.Review)
-                    {
-                        if ((int)sampleSectionState.CurrentQuestionDimension < Enum.GetValues(typeof(QuestionDimension)).Length - 1)
-                        {
-                            sampleSectionState.CurrentQuestionDimension = (QuestionDimension)((int)sampleSectionState.CurrentQuestionDimension + 1);
-                        }
-                        else
-                        {
-                            topicStateMachineState.SampleSectionIterationCount++;
-                            topicStateMachineState.ExerciseSectionState = new ExerciseSectionState();
-                        }
-                    }
-
-                    if (TopicPolicies.IsSampleSectionComplete(profile))
-                    {
-                        if (!profile.CurrentState.CourseLocationInfo.CurrentTopic.IsPseudoTopic)
-                        {
-                            topicStateMachineState.CurrentSection = TopicSectionType.Review;
-                        }
-                    }
-
-                    // TODO: Do sentence selection logic here.
-
-                    if (targetSentence == null)
-                    {
-                        targetSentence = SentenceOperations.FindSentence(profile);
-
-                        // TODO: What happens when we run out of sentences.
-                    }
-                }
+                targetSentence = HandleExerciseSection(profile);
+            }
+            else
+            {
+                targetSentence = HandleReviewSection(profile);
             }
 
-            profile.CurrentState.TopicLocationInfo.ExerciseSectionState.CurrentSentence = new SentenceHandle(targetSentence);
-
             return targetSentence;
+
+            //var topicLocationInfo = profile.CurrentState.CourseLocationInfo.TopicLocationInfo;
+            //var exerciseSectionState = topicLocationInfo.ExerciseSectionState;
+            //var currentSentence = Repositories.Repositories.Sentences.GetItemByHandle(exerciseSectionState.CurrentSentence);
+
+            //Sentence targetSentence = null;
+
+            //// this means we are just starting this section.
+            //// TODO: Figure out if there is something special to do at the start of the section.
+            ////if (profile.CurrentState.TopicStateMachineState.SampleSectionIterationCount == 0)
+            ////{
+
+            ////}
+
+            //// TODO: Convert these to Asserts.
+            //if (profile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection == TopicSectionType.Exercise ||
+            //    profile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection == TopicSectionType.Review)
+            //{
+            //    // BUG: BUG: BUG: Figure out transactionality of updates throughout the system.
+            //    // TODO: Figure out double updates or repeated updates to the same entity.
+            //    // TODO: Move this to its rightful place. 
+            //    UpdateUserProfileWithCurrentSentenceResponse(profile, answerDimension, score);
+
+            //    // TODO: More stuff here.
+            //    // Figure out the next sentence and its mode.
+
+            //    // This wasnt the question, so lets start asking questions now.
+            //    if (!exerciseSectionState.IsQuestion)
+            //    {
+            //        exerciseSectionState.IsQuestion = true;
+
+            //        if (topicLocationInfo.CurrentSection == TopicSectionType.Review)
+            //        {
+            //            exerciseSectionState.CurrentQuestionDimension = QuestionDimension.Understanding;
+            //        }
+            //        else
+            //        {
+            //            exerciseSectionState.CurrentQuestionDimension = (QuestionDimension)1;
+
+            //            // for the first question we are going to re-use this sentence.
+            //            targetSentence = SentenceOperations.GetSentenceFromHandle(exerciseSectionState.CurrentSentence);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        topicLocationInfo.QuestionCount++;
+            //        if (topicLocationInfo.CurrentSection != TopicSectionType.Review)
+            //        {
+            //            if ((int)exerciseSectionState.CurrentQuestionDimension < Enum.GetValues(typeof(QuestionDimension)).Length - 1)
+            //            {
+            //                exerciseSectionState.CurrentQuestionDimension = (QuestionDimension)((int)exerciseSectionState.CurrentQuestionDimension + 1);
+            //            }
+            //            else
+            //            {
+            //                topicLocationInfo.ExerciseSectionIterationCount++;
+            //                topicLocationInfo.ExerciseSectionState = new ExerciseSectionState();
+            //            }
+            //        }
+
+            //        if (TopicPolicies.IsSampleSectionComplete(profile))
+            //        {
+            //            if (!profile.CurrentState.CourseLocationInfo.CurrentTopic.IsPseudoTopic)
+            //            {
+            //                topicLocationInfo.CurrentSection = TopicSectionType.Review;
+            //            }
+            //        }
+
+            //        // TODO: Do sentence selection logic here.
+
+            //        if (targetSentence == null)
+            //        {
+            //            targetSentence = SentenceOperations.FindSentence(profile);
+
+            //            // TODO: What happens when we run out of sentences.
+            //        }
+            //    }
+            //}
+
+            //profile.CurrentState.CourseLocationInfo.TopicLocationInfo.ExerciseSectionState.CurrentSentence = new SentenceHandle(targetSentence);
+
+            //return targetSentence;
+        }
+
+        private static Sentence HandleExerciseSection(UserProfile profile)
+        {
+            // PRE: By the time we come here. we have already been moved to either
+            // starting next pack or being in a valid question dimension by the state evaluator
+            // if starting exercise pack
+            //       select sample sentence.
+            //       return it.
+            // else
+            //       select sentence for this question dimension.
+            //       return it.
+
+            return null;
+        }
+
+        private static Sentence HandleReviewSection(UserProfile profile)
+        {
+            // PRE: WE have already been moved to the review section by the state evaluator.
+            // select sentence for review.
+            // return it.
+
+            return null;
         }
 
         // Make a UserProfileManager and move this there along with other update functionality related to the user.
         private static void UpdateUserProfileWithCurrentSentenceResponse(UserProfile profile, AnswerDimension answerDimension, AnswerScore score)
         {
-            var topicStateMachineState = profile.CurrentState.TopicLocationInfo;
+            var topicStateMachineState = profile.CurrentState.CourseLocationInfo.TopicLocationInfo;
             var sampleSectionState = topicStateMachineState.ExerciseSectionState;
             var currentSentence = Repositories.Repositories.Sentences.GetItemByHandle(sampleSectionState.CurrentSentence);
 
@@ -174,7 +225,7 @@ namespace Quantae.Engine
                 }
             }
 
-            if (profile.CurrentState.TopicLocationInfo.ExerciseSectionState.IsQuestion)
+            if (profile.CurrentState.CourseLocationInfo.TopicLocationInfo.ExerciseSectionState.IsQuestion)
             {
                 TopicOperations.UpdateAnswerDimensionCounts(profile, answerDimension, score);
 
