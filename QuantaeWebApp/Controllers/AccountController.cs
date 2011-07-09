@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using Quantae.ViewModels;
+using Quantae.Engine;
 
 namespace QuantaeWebApp.Controllers
 {
@@ -29,9 +30,12 @@ namespace QuantaeWebApp.Controllers
             if (ModelState.IsValid)
             {
                 // TODO: Add our code here to create session.
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                //SessionOperations.CreateOrReturnSession()
+                LoginUserResult result = UserOperations.LoginUser(model.UserName, model.Password, model.RememberMe);
+                if (result.Success)
+                //if (Membership.ValidateUser(model.UserName, model.Password))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    FormsAuthentication.SetAuthCookie(result.Token, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
@@ -57,6 +61,7 @@ namespace QuantaeWebApp.Controllers
 
         public ActionResult LogOff()
         {
+            UserOperations.LogoutUser(User.Identity.Name);
             FormsAuthentication.SignOut();
 
             return RedirectToAction("Index", "Home");
@@ -79,17 +84,21 @@ namespace QuantaeWebApp.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
-                MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+                //MembershipCreateStatus createStatus;
+                //Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
 
-                if (createStatus == MembershipCreateStatus.Success)
+                CreateUserResult createStatus = UserOperations.CreateUser(model.UserName, model.Email, model.Password);
+
+                if(createStatus.Success)
+                //if (createStatus == MembershipCreateStatus.Success)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+                    FormsAuthentication.SetAuthCookie(createStatus.Token, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    //ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    ModelState.AddModelError("", "Failed to create user.");
                 }
             }
 
@@ -121,8 +130,9 @@ namespace QuantaeWebApp.Controllers
                 bool changePasswordSucceeded;
                 try
                 {
-                    MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
-                    changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+                    //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+                    //changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+                    changePasswordSucceeded = UserOperations.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
                 }
                 catch (Exception)
                 {

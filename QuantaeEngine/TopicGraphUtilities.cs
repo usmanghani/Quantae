@@ -5,6 +5,10 @@ using System.Text;
 using Quantae.DataModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using MongoDB.Bson;
+using Quantae.Repositories;
 
 namespace Quantae.Engine
 {
@@ -15,7 +19,7 @@ namespace Quantae.Engine
             int count = Repositories.Repositories.Topics.CountItems();
             foreach (var i in Enumerable.Range(1, count))
             {
-                Topic t = Repositories.Repositories.Topics.GetTopicByIndex(i);
+                Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(i));
 
                 if (t == null || t.Dependencies == null || t.Dependencies.Count == 0)
                 {
@@ -69,13 +73,15 @@ namespace Quantae.Engine
 
                 t.Dependencies = ResolveDependencies(dependencies);
 
-                if (!Repositories.Repositories.Topics.TopicExists(name) && !Repositories.Repositories.Topics.TopicExists(index))
+                bool topicExistsByName = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByName(name)) != null;
+                bool topicExistsByIndex = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(index)) != null;
+                if (!topicExistsByName && !topicExistsByIndex)
                 {
                     Repositories.Repositories.Topics.Save(t);
                 }
                 else // update dependency handles
                 {
-                    Topic t2 = Repositories.Repositories.Topics.GetTopicByIndex(index);
+                    Topic t2 = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(index));
                     t2.Dependencies = t.Dependencies;
                     Repositories.Repositories.Topics.Save(t2);
                 }
@@ -88,7 +94,7 @@ namespace Quantae.Engine
             foreach (var d in dependencies)
             {
                 if (d == 0) continue;
-                Topic t = Repositories.Repositories.Topics.GetTopicByIndex(d);
+                Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(d));
                 if (t == null) continue;
                 topicHandles.Add(new TopicHandle(t));
             }
@@ -121,13 +127,13 @@ namespace Quantae.Engine
 
                 GrammarRole gr = new GrammarRole() { RoleName = role };
 
-                if (!Repositories.Repositories.GrammarRoles.GrammarRoleExists(gr.RoleName))
+                if (Repositories.Repositories.GrammarRoles.FindOneAs(GrammarRoleQueries.GetGrammarRoleByName(gr.RoleName)) == null)
                 {
                     Repositories.Repositories.GrammarRoles.Save(gr);
                 }
                 else
                 {
-                    gr = Repositories.Repositories.GrammarRoles.GetGrammarRolesByName(role).First();
+                    gr = Repositories.Repositories.GrammarRoles.FindAs(GrammarRoleQueries.GetGrammarRoleByName(role)).First();
                 }
 
                 GrammarRoleHandle grh = new GrammarRoleHandle(gr);

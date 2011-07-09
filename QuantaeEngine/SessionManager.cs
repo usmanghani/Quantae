@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Quantae.DataModel;
+using Quantae.Repositories;
 
 namespace Quantae.Engine
 {
@@ -81,7 +82,7 @@ namespace Quantae.Engine
             {
                 EnsureSessionExists(token);
 
-                Repositories.Repositories.Sessions.Remove(token);
+                Repositories.Repositories.Sessions.Remove(SessionQueries.GetSessionByToken(token));
 
                 return this.SessionStore.Remove(token);
             }

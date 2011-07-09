@@ -9,11 +9,12 @@ using MongoDB.Driver.Builders;
 
 namespace Quantae.Repositories
 {
-    public abstract class RepositoryBase<TObject> where TObject : QuantaeObject
+    public abstract class RepositoryBase<TObject> : IRepository<TObject> where TObject : QuantaeObject
     {
-        public DataStore DataStore { get; set; }
-        public string CollectionName { get; set; }
-        public MongoCollection<TObject> Collection { get; set; }
+        protected SafeMode safeMode = SafeMode.True;
+        public DataStore DataStore { get; protected set; }
+        public string CollectionName { get; protected set; }
+        public MongoCollection<TObject> Collection { get; protected set; }
 
         public RepositoryBase(DataStore store, string collectionName)
         {
@@ -22,14 +23,59 @@ namespace Quantae.Repositories
             this.Collection = store.GetCollection<TObject>(collectionName);
         }
 
-        public TObject GetItemByHandle<HandleType>(HandleType handle) where HandleType : QuantaeObjectHandle<TObject>
+        public IEnumerable<TObject> GetAllItems()
         {
-            return this.Collection.FindOneByIdAs<TObject>(new BsonObjectId(handle.ObjectId.Value));
+            var cursor = this.Collection.FindAllAs<TObject>();
+            return cursor.AsEnumerable<TObject>();
+        }
+
+        public int CountItems()
+        {
+            return this.Collection.Count();
+        }
+
+        public IEnumerable<TObject> FindAs(IMongoQuery query, IMongoSortBy sortBy = null, int skip = -1, int limit = -1, int batchsize = -1)
+        {
+            var cursor = this.Collection.FindAs<TObject>(query);
+
+            if (sortBy != null)
+            {
+                cursor.SetSortOrder(sortBy);
+            }
+
+            if (skip > -1)
+            {
+                cursor.SetSkip(skip);
+            }
+
+            if (limit > -1)
+            {
+                cursor.SetLimit(limit);
+            }
+
+            if (batchsize > -1)
+            {
+                cursor.SetBatchSize(batchsize);
+            }
+
+            return cursor;
+        }
+
+        public TObject FindOneAs(IMongoQuery query)
+        {
+            return this.Collection.FindOneAs<TObject>(query);
+        }
+
+        public bool Update(IMongoQuery query, IMongoUpdate update, bool upsert = false, bool updateAllMatching = false)
+        {
+            UpdateFlags flags = upsert ? UpdateFlags.Upsert : UpdateFlags.None;
+            flags |= updateAllMatching ? UpdateFlags.Multi : UpdateFlags.None;
+            return this.Collection.Update(query, update, flags, safeMode).Ok;
         }
 
         public void Save(TObject doc)
         {
-            SafeModeResult result = this.Collection.Save<TObject>(doc, SafeMode.True);
+            SafeModeResult result = this.Collection.Save<TObject>(doc, safeMode);
 
             if (!result.Ok)
             {
@@ -38,10 +84,9 @@ namespace Quantae.Repositories
             }
         }
 
-        public IEnumerable<TObject> GetAllItems()
+        public TObject GetItemByHandle<HandleType>(HandleType handle) where HandleType : QuantaeObjectHandle<TObject>
         {
-            var cursor = this.Collection.FindAllAs<TObject>();
-            return cursor.AsEnumerable<TObject>();
+            return this.Collection.FindOneByIdAs<TObject>(new BsonObjectId(handle.ObjectId.Value));
         }
 
         public void Remove<HandleType>(HandleType handle) where HandleType : QuantaeObjectHandle<TObject>
@@ -49,9 +94,9 @@ namespace Quantae.Repositories
             this.Collection.Remove(Query.EQ("ObjectID", new BsonObjectId(handle.ObjectId.Value)));
         }
 
-        public int CountItems()
+        public void Remove(IMongoQuery query)
         {
-            return this.Collection.Count();
+            this.Collection.Remove(query);
         }
     }
 }

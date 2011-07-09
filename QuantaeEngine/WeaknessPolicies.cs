@@ -11,6 +11,7 @@ namespace Quantae.Engine
         private static double genderMinPassPercentage = 0.6;
         private static double numberMinPassPercentage = 0.6;
         private static double umbrellaTopicPassPercentage = 0.6;
+        private static int maxTopicsForMajorWeakness = 3;
 
         public static bool IsGenderWeak(UserProfile userProfile)
         {
@@ -30,7 +31,6 @@ namespace Quantae.Engine
             return score >= numberMinPassPercentage;
         }
 
-
         public static bool IsUmbrellaTopicWeak(UserProfile userProfile, string umbrellaTopic)
         {
             var successes = userProfile.CurrentState.CourseLocationInfo.CurrentTopic.UmbrellaTopicSuccessCount[umbrellaTopic];
@@ -38,6 +38,20 @@ namespace Quantae.Engine
 
             double score = (double)successes / (successes + failures);
             return score >= umbrellaTopicPassPercentage;
+        }
+
+        public static bool IsMajorWeakness(Weakness weakness, int times)
+        {
+            if (weakness.WeaknessType == WeaknessType.GenderAgreement || 
+                weakness.WeaknessType == WeaknessType.NumberAgreement)
+            {
+                if (times > maxTopicsForMajorWeakness)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

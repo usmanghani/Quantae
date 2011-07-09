@@ -1,0 +1,19 @@
+﻿@model Quantae.ViewModels.LessonHubModel
+@{
+    ViewBag.Title = "LessonHub";
+            //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>
+    LessonHub</h2>
+<div>
+    <p>
+        <span style="font-weight: bold">Current Topic: </span>@Model.CurrentTopicName&nbsp; &nbsp; @Html.ActionLink("Continue", "ContinueTopic") &nbsp; | &nbsp; @Html.ActionLink("Restart", "RestartTopic") &nbsp; | &nbsp; @Html.ActionLink("Skip", "SkipTopic")</p>
+    <p>
+        <span style="font-weight: bold">Topic History: </span>
+    </p>
+    <ul>
+    @foreach (var topic in Model.TopicHistory) { 
+            <li>@topic</li>
+    }
+    </ul>
+</div>

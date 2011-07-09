@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Quantae.DataModel;
+using Quantae.Repositories;
+using MongoDB.Driver.Builders;
 
 namespace Quantae.Engine
 {
@@ -55,9 +57,11 @@ namespace Quantae.Engine
             // In that case we can't load by primary topic. We have to load by
             // secondary topics (Either conjugations or tags)
 
-            var sentences = Repositories.Repositories.Sentences.GetSentencesByTopic(
-                profile.CurrentState.CourseLocationInfo.CurrentTopic.Topic,
+            var sentences = Repositories.Repositories.Sentences.FindAs(SentenceQueries.GetSentencesByTopic(
+                profile.CurrentState.CourseLocationInfo.CurrentTopic.Topic), 
+                SortBy.Null,
                 profile.CurrentState.CurrentBatchIndex * BatchSize,
+                BatchSize,
                 BatchSize);
 
             profile.CurrentState.CurrentIndexWithinBatch = 0;

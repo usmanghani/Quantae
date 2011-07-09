@@ -6,21 +6,22 @@ using System.IO;
 using System.Text.RegularExpressions;
 using MongoDB.Driver.Builders;
 using Quantae.Repositories;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace Quantae.Engine
 {
-    public interface IGraphNavigator
+    public interface ITopicGraphNavigator
     {
-        TopicHandle GetNextTopic(UserProfile userProfile);
+        GetNextTopicResult GetNextTopic(UserProfile userProfile);
     }
 
-    public class TopicGraphNavigator : IGraphNavigator
+    public class TopicGraphNavigator : ITopicGraphNavigator
     {
         private RepositoryBase<Topic> topicsRepository = null;
 
         private TopicGraphNavigator()
         {
-
         }
 
         public TopicGraphNavigator(RepositoryBase<Topic> topicRepository)
@@ -29,9 +30,9 @@ namespace Quantae.Engine
         }
 
         // Send only relevant items here.
-        public TopicHandle GetNextTopic(UserProfile userProfile)
+        public GetNextTopicResult GetNextTopic(UserProfile userProfile)
         {
-            // ALGO:
+            // ALGO: GetNextTopic
             // What we need: 
             // 1. Whole topic history.
             // 2. Graph
@@ -43,36 +44,10 @@ namespace Quantae.Engine
             // 2. Check Pseudo Topic Triggers (Major weaknesses)
             // 3. Keep moving forward
             //    For each topic encountered: 
-            //       If Dependencies not satisfied, then skip OR if Already successful then skip.
-            //       Otherwise go to it.
+            //       If Dependencies satisfied, and Not already successful then return topic.
+            //       Otherwise go to next index.
             // 4. Only when we run out of topics at the end, we go over the failure counters and
             //    present them
-
-            #region Check Failure Counters
-
-            // BUG: Update failure counters before return for all failed topics,
-            // return target topic from here. and at the end of the function,
-            // update the failure counters.
-            // First make sure no failed topics are due.
-            foreach (var t in userProfile.History.FailureCounters.Keys)
-            {
-                if (userProfile.History.FailureCounters[t] > 2)
-                {
-                    // reset the counter because we are hitting this topic now.
-                    userProfile.History.FailureCounters[t] = 0;
-                    return t;
-                }
-            }
-
-            #endregion
-
-            #region Check Pseudo Topic Triggers (Major weaknesses)
-
-            // TODO: Figure out Pseudo Topic trigger logic.
-
-            #endregion
-
-            #region Look at history to figure out next topic.
 
             // Read the last topic in user history that is not a pseudo topic.
             // The list is reversed.
@@ -84,189 +59,98 @@ namespace Quantae.Engine
             // BUG: thi could be NULL
             Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(thi.Topic);
 
-            Topic candidateTopic = Repositories.Repositories.Topics.GetTopicByIndex(currentTopic.Index + 1);
-
             Topic targetTopic = null;
 
-            bool dependenciesDone = TopicPolicies.AreDependenciesSatisfied(userProfile, candidateTopic);
+            bool found = false;
+            bool isPseudo = true;
+            WeaknessType pseudoTopicType = WeaknessType.Unknown;
 
-            if (dependenciesDone)
+            #region Check Failure Counters
+
+            // BUG: Update failure counters before return for all failed topics,
+            // return target topic from here. and at the end of the function,
+            // update the failure counters.
+            // First make sure no failed topics are due.
+            foreach (var t in userProfile.History.FailureCounters.Keys)
             {
-                targetTopic = candidateTopic;
+                Topic failedTopic = this.topicsRepository.GetItemByHandle(t);
+
+                if ((failedTopic.Index > currentTopic.Index) &&
+                    (userProfile.History.FailureCounters[t] > 2))
+                {
+                    // reset the counter because we are hitting this topic now.
+                    userProfile.History.FailureCounters[t] = 0;
+                    targetTopic = failedTopic;
+                    found = true;
+                }
             }
-            else
+
+            #endregion
+
+            #region Check Pseudo Topic Triggers (Major weaknesses)
+
+            // TODO: Figure out Pseudo Topic trigger logic.
+
+            if (!found)
             {
-                // When we come here, it means the next immediate topic is out.
-                // Let's try the last successful topic and keep going until we are successful or we run out of topics in the history.
-                foreach (var historyItem in userProfile.History.TopicHistory)
+                var majorWeaknesses = userProfile.Weaknesses.Where(kvp => WeaknessPolicies.IsMajorWeakness(kvp.Key, kvp.Value));
+                pseudoTopicType = majorWeaknesses.ElementAt(0).Key.WeaknessType;
+                found = true;
+                isPseudo = true;
+            }
+
+            #endregion
+
+            #region Look at history to figure out next topic.
+
+            if (!found)
+            {
+                int currentIndex = currentTopic.Index + 1;
+                Topic candidateTopic = this.topicsRepository.FindOneAs(TopicQueries.GetTopicByIndex(currentIndex));
+
+                while (!found)
                 {
-                    // BUG: Check for pseudo topic.
-                    if (historyItem.IsSuccessful)
+                    bool dependenciesDone = TopicPolicies.AreDependenciesSatisfied(userProfile, candidateTopic);
+                    bool isSuccessful = TopicPolicies.HasUserSuccessfullyDoneTopic(userProfile, new TopicHandle(candidateTopic));
+                    if (dependenciesDone && !isSuccessful)
                     {
-                        TopicHandle th = SelectForwardLink(userProfile, Repositories.Repositories.Topics.GetItemByHandle(historyItem.Topic));
-                        if (th != null)
-                        {
-                            targetTopic = Repositories.Repositories.Topics.GetItemByHandle(th);
-                            break;
-                        }
+                        targetTopic = candidateTopic;
+                        found = true;
                     }
-                }
-
-                int costOfMovingBack = int.MaxValue;
-
-                if (targetTopic != null)
-                {
-                    costOfMovingBack = Math.Abs(currentTopic.Index - targetTopic.Index);
-                    //if (currentTopic.Index > targetTopic.Index)
-                    //    costOfMovingBack = currentTopic.Index - targetTopic.Index;
-                    //else
-                    //    costOfMovingBack = targetTopic.Index - currentTopic.Index;
-                }
-
-                // try to move fwd by selecting all topics with zero dependencies  and whose index is
-                // great than the current topic's index.
-                var cursor = Repositories.Repositories.Topics.Collection.Find(Query.And(Query.Size("Dependencies", 0), Query.GT("Index", currentTopic.Index)));
-
-                // BUG: Check to see if any of them has been successful.
-                foreach (var topic in cursor)
-                {
-                    if (topic.Index - currentTopic.Index < costOfMovingBack)
+                    else
                     {
-                        targetTopic = topic;
-                        break;
-                    }
-                }
-
-                if (cursor.Count() == 0)
-                {
-                    bool found = false;
-                    while (!found)
-                    {
-                        candidateTopic = Repositories.Repositories.Topics.GetTopicByIndex(candidateTopic.Index + 1);
-
-                        if (candidateTopic == null)
-                        {
-                            break;
-                        }
-
-                        bool dependenciesSatisfied = TopicPolicies.AreDependenciesSatisfied(userProfile, candidateTopic);
-
-                        if (!dependenciesSatisfied)
-                        {
-                            continue;
-                        }
-
-                        if (candidateTopic.Index - currentTopic.Index < costOfMovingBack)
-                        {
-                            targetTopic = candidateTopic;
-                            found = true;
-                        }
+                        currentIndex++;
+                        candidateTopic = this.topicsRepository.FindOneAs(TopicQueries.GetTopicByIndex(currentIndex));
                     }
                 }
             }
 
             #endregion
 
-            # region move them out to utilities or something. Cz they dont belong here.
-            
-            if (targetTopic != null)
+            if (!found)
             {
-                UpdateFailedTopicsCount(userProfile);
-                UpdateCurrentTopicState(userProfile, new TopicHandle(targetTopic));
-                return new TopicHandle(targetTopic);
-            }
-
-            #endregion 
-
-            // TODO: Figure out what to do in the orchestrator when we are stuck.
-            // FIX: Return a rich result type that tells you the reason.
-            return null;
-        }
-
-        // Move this out. One of these things is not like the other.
-        public void MarkTopicComplete(UserProfile userProfile, TopicHandle topicHandle)
-        {
-            bool isSuccess = TopicPolicies.IsTopicSuccessful(userProfile.CurrentState.CourseLocationInfo.CurrentTopic);
-
-            // update each failed topic count. This is the count that will trigger a back path.
-            foreach (var k in userProfile.History.FailureCounters.Keys)
-            {
-                userProfile.History.FailureCounters[k]++;
-            }
-
-            if (!isSuccess)
-            {
-                userProfile.History.FailureCounters.Add(topicHandle, 0);
-            }
-            else
-            {
-                // BUG: Check if it exists in the failure counters.
-                userProfile.History.FailureCounters.Remove(topicHandle);
-            }
-
-            // NOTE: we dont need to update the final grammar score since it will be updated after each topic.
-            // Update all counters here.
-            // TODO: Pull these into a separate function.
-            if (WeaknessPolicies.IsGenderWeak(userProfile))
-            {
-                userProfile.Weaknesses[new Weakness() { WeaknessType = WeaknessType.GenderAgreement }]++;
-            }
-
-            if (WeaknessPolicies.IsNumberWeak(userProfile))
-            {
-                userProfile.Weaknesses[new Weakness() { WeaknessType = WeaknessType.NumberAgreement }]++;
-            }
-
-            foreach (var umbrellaTopic in userProfile.CurrentState.CourseLocationInfo.CurrentTopic.UmbrellaTopicSuccessCount.Keys)
-            {
-                if (WeaknessPolicies.IsUmbrellaTopicWeak(userProfile, umbrellaTopic))
+                if (userProfile.History.FailureCounters.Count > 0)
                 {
-                    userProfile.Weaknesses[new Weakness() { WeaknessType = WeaknessType.UmbrellaTopic, UmbrellaTopicName = umbrellaTopic }]++;
+                    targetTopic = this.topicsRepository.GetItemByHandle(userProfile.History.FailureCounters.First().Key);
+                    found = true;
                 }
             }
 
-            // Make it behave like a stack.
-            userProfile.History.TopicHistory.Insert(0, userProfile.CurrentState.CourseLocationInfo.CurrentTopic);
-            userProfile.History.TopicHistory.First().LastTimestamp = DateTime.UtcNow;
-            userProfile.History.TopicHistory.First().IsSuccessful = isSuccess;
+            return new GetNextTopicResult(found, isPseudo, pseudoTopicType, targetTopic);
 
-            userProfile.CurrentState.CourseLocationInfo.CurrentTopic = null;
+
+            // TODO: Move this to topic utilities when done.
+            //# region move them out to utilities or something. Cz they dont belong here.
+
+            //if (targetTopic != null)
+            //{
+            //    UpdateFailedTopicsCount(userProfile);
+            //    UpdateCurrentTopicState(userProfile, new TopicHandle(targetTopic));
+            //    return targetTopic;
+            //}
+
+            //#endregion
+
         }
-
-        private TopicHandle SelectForwardLink(UserProfile userProfile, Topic currentTopic)
-        {
-            // Next topic's dependencies were not satisfied.
-            // Get forward links and try to find a candidate node.
-            foreach (var candidateTopic in currentTopic.ForwardLinks)
-            {
-                var candidate = Repositories.Repositories.Topics.GetItemByHandle(candidateTopic);
-
-                if (TopicPolicies.AreDependenciesSatisfied(userProfile, candidate) &&
-                    !TopicPolicies.HasUserSuccessfullyDoneTopic(userProfile, candidateTopic))
-                {
-                    return candidateTopic;
-                }
-            }
-
-            return null;
-        }
-
-        #region Take 'em ooout.
-
-        private void UpdateCurrentTopicState(UserProfile userProfile, TopicHandle nextTopic)
-        {
-            userProfile.CurrentState.CourseLocationInfo.CurrentTopic = new TopicHistoryItem() { Topic = nextTopic };
-        }
-
-        private void UpdateFailedTopicsCount(UserProfile userProfile)
-        {
-            foreach (var t in userProfile.History.FailureCounters.Keys)
-            {
-                userProfile.History.FailureCounters[t]++;
-            }
-        }
-
-        #endregion
-
     }
 }

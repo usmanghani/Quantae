@@ -5,7 +5,7 @@ using System.Web;
 
 namespace QuantaeWebApp
 {
-    public class SlideViewBuilder
+    public class ModelViewBuilder
     {
     }
 }

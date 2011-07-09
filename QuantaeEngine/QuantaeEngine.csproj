@@ -51,6 +51,8 @@
     <Compile Include="AnswerScore.cs" />
     <Compile Include="CreateUserResult.cs" />
     <Compile Include="FilterManager.cs" />
+    <Compile Include="GetNextSentenceResult.cs" />
+    <Compile Include="GetNextTopicResult.cs" />
     <Compile Include="HistoryItemOperations.cs" />
     <Compile Include="ISentenceFilter.cs" />
     <Compile Include="LearningTypeOperations.cs" />
@@ -59,7 +61,9 @@
     <Compile Include="NounConjugationOperations.cs" />
     <Compile Include="PseudoTopicFilter.cs" />
     <Compile Include="PseudoTopicPolicies.cs" />
+    <Compile Include="QuantaeEngine.cs" />
     <Compile Include="RollingFileAppenderTextWriter.cs" />
+    <Compile Include="SectionUtilities.cs" />
     <Compile Include="SentenceOperations.cs" />
     <Compile Include="SessionManager.cs" />
     <Compile Include="SessionNotFoundException.cs" />

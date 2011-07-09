@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Quantae.Engine;
 
 namespace QuantaeWebApp
 {
@@ -36,7 +37,7 @@ namespace QuantaeWebApp
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-
+            QuantaeEngine.Init("QuantaeTestDb");
         }
     }
 }

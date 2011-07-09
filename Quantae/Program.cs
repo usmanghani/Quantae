@@ -67,23 +67,27 @@ namespace Quantae
             Repositories.Repositories.Init(dataStore);
             FilterManager.CreateFilters();
 
-            for (int i = 0; i < 100; i++)
-            {
-                var cursor = Repositories.Repositories.Topics.Collection.FindAll();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    var cursor = Repositories.Repositories.Topics.Collection.FindAll();
 
-                cursor.SetSkip(i).SetSortOrder(SortBy.Ascending("Index")).SetFields("Index");
+            //    cursor.SetSkip(i).SetSortOrder(SortBy.Ascending("Index")).SetFields("Index");
 
-                if (cursor.Size() > 0)
-                {
-                    Console.WriteLine(cursor.Size() + "::" + cursor.ElementAt(0).Index);
-                }
-            }
+            //    if (cursor.Size() > 0)
+            //    {
+            //        Console.WriteLine(cursor.Size() + "::" + cursor.ElementAt(0).Index);
+            //    }
+            //}
 
-            //TopicGraphOperations.PopulateTopics("d:\\downloads\\dependencies-parseable.txt");
-            //TopicGraphOperations.CreateForwardLinks();
-            //EnumerateTopics();
+            TopicGraphUtilities.PopulateTopics("d:\\downloads\\dependencies-parseable.txt");
+            TopicGraphUtilities.CreateForwardLinks();
+            EnumerateTopics();
 
-            //UserProfile profile = CreateUserTopicHistory(userTopicHistory12);
+            UserProfile profile = CreateUserTopicHistory(userTopicHistory12);
+            UserProfile profile2 = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByUserName("usman.ghani"));
+            profile2.History.TopicHistory = profile.History.TopicHistory;
+            Repositories.Repositories.Users.Save(profile2);
+
             //TopicHandle topicHandle = TopicGraphOperations.GetNextTopic(profile);
 
             //if (topicHandle != null)
@@ -95,31 +99,7 @@ namespace Quantae
             //    Console.WriteLine("STUCK");
             //}
 
-            //var topics = Repositories.Repositories.Topics.GetAllItems().OrderByDescending(t => t.Index);
-
-            //StreamWriter writer = new StreamWriter("d:\\chains.txt");
-
-            //Dictionary<int, int> countsByTopic = new Dictionary<int, int>();
-            //foreach (var topic in topics)
-            //{
-            //    countsByTopic[topic.Index] = ShowChain(topic.Index, 0, writer);
-
-            //    writer.WriteLine("===========");
-            //    writer.WriteLine(countsByTopic[topic.Index].ToString());
-            //    writer.WriteLine("==========");
-            //}
-
-            //writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<<<");
-
-            //var topicsByCountSorted = countsByTopic.OrderByDescending(kvp => kvp.Value);
-            //foreach (var kvp in topicsByCountSorted)
-            //{
-            //    writer.WriteLine(kvp.Key + " => " + kvp.Value);
-            //}
-
-            //writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<");
-            //writer.Flush();
-            //writer.Close();
+            DoChains();
 
             //Topic topic = Repositories.Repositories.Topics.GetItemByHandle(topicHandle);
 
@@ -138,6 +118,35 @@ namespace Quantae
             //DoTransliterationStuff();
         }
 
+        private static void DoChains()
+        {
+            var topics = Repositories.Repositories.Topics.GetAllItems().OrderByDescending(t => t.Index);
+
+            StreamWriter writer = new StreamWriter("d:\\chains.txt");
+
+            Dictionary<int, int> countsByTopic = new Dictionary<int, int>();
+            foreach (var topic in topics)
+            {
+                countsByTopic[topic.Index] = ShowChain(topic.Index, 0, writer);
+
+                writer.WriteLine("===========");
+                writer.WriteLine(countsByTopic[topic.Index].ToString());
+                writer.WriteLine("==========");
+            }
+
+            writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<<<");
+
+            var topicsByCountSorted = countsByTopic.OrderByDescending(kvp => kvp.Value);
+            foreach (var kvp in topicsByCountSorted)
+            {
+                writer.WriteLine(kvp.Key + " => " + kvp.Value);
+            }
+
+            writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<");
+            writer.Flush();
+            writer.Close();
+        }
+
         private static void DoCassandraStuff()
         {
             using (var db = new FluentCassandra.CassandraContext(keyspace: "quantae", host: "localhost"))
@@ -149,7 +158,7 @@ namespace Quantae
         private static int ShowChain(int p, int indent, StreamWriter writer)
         {
             int sum = 0;
-            var topic = Repositories.Repositories.Topics.GetTopicByIndex(p);
+            var topic = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(p));
 
             writer.WriteLine(new string(' ', indent) + p);
 
@@ -376,10 +385,10 @@ namespace Quantae
         private static void DoQuantaeDataModelStuff()
         {
             Repositories.Repositories.Users.Save(new UserProfile() { UserID = "usman", Email = "usman.ghani@gmail.com" });
-            UserProfile up = Repositories.Repositories.Users.GetUserByUserName("usman");
+            UserProfile up = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByUserName("usman"));
             Console.WriteLine(up.UserID + "=>" + up.Email);
-            Repositories.Repositories.Users.UpdateUserEmail("usman", "blahingham25@yahoo.com");
-            up = Repositories.Repositories.Users.GetUserByUserName("usman");
+            Repositories.Repositories.Users.Update(UserProfileQueries.GetUserByUserName("usman"), UserProfileQueries.UpdateUserEmailUpdate("blahingham25@yahoo.com"));
+            up = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByUserName("usman"));
             Console.WriteLine(up.UserID + "=>" + up.Email);
         }
 
@@ -417,7 +426,7 @@ namespace Quantae
             {
                 TopicHistoryItem thi = new TopicHistoryItem();
                 thi.IsSuccessful = topicHistory[item];
-                thi.Topic = new TopicHandle(Repositories.Repositories.Topics.GetTopicByIndex(item));
+                thi.Topic = new TopicHandle(Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(item)));
                 profile.History.TopicHistory.Insert(0, thi);
             }
 

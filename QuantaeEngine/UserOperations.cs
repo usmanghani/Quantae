@@ -6,6 +6,8 @@ using Quantae.DataModel;
 using System.Security.Cryptography;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
+using MongoDB.Driver;
+using Quantae.Repositories;
 
 namespace Quantae.Engine
 {
@@ -35,7 +37,7 @@ namespace Quantae.Engine
             string encryptedPassword = EncryptPassword(password, salt);
             string token = CreateToken(username, salt);
 
-            UserProfile profile = Repositories.Repositories.Users.GetUserByUserName(username);
+            UserProfile profile = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByUserName(username));
 
             if (profile != null)
             {
@@ -44,7 +46,7 @@ namespace Quantae.Engine
                 return result;
             }
 
-            profile = Repositories.Repositories.Users.GetUserByEmail(email);
+            profile = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByEmail(email));
 
             if (profile != null)
             {
@@ -54,6 +56,7 @@ namespace Quantae.Engine
             }
 
             profile = new UserProfile();
+            profile.Salt = salt;
             profile.UserID = username;
             profile.PasswordHash = encryptedPassword;
             profile.Email = email;
@@ -73,14 +76,14 @@ namespace Quantae.Engine
             return cursor.Count() > 0;
         }
 
-        public static LoginUserResult LoginUser(string usernameOrEmail, string password)
+        public static LoginUserResult LoginUser(string usernameOrEmail, string password, bool rememberMe = false)
         {
-            UserProfile profile = Repositories.Repositories.Users.GetUserByUserName(usernameOrEmail);
+            UserProfile profile = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByUserName(usernameOrEmail));
             LoginUserResult result = new LoginUserResult();
 
             if (profile == null)
             {
-                profile = Repositories.Repositories.Users.GetUserByEmail(usernameOrEmail);
+                profile = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByEmail(usernameOrEmail));
             }
 
             if (profile == null)
@@ -116,6 +119,56 @@ namespace Quantae.Engine
             }
         }
 
+        public static bool ChangePassword(string token, string oldPassword, string newPassword)
+        {
+            try
+            {
+                UserSession session = SessionManager.Current.GetSession(token);
+                UserProfile profile = Repositories.Repositories.Users.GetItemByHandle(session.UserProfile);
+
+                if (EncryptPassword(oldPassword, profile.Salt).Equals(profile.PasswordHash))
+                {
+                    profile.PasswordHash = EncryptPassword(newPassword, profile.Salt);
+                    Repositories.Repositories.Users.Save(profile);
+                }
+                else
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (SessionNotFoundException)
+            {
+                return false;
+            }
+        }
+
+        public static UserProfile GetUserProfileFromSession(string token)
+        {
+            try
+            {
+                UserSession session = SessionManager.Current.GetSession(token);
+                UserProfile profile = Repositories.Repositories.Users.GetItemByHandle(session.UserProfile);
+
+                return profile;
+            }
+            catch (SessionNotFoundException)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates the token.
+        /// </summary>
+        /// <param name="profile">The profile.</param>
+        /// <returns></returns>
+        public static string CreateToken(UserProfile profile)
+        {
+            return CreateToken(profile.UserID, profile.Salt);
+        }
+
         private static string CalculateHash(string str)
         {
             return BitConverter.ToString(new SHA512CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(str)));
@@ -134,11 +187,6 @@ namespace Quantae.Engine
         private static string CreateToken(string username, string salt)
         {
             return string.Concat(username, ",", salt);
-        }
-
-        public static string CreateToken(UserProfile profile)
-        {
-            return CreateToken(profile.UserID, profile.Salt);
         }
     }
 }

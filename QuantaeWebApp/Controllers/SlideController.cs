@@ -3,64 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Quantae.Engine;
 
 namespace QuantaeWebApp.Controllers
 {
-    public class LessonOrchestrationController : Controller
+    public class SlideController : Controller
     {
         //
-        // GET: /LessonOrchestration/
+        // GET: /Slide/
 
         public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult StartSession()
-        {
-            // PRE: The session is already created by the Account Controller. LogOn Action.
-            // PRE: The token is in the cookie.
-            // TODO: 
-            // 1. Get the topic history for the user.
-            // 2. Lesson Plan.
-            // 3. Current Topic.
-            // 4. Set Type of Slide to Lesson Hub. (Lesson Hub talks to the engine and does GetNextTopic.)
-            // POST: Returns the Lesson Hub
-
-            return Json(null);
-        }
-
-        public ActionResult RestartTopic()
-        {
-            // PRE: Start Session.
-            // PRE: Token in the cookie.
-            // TODO:
-            // 1. Get Current Topic.
-            // 2. TopicOperations.RestartCurrentTopic. (modifies certain data structures to make it look like the topic is starting again.)
-            // 3. We need to return the first intro slide of this topic.
-            // POST: returns the first intro slide of this topic.
-
-            return Json(null);
-        }
-
-        public ActionResult SkipTopic()
-        {
-            // PRE: Start Session
-            // PRE: Token in the cookie.
-            // TODO:
-            // 1. Mark topic skipped. (It still goes to your history, but it is considered successful.)
-            // 2. Return Lesson Hub.
-            // POST: Return Lesson Hub. (with updated info).
-
-            return Json(null);
-        }
-
-        /// <summary>
-        /// Gets the next slide.
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult GetNextSlide()
         {
             // PRE: StartSession
             // PRE: Token in the cookie.
@@ -137,7 +88,9 @@ namespace QuantaeWebApp.Controllers
             //     Determine next topic, 
             //     Set location to LessonHub
 
-            return Json(null);
+
+            return View();
         }
+
     }
 }

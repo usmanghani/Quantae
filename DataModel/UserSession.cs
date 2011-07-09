@@ -37,6 +37,14 @@ namespace Quantae.DataModel
         public DateTime CreationTimestamp { get; set; }
 
         /// <summary>
+        /// Gets or sets the last login timestamp.
+        /// </summary>
+        /// <value>
+        /// The last login timestamp.
+        /// </value>
+        public DateTime LastLoginTimestamp { get; set; }
+
+        /// <summary>
         /// Gets or sets the expiration timestamp.
         /// This is set at a max of two weeks if the user asks us to remember him/her.
         /// </summary>
