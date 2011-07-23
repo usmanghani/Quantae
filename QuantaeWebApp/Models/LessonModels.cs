@@ -5,14 +5,21 @@ using System.Web;
 
 namespace Quantae.ViewModels
 {
-    public class LessonHubModel
+    public class LessonHubViewModel
     {
         public string CurrentTopicName { get; set; }
         public List<string> TopicHistory { get; set; }
+        public bool IsCurrentTopicNew { get; set; }
 
-        public LessonHubModel()
+        public LessonHubResponseModel ResponseModel { get; set; }
+
+        public LessonHubViewModel()
         {
             TopicHistory = new List<string>();
         }
+    }
+
+    public class LessonHubResponseModel
+    {
     }
 }

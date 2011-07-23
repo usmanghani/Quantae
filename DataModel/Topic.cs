@@ -24,13 +24,12 @@ namespace Quantae.DataModel
         public string AnalyticalLocalizedTopicTitle { get; set; }
         public string ContextualLocalizedTopicTitle { get; set; }
 
-        public List<QuantaeTuple<GrammarRoleHandle, Conjugation>> RoleConjugationPairs { get; set; }
+        // FIX: Remove these as they are relevant for topic history item only.
 
-        public bool IsPseudoTopic { get; set; }
-        public Weakness WeaknessForPseudoTopic { get; set; }
+        // FIX: Remove grammar roles and role conjugation pairs because they are not required.
 
-        public List<TopicHandle> Dependencies { get; set; }
-        public List<TopicHandle> ForwardLinks { get; set; }
+        public List<int> Dependencies { get; set; }
+        public List<int> ForwardLinks { get; set; }
 
         public StaticSection IntroSection { get; set; }
 
@@ -40,9 +39,8 @@ namespace Quantae.DataModel
 
         public Topic()
         {
-            this.RoleConjugationPairs = new List<QuantaeTuple<GrammarRoleHandle, Conjugation>>();
-            this.Dependencies = new List<TopicHandle>();
-            this.ForwardLinks = new List<TopicHandle>();
+            this.Dependencies = new List<int>();
+            this.ForwardLinks = new List<int>();
         }
     }
 

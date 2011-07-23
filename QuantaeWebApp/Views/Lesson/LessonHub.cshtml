@@ -1,4 +1,4 @@
-﻿@model Quantae.ViewModels.LessonHubModel
+﻿@model Quantae.ViewModels.LessonHubViewModel
 @{
     ViewBag.Title = "LessonHub";
             //Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,7 +7,7 @@
     LessonHub</h2>
 <div>
     <p>
-        <span style="font-weight: bold">Current Topic: </span>@Model.CurrentTopicName&nbsp; &nbsp; @Html.ActionLink("Continue", "ContinueTopic") &nbsp; | &nbsp; @Html.ActionLink("Restart", "RestartTopic") &nbsp; | &nbsp; @Html.ActionLink("Skip", "SkipTopic")</p>
+        <span style="font-weight: bold">Current Topic: </span>@Model.CurrentTopicName&nbsp; &nbsp; @Html.ActionLink("Continue", "Index", "Home") &nbsp; | &nbsp; @Html.ActionLink("Restart", "Index") &nbsp; | &nbsp; @Html.ActionLink("Skip", "About", "Home")</p>
     <p>
         <span style="font-weight: bold">Topic History: </span>
     </p>

@@ -18,4 +18,9 @@
             return this.Text.GetHashCode() + this.Translation.GetHashCode();
         }
     }
+
+    public class GrammarEntryHandle : QuantaeObjectHandle<GrammarEntry>
+    {
+        public GrammarEntryHandle(GrammarEntry entry) : base(entry) { }
+    }
 }

@@ -101,7 +101,7 @@ namespace Quantae.Engine
                 return result;
             }
 
-            result.Token = SessionOperations.CreateOrReturnSession(profile);
+            result.Token = SessionOperations.CreateOrReturnSession(profile, rememberMe);
             result.Success = true;
 
             return result;

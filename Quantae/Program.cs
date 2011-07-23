@@ -321,7 +321,7 @@ namespace Quantae
                     writer.Write(name.ToString());
                     writer.Write("\t");
 
-                    foreach (var p in topic.RoleConjugationPairs)
+                    foreach (var p in topic.GrammarRoles)
                     {
                         var r = Repositories.Repositories.GrammarRoles.GetItemByHandle(p.Item1);
                         writer.Write(r.RoleName);

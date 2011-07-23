@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArrowTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ArrowTest.Designer.cs">
+      <DependentUpon>ArrowTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="SentenceEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

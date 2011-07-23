@@ -11,13 +11,11 @@ namespace Quantae.DataModel
 
         #region Structural Properties
 
-        public SentenceType Type { get; set; }
-
         public List<VocabEntryHandle> VocabEntries { get; set; }
 
         // TODO: figure out a way to combine these if possible.
         //////////////////////////////////////////////////
-        public List<GrammarEntry> GrammarEntries { get; set; }
+        public List<GrammarEntryHandle> GrammarEntries { get; set; }
         public List<GrammarAnalysisElement> GrammarAnalysis { get; set; }
         public List<int[]> ContextualAnalysis { get; set; }
         /////////////////////////////////////////////////////
@@ -75,6 +73,9 @@ namespace Quantae.DataModel
             this.RoleConjugationPairs = new List<QuantaeTuple<GrammarRoleHandle, Conjugation>>();
             this.Questions = new Dictionary<QuestionDimension, Question>();
             this.Tags = new List<string>();
+            this.GrammarAnalysis = new List<GrammarAnalysisElement>();
+            this.ContextualAnalysis = new List<int[]>();
+            this.GrammarEntries = new List<GrammarEntryHandle>();
         }
     }
 

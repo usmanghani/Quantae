@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Quantae.Engine;
 using Quantae.ViewModels;
 using Quantae.DataModel;
+using Quantae.Repositories;
 
 namespace QuantaeWebApp.Controllers
 {
@@ -26,9 +27,18 @@ namespace QuantaeWebApp.Controllers
             // TODO: Create Lesson Hub view here.
 
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
-            //Topic currentTopic = TopicOperations.GetTopicFromHandle(profile.CurrentState.CourseLocationInfo.CurrentTopic.Topic);
 
-            LessonHubModel model = new LessonHubModel();
+            TopicHistoryItem currentTopicHistoryItem = profile.CurrentState.CourseLocationInfo.CurrentTopic;
+
+            //// We have completed the previous topic.
+            //if (currentTopicHistoryItem == null)
+            //{
+            //    ITopicGraphNavigator nav = new TopicGraphNavigator(Repositories.Topics);
+            //    GetNextTopicResult result = nav.GetNextTopic(profile);
+            //}
+
+
+            LessonHubViewModel model = new LessonHubViewModel();
 
             //model.CurrentTopicName = currentTopic.TopicName;
             model.CurrentTopicName = "Blah";
@@ -43,13 +53,15 @@ namespace QuantaeWebApp.Controllers
         }
 
         [Authorize]
-        public ActionResult ContinueTopic()
+        [HttpPost]
+        public ActionResult ContinueTopic(LessonHubViewModel viewModel)
         {
             return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
-        public ActionResult RestartTopic()
+        [HttpPost]
+        public ActionResult RestartTopic(LessonHubViewModel viewModel)
         {
             // PRE: Start Session.
             // PRE: Token in the cookie.
@@ -64,7 +76,8 @@ namespace QuantaeWebApp.Controllers
         }
 
         [Authorize]
-        public ActionResult SkipTopic()
+        [HttpPost]
+        public ActionResult SkipTopic(LessonHubViewModel viewModel)
         {
             // PRE: Start Session
             // PRE: Token in the cookie.
@@ -72,6 +85,10 @@ namespace QuantaeWebApp.Controllers
             // 1. Mark topic skipped. (It still goes to your history, but it is considered successful.)
             // 2. Return Lesson Hub.
             // POST: Return Lesson Hub. (with updated info).
+
+            UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
+
+            TopicOperations.MarkCurrentTopicComplete(profile);
 
             // TODO: Redirect to action here.
             return RedirectToAction("About", "Home");

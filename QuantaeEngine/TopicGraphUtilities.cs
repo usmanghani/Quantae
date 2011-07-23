@@ -69,7 +69,7 @@ namespace Quantae.Engine
 
                 Topic t = new Topic() { Index = index, TopicName = name };
 
-                t.RoleConjugationPairs = ParseRules(rules);
+                t.GrammarRoles = ParseRules(rules);
 
                 t.Dependencies = ResolveDependencies(dependencies);
 
