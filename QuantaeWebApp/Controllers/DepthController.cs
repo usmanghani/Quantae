@@ -16,5 +16,10 @@ namespace QuantaeWebApp.Controllers
             return View();
         }
 
+        // GET: /Depth/NextSlide
+        public ActionResult NextSlide()
+        {
+            return View();
+        }
     }
 }

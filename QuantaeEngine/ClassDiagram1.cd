@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Quantae.Engine.CreateUserResult" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>CreateUserResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.FilterManager" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAACAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>FilterManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.GetNextSentenceResult" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAABAAAAAAAAAAggAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>GetNextSentenceResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.GetNextTopicResult" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAABAAAAAAAgAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>GetNextTopicResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.HistoryItemOperations" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HistoryItemOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.LearningTypeOperations" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LearningTypeOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.LearningTypeScorePolicies" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQgAAAAAAAABAAAAAAAAACAAAQAQAAAAAAAAAAAA=</HashCode>
+      <FileName>LearningTypeScorePolicies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.LoginUserResult" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>LoginUserResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.NounConjugationFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>NounConjugationFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Quantae.Engine.NounConjugationOperations" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>NounConjugationOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.NounConjugationPolicies" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAEIAAAAAAAAACAAAAgABAAAAAAABAA=</HashCode>
+      <FileName>NounConjugationPolicies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.PrimaryTopicFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>PrimaryTopicFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Quantae.Engine.PseudoTopicFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>PseudoTopicFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Quantae.Engine.PseudoTopicPolicies" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PseudoTopicPolicies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.QuantaeEngine" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>QuantaeEngine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.RollingFileAppenderTextWriter" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACADACAABQAAARAZAAAgEAAAAhEACASAAAQAJAGIAAA=</HashCode>
+      <FileName>RollingFileAppenderTextWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.SecondaryTopicFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>SecondaryTopicFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Quantae.Engine.SectionUtilities" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SectionUtilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.SentenceOperations" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAADAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SentenceOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.SentenceSelectionEngine" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAgAAAAAAAEACAAAAAAAAAAAgAAEAAAAAABA=</HashCode>
+      <FileName>SentenceSelectionEngine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Quantae.Engine.SessionManager" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABgEAAAAAAEBAAAQCAAAAAAAFAARAAAAIAAAAQAAg=</HashCode>
+      <FileName>SessionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.SessionNotFoundException" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SessionNotFoundException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.SessionOperations" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SessionOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.TopicGraphNavigator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAABAAAAAAAAAAA=</HashCode>
+      <FileName>TopicGraphNavigator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Quantae.Engine.TopicGraphUtilities" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAAAAAAAEEAAAAAACAAAAAAAAAAAAAAAAEEAAAAAA=</HashCode>
+      <FileName>TopicGraphUtilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.TopicOperations" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>TopicOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.TopicPolicies" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAQAAAQAAAAIAAAAAIAEABAAEAAAAAAABAA=</HashCode>
+      <FileName>TopicPolicies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.UserOperations" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAEBAQAAgAAAAAAAAAACgAAAAAAAAAAAAAACACE=</HashCode>
+      <FileName>UserOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.VerbConjugationFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>VerbConjugationFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Quantae.Engine.VerbConjugationOperations" Collapsed="true">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>VerbConjugationOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.VerbConjugationPolicies" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAQAAAAAAAAAIAIABAAAQAAAAAAAAAAFAAAIAAAAAA=</HashCode>
+      <FileName>VerbConjugationPolicies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.VocabFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>VocabFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Quantae.Engine.VocabOperations" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VocabOperations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.VocabPolicies" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQEAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VocabPolicies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quantae.Engine.WeaknessPolicies" Collapsed="true">
+    <Position X="7.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAEAAAAAAAAAAAAIAAAIQAIAAAAAAAAEAAAA=</HashCode>
+      <FileName>WeaknessPolicies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Quantae.Engine.ISentenceFilter" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>ISentenceFilter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Quantae.Engine.ISentenceSelectionEngine" Collapsed="true">
+    <Position X="2.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>SentenceSelectionEngine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Quantae.Engine.ITopicGraphNavigator" Collapsed="true">
+    <Position X="4" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TopicGraphNavigator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Quantae.Engine.AnswerScore" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAACAAAAAEBA=</HashCode>
+      <FileName>AnswerScore.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Quantae.Engine.CreateUserFailureReason" Collapsed="true">
+    <Position X="2.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAABE=</HashCode>
+      <FileName>CreateUserResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Quantae.Engine.LoginFailureReason" Collapsed="true">
+    <Position X="4" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAIAAAABA=</HashCode>
+      <FileName>LoginUserResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

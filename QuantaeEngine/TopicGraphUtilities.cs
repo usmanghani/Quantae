@@ -28,16 +28,15 @@ namespace Quantae.Engine
 
                 foreach (var d in t.Dependencies)
                 {
-                    Topic f = Repositories.Repositories.Topics.GetItemByHandle(d);
+                    Topic f = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(d));
                     if (f.ForwardLinks == null)
                     {
-                        f.ForwardLinks = new List<TopicHandle>();
+                        f.ForwardLinks = new List<int>();
                     }
 
-                    var h = new TopicHandle(t);
-                    if (!f.ForwardLinks.Contains(h))
+                    if (!f.ForwardLinks.Contains(t.Index))
                     {
-                        f.ForwardLinks.Add(h);
+                        f.ForwardLinks.Add(t.Index);
                     }
 
                     Repositories.Repositories.Topics.Save(f);
@@ -69,9 +68,7 @@ namespace Quantae.Engine
 
                 Topic t = new Topic() { Index = index, TopicName = name };
 
-                t.GrammarRoles = ParseRules(rules);
-
-                t.Dependencies = ResolveDependencies(dependencies);
+                t.Dependencies = dependencies;
 
                 bool topicExistsByName = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByName(name)) != null;
                 bool topicExistsByIndex = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(index)) != null;
@@ -86,20 +83,6 @@ namespace Quantae.Engine
                     Repositories.Repositories.Topics.Save(t2);
                 }
             }
-        }
-
-        public static List<TopicHandle> ResolveDependencies(List<int> dependencies)
-        {
-            List<TopicHandle> topicHandles = new List<TopicHandle>();
-            foreach (var d in dependencies)
-            {
-                if (d == 0) continue;
-                Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(d));
-                if (t == null) continue;
-                topicHandles.Add(new TopicHandle(t));
-            }
-
-            return topicHandles;
         }
 
         public static List<QuantaeTuple<GrammarRoleHandle, Conjugation>> ParseRules(string rules)

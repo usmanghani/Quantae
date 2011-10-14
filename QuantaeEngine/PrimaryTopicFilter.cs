@@ -10,10 +10,10 @@ namespace Quantae.Engine
     {
         public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {
-            Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(user.CurrentState.CourseLocationInfo.CurrentTopic.Topic);
+            TopicHistoryItem currentTopic = user.CurrentState.CourseLocationInfo.CurrentTopic;
             if (!currentTopic.IsPseudoTopic)
             {
-                return user.CurrentState.CourseLocationInfo.CurrentTopic.Topic.Equals(sentence.PrimaryTopic);
+                return currentTopic.Topic.Equals(sentence.PrimaryTopic);
             }
 
             return true;

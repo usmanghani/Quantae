@@ -164,7 +164,7 @@ namespace Quantae
 
             foreach (var d in topic.Dependencies)
             {
-                var t = Repositories.Repositories.Topics.GetItemByHandle(d);
+                var t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(d));
                 sum += ShowChain(t.Index, indent + 4, writer);
             }
 
@@ -307,42 +307,20 @@ namespace Quantae
                     List<int> deps = new List<int>();
                     foreach (var d in topic.Dependencies)
                     {
-                        deps.Add(Repositories.Repositories.Topics.GetItemByHandle(d).Index);
+                        Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(d));
+                        deps.Add(t.Index);
                     }
 
                     List<int> fwdLinks = new List<int>();
                     foreach (var f in topic.ForwardLinks)
                     {
-                        fwdLinks.Add(Repositories.Repositories.Topics.GetItemByHandle(f).Index);
+                        Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(f));
+                        fwdLinks.Add(t.Index);
                     }
 
                     writer.Write(index.ToString());
                     writer.Write("\t");
                     writer.Write(name.ToString());
-                    writer.Write("\t");
-
-                    foreach (var p in topic.GrammarRoles)
-                    {
-                        var r = Repositories.Repositories.GrammarRoles.GetItemByHandle(p.Item1);
-                        writer.Write(r.RoleName);
-
-                        writer.Write(";");
-                        writer.Write(p.Item2.Gender.ToString());
-                        writer.Write(",");
-                        writer.Write(p.Item2.Number.ToString());
-
-                        if (p.Item2.GetType() == typeof(VerbConjugation))
-                        {
-                            writer.Write(",");
-                            var v = p.Item2 as VerbConjugation;
-                            writer.Write(v.Tense.ToString());
-                            writer.Write(",");
-                            writer.Write(v.Person.ToString());
-                        }
-
-                        writer.Write(";");
-                    }
-
                     writer.Write("\t");
 
                     foreach (var d in deps)
