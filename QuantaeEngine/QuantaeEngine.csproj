@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnswerScore.cs" />
+    <Compile Include="SentenceUtilities.cs" />
     <Compile Include="CreateUserResult.cs" />
     <Compile Include="FilterManager.cs" />
     <Compile Include="GetNextSentenceResult.cs" />

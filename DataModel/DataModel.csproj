@@ -34,13 +34,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson, Version=1.1.0.4184, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\mongocsharpdriver.1.1\lib\net35\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver, Version=1.1.0.4184, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\mongocsharpdriver.1.1\lib\net35\MongoDB.Driver.dll</HintPath>
+    <Reference Include="MongoDB.Bson, Version=1.2.0.4274, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\mongocsharpdriver.1.2\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\packages\MySql.Data.6.3.6\lib\MySql.Data.dll</HintPath>
