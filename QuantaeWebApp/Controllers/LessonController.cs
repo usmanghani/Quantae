@@ -30,6 +30,7 @@ namespace QuantaeWebApp.Controllers
 
             TopicHistoryItem currentTopicHistoryItem = profile.CurrentState.CourseLocationInfo.CurrentTopic;
 
+            // TODO: un-comment. This was commented out to test the view.
             //// We have completed the previous topic.
             //if (currentTopicHistoryItem == null)
             //{
@@ -56,6 +57,7 @@ namespace QuantaeWebApp.Controllers
         [HttpPost]
         public ActionResult ContinueTopic(LessonHubViewModel viewModel)
         {
+            // TODO: Redirect to correct action here.
             return RedirectToAction("Index", "Home");
         }
 
@@ -71,7 +73,7 @@ namespace QuantaeWebApp.Controllers
             // 3. We need to return the first intro slide of this topic.
             // POST: returns the first intro slide of this topic.
 
-            // TODO: Redirect to action here.
+            // TODO: Redirect to correct action here.
             return RedirectToAction("Index", "Lesson");
         }
 
@@ -90,7 +92,7 @@ namespace QuantaeWebApp.Controllers
 
             TopicOperations.MarkCurrentTopicComplete(profile);
 
-            // TODO: Redirect to action here.
+            // TODO: Redirect to correct action here.
             return RedirectToAction("About", "Home");
         }
     }

@@ -24,7 +24,7 @@ namespace Quantae.Engine
             return userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection;
         }
 
-        // This is out also.
+        // TODO: This goes either into the controller or stays in a util class and gets called from the controller.
         public static string GetNextIntroSlideContent(UserProfile userProfile)
         {
             Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(userProfile.CurrentState.CourseLocationInfo.CurrentTopic.Topic);
