@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippet Format="1.0.0" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <Header>
+    <Title>Create a column processor method for the parser</Title>
+    <Author>Usman Ghani</Author>
+    <Shortcut>process</Shortcut>
+    <Description>Create a column processor method for the parser</Description>
+    <SnippetTypes>
+      <SnippetType>Expansion</SnippetType>
+    </SnippetTypes>
+  </Header>
+  <Snippet>
+    <Declarations>
+      <Literal>
+        <ID>MethodName</ID>
+        <Default>Method</Default>
+      </Literal>
+    </Declarations>
+    <Code Language="CSharp">
+      <![CDATA[public static string Process$MethodName$(string context, string colValue, Sentence sentence)
+      {
+        return context;
+      }
+      ]]>
+    </Code>
+  </Snippet>
+</CodeSnippet>

@@ -29,12 +29,12 @@ namespace Quantae.Repositories
             return cursor.AsEnumerable<TObject>();
         }
 
-        public int CountItems()
+        public long CountItems()
         {
             return this.Collection.Count();
         }
 
-        public IEnumerable<TObject> FindAs(IMongoQuery query, IMongoSortBy sortBy = null, int skip = -1, int limit = -1, int batchsize = -1)
+        public IEnumerable<TObject> FindAs(IMongoQuery query, IMongoSortBy sortBy = null, int skip = -1, int limit = -1, int batchsize = -1, string indexHint = "", bool tableScan = false)
         {
             var cursor = this.Collection.FindAs<TObject>(query);
 
@@ -56,6 +56,16 @@ namespace Quantae.Repositories
             if (batchsize > -1)
             {
                 cursor.SetBatchSize(batchsize);
+            }
+
+            if (!string.IsNullOrEmpty(indexHint))
+            {
+                cursor.SetHint(indexHint);
+            }
+
+            if (tableScan)
+            {
+                cursor.SetHint(new BsonDocument(new BsonElement("natural", new BsonInt32(1))));
             }
 
             return cursor;
@@ -97,6 +107,11 @@ namespace Quantae.Repositories
         public void Remove(IMongoQuery query)
         {
             this.Collection.Remove(query);
+        }
+
+        public void EnsureIndex(string[] fieldNames)
+        {
+            this.Collection.EnsureIndex(fieldNames);
         }
     }
 }

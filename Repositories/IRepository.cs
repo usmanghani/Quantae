@@ -14,8 +14,8 @@ namespace Quantae.Repositories
         MongoCollection<TObject> Collection { get; }
 
         IEnumerable<TObject> GetAllItems();
-        int CountItems();
-        IEnumerable<TObject> FindAs(IMongoQuery query, IMongoSortBy sortBy = null, int skip = -1, int limit = -1, int batchsize = -1);
+        long CountItems();
+        IEnumerable<TObject> FindAs(IMongoQuery query, IMongoSortBy sortBy = null, int skip = -1, int limit = -1, int batchsize = -1, string indexHint = "", bool tableScan = false);
         TObject FindOneAs(IMongoQuery query);
         bool Update(IMongoQuery query, IMongoUpdate update, bool upsert = false, bool updateAllMatching = false);
         void Save(TObject doc);

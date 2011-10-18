@@ -16,8 +16,8 @@ namespace Quantae.Engine
     {
         public static void CreateForwardLinks()
         {
-            int count = Repositories.Repositories.Topics.CountItems();
-            foreach (var i in Enumerable.Range(1, count))
+            var count = Repositories.Repositories.Topics.CountItems();
+            for (var i = 0; i < count; i++)
             {
                 Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(i));
 
