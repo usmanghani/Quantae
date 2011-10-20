@@ -1,0 +1,15 @@
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\QuantaeWebApp.Tests.dll
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\QuantaeWebApp.Tests.pdb
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\MongoDB.Bson.dll
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\MongoDB.Driver.dll
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\nunit.framework.dll
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\nunit.mocks.dll
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\pnunit.framework.dll
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\MongoDB.Bson.pdb
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\MongoDB.Bson.xml
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\MongoDB.Driver.pdb
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\MongoDB.Driver.xml
+D:\Quantae\QuantaeWebApp.Tests\bin\Debug\nunit.framework.xml
+D:\Quantae\QuantaeWebApp.Tests\obj\Debug\ResolveAssemblyReference.cache
+D:\Quantae\QuantaeWebApp.Tests\obj\Debug\QuantaeWebApp.Tests.dll
+D:\Quantae\QuantaeWebApp.Tests\obj\Debug\QuantaeWebApp.Tests.pdb
