@@ -17,19 +17,19 @@ namespace Quantae
     class B : A { public string Bb = null;}
     class C : A { public string Cc = null;}
 
-    class MyStateMachine : StateMachineWorkflowActivity
-    {
-        public StateActivity state1 = new StateActivity("blah");
-        public StateActivity state2 = new StateActivity("blah2");
+    //class MyStateMachine : StateMachineWorkflowActivity
+    //{
+    //    public StateActivity state1 = new StateActivity("blah");
+    //    public StateActivity state2 = new StateActivity("blah2");
 
-        public MyStateMachine()
-        {
-            this.Activities.Add(state1);
-            this.Activities.Add(state2);
-            this.InitialStateName = state1.Name;
-            this.CompletedStateName = state2.Name;
-        }
-    }
+    //    public MyStateMachine()
+    //    {
+    //        this.Activities.Add(state1);
+    //        this.Activities.Add(state2);
+    //        this.InitialStateName = state1.Name;
+    //        this.CompletedStateName = state2.Name;
+    //    }
+    //}
 
 
     class Program
@@ -79,14 +79,14 @@ namespace Quantae
             //    }
             //}
 
-            TopicGraphUtilities.PopulateTopics("d:\\downloads\\dependencies-parseable.txt");
-            TopicGraphUtilities.CreateForwardLinks();
-            EnumerateTopics();
+            //TopicGraphUtilities.PopulateTopics("d:\\downloads\\dependencies-parseable.txt");
+            //TopicGraphUtilities.CreateForwardLinks();
+            //EnumerateTopics();
 
-            UserProfile profile = CreateUserTopicHistory(userTopicHistory12);
-            UserProfile profile2 = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByUserName("usman.ghani"));
-            profile2.History.TopicHistory = profile.History.TopicHistory;
-            Repositories.Repositories.Users.Save(profile2);
+            //UserProfile profile = CreateUserTopicHistory(userTopicHistory12);
+            //UserProfile profile2 = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByUserName("usman.ghani"));
+            //profile2.History.TopicHistory = profile.History.TopicHistory;
+            //Repositories.Repositories.Users.Save(profile2);
 
             //TopicHandle topicHandle = TopicGraphOperations.GetNextTopic(profile);
 
@@ -370,16 +370,16 @@ namespace Quantae
             Console.WriteLine(up.UserID + "=>" + up.Email);
         }
 
-        private static void DoWorkflowStuff()
-        {
-            MyStateMachine statemachine = new MyStateMachine();
-            using (WorkflowRuntime runtime = new WorkflowRuntime())
-            {
-                runtime.StartRuntime();
-                WorkflowInstance instance = runtime.CreateWorkflow(typeof(MyStateMachine));
-                instance.Start();
-            }
-        }
+        //private static void DoWorkflowStuff()
+        //{
+        //    MyStateMachine statemachine = new MyStateMachine();
+        //    using (WorkflowRuntime runtime = new WorkflowRuntime())
+        //    {
+        //        runtime.StartRuntime();
+        //        WorkflowInstance instance = runtime.CreateWorkflow(typeof(MyStateMachine));
+        //        instance.Start();
+        //    }
+        //}
 
         private static void DoTransliterationStuff()
         {

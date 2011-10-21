@@ -24,10 +24,12 @@ namespace Quantae.Engine
         }
 
         // Move this out. One of these things is not like the other.
-        public static void MarkCurrentTopicComplete(UserProfile userProfile)
+        public static void MarkCurrentTopicComplete(UserProfile userProfile, bool skipTopic /*this happens in the case of a skip topic*/)
         {
             var currentTopicHistoryItem = userProfile.CurrentState.CourseLocationInfo.CurrentTopic;
             var currentTopicHandle = currentTopicHistoryItem.Topic;
+
+            currentTopicHistoryItem.IsSkipped = true;
 
             bool isSuccess = TopicPolicies.IsTopicSuccessful(currentTopicHistoryItem);
 
@@ -37,7 +39,7 @@ namespace Quantae.Engine
                 userProfile.History.FailureCounters[k]++;
             }
 
-            if (!isSuccess)
+            if (!isSuccess && !skipTopic)
             {
                 userProfile.History.FailureCounters.Add(currentTopicHandle, 0);
             }
@@ -73,6 +75,11 @@ namespace Quantae.Engine
             currentTopicHistoryItem.IsSuccessful = isSuccess;
             userProfile.History.TopicHistory.Insert(0, currentTopicHistoryItem);
             userProfile.CurrentState.CourseLocationInfo.CurrentTopic = null;
+        }
+
+        public static void RestartTopic(UserProfile profile)
+        {
+            profile.CurrentState.CourseLocationInfo.TopicLocationInfo.Reset();
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Quantae.Engine
         private static int maxQuestions = 30;
         private static double sampleSentencePassPercentage = 0.7;
 
+        // Success is determined by a certain number of understanding questions being correct.
         public static bool IsTopicSuccessful(TopicHistoryItem thi)
         {
             var understandingFailures = thi.AnswerDimensionFailureCount.Where(a => a.Key == AnswerDimension.Understanding).Sum(kvp => kvp.Value);
@@ -24,7 +25,7 @@ namespace Quantae.Engine
             return nextTopic.Dependencies.All(th =>
             {
                 var topicHistoryEntry = userProfile.History.TopicHistory.Where(thi => thi.Topic.Equals(th)).FirstOrDefault();
-                if (topicHistoryEntry != null && topicHistoryEntry.IsSuccessful)
+                if (topicHistoryEntry != null && (topicHistoryEntry.IsSuccessful || topicHistoryEntry.IsSkipped))
                 {
                     return true;
                 }
@@ -38,7 +39,7 @@ namespace Quantae.Engine
             // TODO: Figure out if IsSuccessful condition is required or not. This might potentially lead to infinite
             // loops since we will keep forcing the user to cover failed topics. Those are already taken care of by
             // failure counters.
-            return userProfile.History.TopicHistory.Any(thi => thi.Topic.Equals(topic) /*&& thi.IsSuccessful*/);
+            return userProfile.History.TopicHistory.Any(thi => thi.Topic.Equals(topic) && (thi.IsSuccessful || thi.IsSkipped));
         }
 
         /// <summary>

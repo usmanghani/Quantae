@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="DataStore.cs" />
     <Compile Include="DuplicateUserIdException.cs" />
+    <Compile Include="GrammarEntriesRepository.cs" />
     <Compile Include="GrammarRolesRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

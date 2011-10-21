@@ -8,7 +8,7 @@ namespace Quantae.DataModel
     /// Mudaf-MudafIlaihi (Possessive Phrase)
     /// Ism Mosool Jumla Sila (Relative Pronoun Phrase)
     /// Ism Mosool Jumla Sila Wa Al Aaid (Relative and Personal Pronoun Phrase)
-    /// 
+    /// !!!!NOTE: Topic == Lesson!!!!
     /// </summary>
     public class Topic : QuantaeObject
     {

@@ -76,4 +76,12 @@ namespace Quantae.Repositories
             return Query.EQ("Text", new BsonString(text));
         }
     }
+
+    public class GrammarEntryQueries
+    {
+        public static IMongoQuery GetGrammarEntryByText(string text)
+        {
+            return Query.EQ("Text", new BsonString(text));
+        }
+    }
 }

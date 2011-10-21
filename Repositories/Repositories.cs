@@ -10,6 +10,7 @@ namespace Quantae.Repositories
     {
         public static RepositoryBase<Sentence> Sentences { get; set; }
         public static RepositoryBase<VocabEntry> Vocabulary { get; set; }
+        public static RepositoryBase<GrammarEntry> GrammarEntries { get; set; }
         public static RepositoryBase<GrammarRole> GrammarRoles { get; set; }
         public static RepositoryBase<UserProfile> Users { get; set; }
         public static RepositoryBase<Topic> Topics { get; set; }
@@ -19,6 +20,7 @@ namespace Quantae.Repositories
         {
             Sentences = new SentenceRepository(dataStore);
             Vocabulary = new VocabRepository(dataStore);
+            GrammarEntries = new GrammarEntryRepository(dataStore);
             GrammarRoles = new GrammarRolesRepository(dataStore);
             Users = new UserRepository(dataStore);
             Topics = new TopicRepository(dataStore);

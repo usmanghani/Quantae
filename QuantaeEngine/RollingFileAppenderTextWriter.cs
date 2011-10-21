@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Quantae.Engine
 {
-    public class RollingFileAppenderTextWriter : System.Diagnostics.TraceListener
+    public class RollingFileAppenderTextWriter : System.Diagnostics.TextWriterTraceListener
     {
         private const long Meg = 1024 * 1024;
 
@@ -16,8 +16,6 @@ namespace Quantae.Engine
         string defaultFileExtension = "log";
         string currentFileName = string.Empty;
         StreamWriter streamWriter = null;
-
-        
 
         public RollingFileAppenderTextWriter()
         {

@@ -58,6 +58,11 @@ namespace Quantae.DataModel
 
         public TopicLocationInfo()
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
             this.ExerciseSectionState = new ExerciseSectionState();
             this.ExerciseSectionIterationCount = 0;
             this.QuestionCountByQuestionDimension = new Dictionary<QuestionDimension, int>();

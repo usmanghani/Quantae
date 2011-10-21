@@ -7,9 +7,13 @@ using Quantae.Engine;
 using Quantae.ViewModels;
 using Quantae.DataModel;
 using Quantae.Repositories;
+using System.Diagnostics;
 
 namespace QuantaeWebApp.Controllers
 {
+    /// <summary>
+    /// !!!!NOTE: Topic == Lesson!!!!
+    /// </summary>
     public class LessonController : Controller
     {
         [Authorize]
@@ -24,33 +28,48 @@ namespace QuantaeWebApp.Controllers
             // 4. Set Type of Slide to Lesson Hub. (Lesson Hub talks to the engine and does GetNextTopic.)
             // POST: Returns the Lesson Hub
 
-            // TODO: Create Lesson Hub view here.
-
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
-
             TopicHistoryItem currentTopicHistoryItem = profile.CurrentState.CourseLocationInfo.CurrentTopic;
+            ITopicGraphNavigator nav = new TopicGraphNavigator(Repositories.Topics);
+            LessonHubViewModel model = null;
+            GetNextTopicResult result = null;
 
             // TODO: un-comment. This was commented out to test the view.
-            //// We have completed the previous topic.
-            //if (currentTopicHistoryItem == null)
-            //{
-            //    ITopicGraphNavigator nav = new TopicGraphNavigator(Repositories.Topics);
-            //    GetNextTopicResult result = nav.GetNextTopic(profile);
-            //}
+            // We have completed the previous topic.
+            // OR we are starting anew.
+            if (currentTopicHistoryItem == null)
+            {
+                result = nav.GetNextTopic(profile);
+                if (result.Success)
+                {
+                    model = new LessonHubViewModel(result.TargetTopic.TopicName, true);
+                    UserOperations.UpdateUserCurrentTopic(profile, result);
+                    Repositories.Users.Save(profile);
+                }
+                else
+                {
+                    Trace.TraceError("LessonController/Index: GetNextTopic returned failure.");
+                    // TODO: Figure out what to do if we can't take the user to the nxt topic. message it properly here and ask the user to continue onto the same topic.
+                }
+            }
+            else
+            {
+                Topic topicOperationsGetTopicFromHandle = TopicOperations.GetTopicFromHandle(currentTopicHistoryItem.Topic);
+                if (topicOperationsGetTopicFromHandle == null)
+                {
+                    // TODO: Invalid handle. Figure out what to do here. Atleast trace.
+                    Trace.WriteLine("LessonController/Index: Invalid topic handle. Topic handle doesn't have a corresponding topic entry.");
+                }
 
-
-            LessonHubViewModel model = new LessonHubViewModel();
-
-            //model.CurrentTopicName = currentTopic.TopicName;
-            model.CurrentTopicName = "Blah";
-            model.TopicHistory = new List<string>();
+                model = new LessonHubViewModel(topicOperationsGetTopicFromHandle.TopicName, false);
+            }
 
             foreach (var thi in profile.History.TopicHistory)
             {
-                model.TopicHistory.Add(TopicOperations.GetTopicFromHandle(thi.Topic).TopicName);
+                model.AddHistory(thi);
             }
 
-            return View("LessonHub", model);
+            return View(ViewNames.Lesson.LessonHubView, model);
         }
 
         [Authorize]
@@ -58,7 +77,7 @@ namespace QuantaeWebApp.Controllers
         public ActionResult ContinueTopic(LessonHubViewModel viewModel)
         {
             // TODO: Redirect to correct action here.
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Continue", "Section");
         }
 
         [Authorize]
@@ -69,10 +88,14 @@ namespace QuantaeWebApp.Controllers
             // PRE: Token in the cookie.
             // TODO: RestartTopicAlgo
             // 1. Get Current Topic.
-            // 2. TopicOperations.RestartCurrentTopic. (modifies certain data structures to make it look like the topic is starting again.)
+            // 2. TopicOperations.RestartCurrentTopic. 
+            // (modifies certain data structures to make it look like the topic is starting again.)
             // 3. We need to return the first intro slide of this topic.
             // POST: returns the first intro slide of this topic.
 
+            UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
+            TopicOperations.RestartTopic(profile);
+            Repositories.Users.Save(profile);
             // TODO: Redirect to correct action here.
             return RedirectToAction("Index", "Lesson");
         }
@@ -84,16 +107,21 @@ namespace QuantaeWebApp.Controllers
             // PRE: Start Session
             // PRE: Token in the cookie.
             // TODO: SkipTopicAlgo
-            // 1. Mark topic skipped. (It still goes to your history, but it is considered successful.)
+            // 1. Mark topic skipped. (It still goes to your history, but it is considered complete and successful.)
             // 2. Return Lesson Hub.
             // POST: Return Lesson Hub. (with updated info).
 
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
 
-            TopicOperations.MarkCurrentTopicComplete(profile);
+            // NOTE: This is intentional and by policy of the first founding father. SyedB.
+            // It still goes to your history, but it is considered complete and successful. 
+            // SkipTopic is an explicit request by the student that he/she doesn't want to see
+            // this topic. Hence we mark it successful to prevent it from showing up again and again.
+            TopicOperations.MarkCurrentTopicComplete(profile, true);
+            
+            Repositories.Users.Save(profile);
 
-            // TODO: Redirect to correct action here.
-            return RedirectToAction("About", "Home");
+            return RedirectToAction("Index", "Lesson");
         }
     }
 }

@@ -169,6 +169,13 @@ namespace Quantae.Engine
             return CreateToken(profile.UserID, profile.Salt);
         }
 
+        public static void UpdateUserCurrentTopic(UserProfile profile, GetNextTopicResult result)
+        {
+            TopicHistoryItem item = new TopicHistoryItem();
+            item.Topic = new TopicHandle(result.TargetTopic);
+            item.IsPseudoTopic = result.IsPseudo;
+        }
+
         private static string CalculateHash(string str)
         {
             return BitConverter.ToString(new SHA512CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(str)));
