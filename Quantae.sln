@@ -21,6 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeAdminWebApp.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeWebApp.Tests", "QuantaeWebApp.Tests\QuantaeWebApp.Tests.csproj", "{848B9A84-97DA-4075-AC1B-6C3877E76DB9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DE154E4A-5E10-402E-8549-69164078B7FE}"
+	ProjectSection(SolutionItems) = preProject
+		fullalgo.txt = fullalgo.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

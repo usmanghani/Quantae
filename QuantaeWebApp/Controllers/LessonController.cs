@@ -16,6 +16,8 @@ namespace QuantaeWebApp.Controllers
     /// </summary>
     public class LessonController : Controller
     {
+        //
+        // GET: /Lesson/
         [Authorize]
         public ActionResult Index()
         {
@@ -72,17 +74,20 @@ namespace QuantaeWebApp.Controllers
             return View(ViewNames.Lesson.LessonHubView, model);
         }
 
+        //
+        // POST: /Lesson/Continue/
         [Authorize]
         [HttpPost]
-        public ActionResult ContinueTopic(LessonHubViewModel viewModel)
+        public ActionResult Continue(LessonHubViewModel viewModel)
         {
-            // TODO: Redirect to correct action here.
-            return RedirectToAction("Continue", "Section");
+            return RedirectToAction("Index", "Section");
         }
 
+        //
+        // POST: /Lesson/Restart/
         [Authorize]
         [HttpPost]
-        public ActionResult RestartTopic(LessonHubViewModel viewModel)
+        public ActionResult Restart(LessonHubViewModel viewModel)
         {
             // PRE: Start Session.
             // PRE: Token in the cookie.
@@ -97,12 +102,15 @@ namespace QuantaeWebApp.Controllers
             TopicOperations.RestartTopic(profile);
             Repositories.Users.Save(profile);
             // TODO: Redirect to correct action here.
-            return RedirectToAction("Index", "Lesson");
+            return RedirectToAction("Index", "Section");
         }
+
+        //
+        // POST: /Lesson/Skip/
 
         [Authorize]
         [HttpPost]
-        public ActionResult SkipTopic(LessonHubViewModel viewModel)
+        public ActionResult Skip(LessonHubViewModel viewModel)
         {
             // PRE: Start Session
             // PRE: Token in the cookie.
@@ -119,6 +127,26 @@ namespace QuantaeWebApp.Controllers
             // this topic. Hence we mark it successful to prevent it from showing up again and again.
             TopicOperations.MarkCurrentTopicComplete(profile, true);
             
+            Repositories.Users.Save(profile);
+
+            return RedirectToAction("Index", "Lesson");
+        }
+
+        //
+        // POST: /Lesson/Next/
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Next(LessonHubViewModel viewModel)
+        {
+            UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
+
+            // NOTE: This is intentional and by policy of the first founding father. SyedB.
+            // It still goes to your history, but it is considered complete and successful. 
+            // SkipTopic is an explicit request by the student that he/she doesn't want to see
+            // this topic. Hence we mark it successful to prevent it from showing up again and again.
+            TopicOperations.MarkCurrentTopicComplete(profile, false);
+
             Repositories.Users.Save(profile);
 
             return RedirectToAction("Index", "Lesson");
