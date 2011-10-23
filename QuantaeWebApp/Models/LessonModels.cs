@@ -16,6 +16,10 @@ namespace Quantae.ViewModels
 
         public LessonHubResponseModel ResponseModel { get; set; }
 
+        public LessonHubViewModel()
+        {
+        }
+
         public LessonHubViewModel(string currentTopicName, bool isCurrentTopicNew)
         {
             TopicHistory = new List<string>();

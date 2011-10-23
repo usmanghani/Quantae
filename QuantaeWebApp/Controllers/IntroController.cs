@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Quantae.DataModel;
 using Quantae.Repositories;
 using Quantae.Engine;
+using Quantae.ViewModels;
 
 namespace QuantaeWebApp.Controllers
 {
@@ -16,11 +17,24 @@ namespace QuantaeWebApp.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
+            IntroSlideViewModel model = null;
+            string content = GetNextIntroSlideContent(profile);
+
+            // Empty content means the intro section is complete (TODO: change this to a proper data contract)
+            if (string.IsNullOrEmpty(content))
+            {
+                return RedirectToAction("Next", "Section");
+            }
+            else
+            {
+                model = new IntroSlideViewModel(content);
+            }
+
+            return View(ViewNames.Intro.IntroSlideView, model);
         }
 
-        // TODO: This goes either into the controller or stays in a util class and gets called from the controller.
-        public static string GetNextIntroSlideContent(UserProfile userProfile)
+        private static string GetNextIntroSlideContent(UserProfile userProfile)
         {
             Topic currentTopic = Repositories.Topics.GetItemByHandle(userProfile.CurrentState.CourseLocationInfo.CurrentTopic.Topic);
 
@@ -36,10 +50,7 @@ namespace QuantaeWebApp.Controllers
             }
 
             userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IsIntroComplete = true;
-            userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection = TopicSectionType.Exercise;
-
             return string.Empty;
         }
-
     }
 }

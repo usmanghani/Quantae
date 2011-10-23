@@ -19,5 +19,16 @@ namespace QuantaeWebApp
         {
             public const string ExtrasHubView = "Extras";
         }
+
+        public class Intro
+        {
+            public const string IntroSlideView = "IntroSlide";
+        }
+
+        public class Depth
+        {
+            public const string DepthSlideView = "DepthSlide";
+        }
+
     }
 }

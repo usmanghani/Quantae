@@ -23,7 +23,7 @@ namespace QuantaeWebApp.Controllers
         {
             // PRE: The session is already created by the Account Controller. LogOn Action.
             // PRE: The token is in the cookie.
-            // TODO: StartSessionAlgo
+            // STEPS: StartSessionAlgo
             // 1. Get the topic history for the user.
             // 2. Lesson Plan.
             // 3. Current Topic.
@@ -36,7 +36,6 @@ namespace QuantaeWebApp.Controllers
             LessonHubViewModel model = null;
             GetNextTopicResult result = null;
 
-            // TODO: un-comment. This was commented out to test the view.
             // We have completed the previous topic.
             // OR we are starting anew.
             if (currentTopicHistoryItem == null)
@@ -91,7 +90,7 @@ namespace QuantaeWebApp.Controllers
         {
             // PRE: Start Session.
             // PRE: Token in the cookie.
-            // TODO: RestartTopicAlgo
+            // STEPS: RestartTopicAlgo
             // 1. Get Current Topic.
             // 2. TopicOperations.RestartCurrentTopic. 
             // (modifies certain data structures to make it look like the topic is starting again.)
@@ -101,7 +100,7 @@ namespace QuantaeWebApp.Controllers
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
             TopicOperations.RestartTopic(profile);
             Repositories.Users.Save(profile);
-            // TODO: Redirect to correct action here.
+            // Redirect to correct action here.
             return RedirectToAction("Index", "Section");
         }
 
@@ -114,7 +113,7 @@ namespace QuantaeWebApp.Controllers
         {
             // PRE: Start Session
             // PRE: Token in the cookie.
-            // TODO: SkipTopicAlgo
+            // STEPS: SkipTopicAlgo
             // 1. Mark topic skipped. (It still goes to your history, but it is considered complete and successful.)
             // 2. Return Lesson Hub.
             // POST: Return Lesson Hub. (with updated info).
@@ -122,9 +121,9 @@ namespace QuantaeWebApp.Controllers
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
 
             // NOTE: This is intentional and by policy of the first founding father. SyedB.
-            // It still goes to your history, but it is considered complete and successful. 
+            // It still goes to your history, but it is considered skipped. 
             // SkipTopic is an explicit request by the student that he/she doesn't want to see
-            // this topic. Hence we mark it successful to prevent it from showing up again and again.
+            // this topic. Hence we mark it skipped to prevent it from showing up again and again.
             TopicOperations.MarkCurrentTopicComplete(profile, true);
             
             Repositories.Users.Save(profile);
@@ -140,16 +139,42 @@ namespace QuantaeWebApp.Controllers
         public ActionResult Next(LessonHubViewModel viewModel)
         {
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
-
-            // NOTE: This is intentional and by policy of the first founding father. SyedB.
-            // It still goes to your history, but it is considered complete and successful. 
-            // SkipTopic is an explicit request by the student that he/she doesn't want to see
-            // this topic. Hence we mark it successful to prevent it from showing up again and again.
             TopicOperations.MarkCurrentTopicComplete(profile, false);
 
-            Repositories.Users.Save(profile);
+            TopicHistoryItem currentTopicHistoryItem = profile.CurrentState.CourseLocationInfo.CurrentTopic;
+            ITopicGraphNavigator nav = new TopicGraphNavigator(Repositories.Topics);
+            LessonHubViewModel model = null;
+            GetNextTopicResult result = null;
 
-            return RedirectToAction("Index", "Lesson");
+            // We have completed the previous topic.
+            // OR we are starting anew.
+            if (currentTopicHistoryItem == null)
+            {
+                result = nav.GetNextTopic(profile);
+                if (result.Success)
+                {
+                    model = new LessonHubViewModel(result.TargetTopic.TopicName, true);
+                    UserOperations.UpdateUserCurrentTopic(profile, result);
+                    Repositories.Users.Save(profile);
+                }
+                else
+                {
+                    Trace.TraceError("LessonController/Index: GetNextTopic returned failure.");
+                    // TODO: Figure out what to do if we can't take the user to the nxt topic. message it properly here and ask the user to continue onto the same topic.
+                }
+            }
+            else
+            {
+                Trace.TraceError("CurrentTopicHistoryItem is expected to be Null and it's not!");
+            }
+
+            // Update the view model with student's current topic history
+            foreach (var thi in profile.History.TopicHistory)
+            {
+                model.AddHistory(thi);
+            }
+
+            return View(ViewNames.Lesson.LessonHubView, model);
         }
     }
 }

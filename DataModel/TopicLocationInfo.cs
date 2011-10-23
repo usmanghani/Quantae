@@ -68,9 +68,15 @@ namespace Quantae.DataModel
             this.QuestionCountByQuestionDimension = new Dictionary<QuestionDimension, int>();
 
             this.IsIntroComplete = false;
-            this.IntroSlideIndex = 0;
+            this.IsDepthComplete = false;
+            this.IntroSlideIndex = -1;
+            this.DepthSlideIndex = -1;
 
             this.CurrentSection = TopicSectionType.Intro;
         }
+
+        public bool IsDepthComplete { get; set; }
+
+        public int DepthSlideIndex { get; set; }
     }
 }

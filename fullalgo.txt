@@ -1,4 +1,9 @@
-            // PRE: StartSession
+Student Flow through the system:
+
+LessonHub > Intro > Exercise > Review > ExtrasHub > Depth > LessonHub            
+
+
+// PRE: StartSession
             // PRE: Token in the cookie.
             // 1. Submit result from previous slide.
             //  1.a. Update User State
