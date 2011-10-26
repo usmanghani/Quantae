@@ -58,9 +58,9 @@ namespace QuantaeWebApp.Controllers
                 case TopicSectionType.Extras:
                     result = RedirectToAction("Index", "Extras");
                     break;
-                case TopicSectionType.Depth:
-                    result = RedirectToAction("Index", "Depth");
-                    break;
+                //case TopicSectionType.Depth:
+                //    result = RedirectToAction("Index", "Depth");
+                //    break;
             }
 
             Repositories.Users.Save(profile);
@@ -106,8 +106,8 @@ namespace QuantaeWebApp.Controllers
                     nextSection = TopicSectionType.Extras;
                     break;
                 case TopicSectionType.Extras:
-                    // Extras + Next = Depth
-                    nextSection = TopicSectionType.Depth;
+                    // Extras + Next = Next of Lesson; go up (like Salmons)
+                    nextActionName = "Next";
                     break;
                 case TopicSectionType.Depth:
                     // Depth + Next = Next of Lesson; go up (like Salmons)

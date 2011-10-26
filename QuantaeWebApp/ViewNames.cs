@@ -15,7 +15,7 @@ namespace QuantaeWebApp
             public const string LessonHubView = "LessonHub";
         }
 
-        public class Section
+        public class Extras
         {
             public const string ExtrasHubView = "Extras";
         }
@@ -30,5 +30,9 @@ namespace QuantaeWebApp
             public const string DepthSlideView = "DepthSlide";
         }
 
+        public class Exercise
+        {
+            public const string ExerciseIndexView = "Index";
+        }
     }
 }

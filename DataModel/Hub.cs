@@ -6,6 +6,6 @@ namespace Quantae.DataModel
     [BsonKnownTypes(typeof(ExtrasHub))]
     public abstract class Hub
     {
-        List<HubAction> Actions { get; set; }
+        public abstract List<HubAction> Actions { get; set; }
     }
 }

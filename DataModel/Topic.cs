@@ -33,14 +33,18 @@ namespace Quantae.DataModel
 
         public StaticSection IntroSection { get; set; }
 
-        // TODO: Introduce a depth gateway slide here.
-
         public StaticSection DepthSection { get; set; }
+
+        public Hub ExtrasHub { get; set; }
 
         public Topic()
         {
             this.Dependencies = new List<int>();
             this.ForwardLinks = new List<int>();
+
+            this.ExtrasHub = new ExtrasHub();
+            this.IntroSection = new IntroSection();
+            this.DepthSection = new DepthSection();
         }
     }
 
