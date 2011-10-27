@@ -1,0 +1,125 @@
+<html>
+ <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>BBC Urdu</title>
+      <meta http-equiv="content-language" content="ur" />
+      <meta http-equiv="content-script-type" content="text/javascript" />
+      <meta http-equiv="imagetoolbar" content="no" />
+      <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
+      <link rel="schema.dcterms" href="http://purl.org/dc/terms/" />
+      <meta name="dc.language" content="ur" />
+      <meta name="dc.publisher" content="British Broadcasting Corporation" />
+      <meta name="dc.identifier" content="http://www.bbc.co.uk/urdu/" />
+      <meta name="dcterms.created" content="2009-02-26T20:54:00+05:00" />
+      <meta name="dcterms.modified" content="2011-09-09T22:46:11+05:00" />
+      <meta name="description" content="main index" />
+      <meta name="keywords" content="" />
+      <meta name="generator" content="Topcat2" />
+      <script src="sentence.js"></script>
+      <script src="raphael.js"></script>
+      <script src="Quantae.js"></script>
+	  <script src="WordMeaningsPlotter.js"></script>
+      <script src="ArrowPlotter.js"></script>
+</head>
+<body>
+<p id="map"></p>
+<script>
+	/*var textX, textY;
+	textX = textY = 100;
+
+	var t = paper.text(textX, textY, "Some\n is\n my\n text!");
+	/*t.attr("font-size", "55");
+	t.attr("font-family", "55");
+
+	t.attr({
+		"font-size" : 55,
+		"font-family" : "Verdana",
+		"fill" : "blue",
+		"text-anchor" : "start"
+		});
+
+	var textWidth = t.getBBox().width;
+	var textHeight = t.getBBox().height;
+
+	t.attr("y", Number((textHeight /2) + textY));
+
+	//alert("Width : " + textWidth + ", Height : " + textHeight);
+
+	var circleX = textX + textWidth;
+	var circleY = textY + textHeight;
+
+	var rectBox = paper.rect(textX, textY, textWidth, textHeight);
+	rectBox.attr("stroke", "#000000");
+
+	var c = paper.circle(circleX, circleY, 10).attr({
+    fill: "#000000",
+    stroke: "none",
+    opacity: .5
+	});
+
+	var start = function () {
+		// storing original coordinates
+		this.ox = this.attr("cx");
+		this.oy = this.attr("cy");
+		this.attr({opacity: 1});
+	},
+	move = function (dx, dy) {
+		// move will be called with dx and dy
+		this.attr({cx: this.ox + dx, cy: this.oy + dy});
+	},
+	up = function () {
+		// restoring state
+		this.attr({opacity: .5});
+	};
+
+	c.drag(move, start, up);
+
+	paper.circle(textX, textY, 10).attr({
+		fill: "#000000",
+		stroke: "none",
+		opacity: .5
+	});
+
+	/*var pointsAttr = {fill: "#000000", stroke: "none"};
+
+	var noOfPoints = 5;
+	var circleRadius = 10;
+	var xDifference = ((800 - (noOfPoints * circleRadius)) / 5);
+	var drawingX = 15;
+
+	var points = [];
+
+	for (var i = 0; i < noOfPoints; i++)
+	{
+		paper.circle(drawingX, 100, circleRadius).attr(pointsAttr);
+		drawingX += xDifference;
+		points.push({x: drawingX, y: 100, radius: circleRadius});
+	}
+
+	paper.circle(200, 500, circleRadius).attr(pointsAttr);
+	points.push({x: 200, y: 500, radius: circleRadius});
+
+	createConnection(paper, 200, 500, 765, 100, 9);*/
+
+  //paper.path(createEllipse(100, 50, 50, 30, 0, {x: 0 , y: 50}, {x: 200 , y: 90}));*/
+
+	/*mainTexts.push(plotText(0, 0, "Amir\nAli\nJiwani", paper, {"font-size" : 55,
+			"font-family" : "Verdana",
+			"fill" : "blue"}));
+
+	mainTexts.push(plotText(200, 10, sentence.grammarEntries[0].word, paper, {"font-size" : 55,
+			"font-family" : "Verdana",
+			"fill" : "blue"}));*/
+
+	var paper = Raphael(20, 200, 800, 600);
+
+	var rectBox = paper.rect(0, 0, 800, 600);
+	rectBox.attr("stroke", "#000000");
+	
+	var map = document.getElementById("map");
+
+	Quantae.plotWordMeanings(sentence.grammarEntries, paper, false, 70, 50);
+	Quantae.ArrowPlotter.Analyze(sentence.grammarAnalysis, map);
+    Quantae.ArrowPlotter.PlotArrows(paper, Quantae.plottedWords, Quantae.plottedMeanings, 40);
+</script>
+</body>

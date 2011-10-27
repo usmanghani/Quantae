@@ -1,0 +1,36 @@
+<html>
+ <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>BBC Urdu</title>
+      <meta http-equiv="content-language" content="ur" />
+      <meta http-equiv="content-script-type" content="text/javascript" />
+      <meta http-equiv="imagetoolbar" content="no" />
+      <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
+      <link rel="schema.dcterms" href="http://purl.org/dc/terms/" />
+      <meta name="dc.language" content="ur" />
+      <meta name="dc.publisher" content="British Broadcasting Corporation" />
+      <meta name="dc.identifier" content="http://www.bbc.co.uk/urdu/" />
+      <meta name="dcterms.created" content="2009-02-26T20:54:00+05:00" />
+      <meta name="dcterms.modified" content="2011-09-09T22:46:11+05:00" />
+      <meta name="description" content="main index" />
+      <meta name="keywords" content="" />
+      <meta name="generator" content="Topcat2" />
+      <script src="raphael.js"></script>
+      <script src="Quantae.js"></script>
+	  <script src="LessonHubPlotter.js"></script>
+</head>
+<body>
+<p id="map"></p>
+<script>
+	var paper = Raphael(20, 200, 800, 600);
+
+	var rectBox = paper.rect(0, 0, 800, 600);
+	rectBox.attr("stroke", "#000000");
+	
+	var map = document.getElementById("map");
+
+	Quantae.plotWordMeanings(sentence.grammarEntries, paper, false, 70, 50);
+	Quantae.ArrowPlotter.Analyze(sentence.grammarAnalysis, map);
+    Quantae.ArrowPlotter.PlotArrows(paper, Quantae.plottedWords, Quantae.plottedMeanings, 40);
+</script>
+</body>

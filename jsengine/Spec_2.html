@@ -1,0 +1,32 @@
+<html>
+ <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>BBC Urdu</title>
+      <meta http-equiv="content-language" content="ur" />
+      <meta http-equiv="content-script-type" content="text/javascript" />
+      <meta http-equiv="imagetoolbar" content="no" />
+      <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
+      <link rel="schema.dcterms" href="http://purl.org/dc/terms/" />
+	  
+	  <link rel="stylesheet" type="text/css" href="styles/style.css" />
+	  
+      <meta name="dc.language" content="ur" />
+      <meta name="dc.publisher" content="British Broadcasting Corporation" />
+      <meta name="dc.identifier" content="http://www.bbc.co.uk/urdu/" />
+      <meta name="dcterms.created" content="2009-02-26T20:54:00+05:00" />
+      <meta name="dcterms.modified" content="2011-09-09T22:46:11+05:00" />
+      <meta name="description" content="main index" />
+      <meta name="keywords" content="" />
+      <meta name="generator" content="Topcat2" />
+	  <script src="Quantae.js"></script>
+      <script src="sentence_2.js"></script>
+	  <script src="ContextualViewPlotter.js"></script>
+</head>
+<body>
+<div id="paperToDraw">
+</div>
+<script>
+	var paper = document.getElementById("paperToDraw");
+	Quantae.ContextualViewPlotter.PlotPage(paper, sentence, false);
+</script>
+</body>
