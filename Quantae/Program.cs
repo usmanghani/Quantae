@@ -67,6 +67,8 @@ namespace Quantae
             Repositories.Repositories.Init(dataStore);
             FilterManager.CreateFilters();
 
+            //Repositories.Repositories.Users.Save(new UserProfile());
+
             //for (int i = 0; i < 100; i++)
             //{
             //    var cursor = Repositories.Repositories.Topics.Collection.FindAll();
@@ -99,7 +101,7 @@ namespace Quantae
             //    Console.WriteLine("STUCK");
             //}
 
-            DoChains();
+            //DoChains();
 
             //Topic topic = Repositories.Repositories.Topics.GetItemByHandle(topicHandle);
 
@@ -168,7 +170,7 @@ namespace Quantae
                 sum += ShowChain(t.Index, indent + 4, writer);
             }
 
-            return ++ sum;
+            return ++sum;
         }
 
         private static Dictionary<int, Tuple<string, int, List<int>>> DoFwdLinks(Dictionary<int, Tuple<string, List<int>>> graph)
