@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>BBC Urdu</title>
+    <meta http-equiv="content-language" content="ur" />
+    <meta http-equiv="content-script-type" content="text/javascript" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
+    <link rel="schema.dcterms" href="http://purl.org/dc/terms/" />
+    
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    
+    <meta name="dc.language" content="ur" />
+    <meta name="dc.publisher" content="British Broadcasting Corporation" />
+    <meta name="dc.identifier" content="http://www.bbc.co.uk/urdu/" />
+    <meta name="dcterms.created" content="2009-02-26T20:54:00+05:00" />
+    <meta name="dcterms.modified" content="2011-09-09T22:46:11+05:00" />
+    <meta name="description" content="main index" />
+    <meta name="keywords" content="" />
+    <meta name="generator" content="Topcat2" />
+    <script src="Quantae.js"></script>
+    <script src="sentence_4a.js"></script>
+	<script src="QAPlotter.js"></script>
+</head>
+<body>
+
+<div id="paperToDraw" class="base">
+    <!-- div class="spec4a questionFragment" style="left: 200px; bottom: 10px;">
+        <div class="answerChoices">
+            <div class="answer">
+                Tabish
+            </div>
+            <div class="answer">
+                Arqam
+            </div>
+            <div class="answer">
+                Fahad
+            </div>
+        </div>
+    </div>
+    <div class="spec4a questionFragments">
+        <div class="spec4a questionFragment">
+            ABC
+        </div>
+        <div class="spec4a questionFragment">
+            DEF
+        </div>
+        <div style="width: 100px;" class="spec4a questionFragment">
+            &nbsp;
+        </div>
+    </div --!>
+</div>
+
+<script type="text/javascript">
+    var paper = document.getElementById("paperToDraw");
+    Quantae.QAPlotter.PlotPage(paper, sentence, false);
+    
+    Quantae.QAPlotter.BalanceBlankSpace = function()
+    {
+        var blankDiv = document.getElementById(Quantae.QAPlotter.PlottedQuesFrags_Base + Quantae.QAPlotter.BlankIndex);
+        var subAnswersDiv = document.getElementById(Quantae.QAPlotter.PlottedAnswers_SubParent_Base);
+        
+        var max = -1;
+        
+        for (var i = 0; i < subAnswersDiv.childNodes.length; i++)
+        {
+            if (subAnswersDiv.childNodes[i].clientWidth > max)
+                max = subAnswersDiv.childNodes[i].clientWidth;
+        }
+        
+        alert(max);
+        
+        subAnswersDiv.style.top = (blankDiv.clientHeight + Quantae.QAPlotter.BottomMargin_Answers) + 'px';
+        
+        blankDiv.style.width = subAnswersDiv.clientWidth + 'px';
+    }
+    
+    
+    
+    Quantae.QAPlotter.BalanceBlankSpace();
+</script>
+
+</body>
+</html>
