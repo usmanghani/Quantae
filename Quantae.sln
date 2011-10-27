@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual Web Developer Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quantae", "Quantae\Quantae.csproj", "{E5AB8C40-42A7-4AFF-A269-F51DCB5FC02F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransliterationLibrary", "TransliterationLibrary\TransliterationLibrary.csproj", "{36AEA523-BB68-4761-B5E3-3ED14D643D62}"
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeAdminWebApp.Tests", "QuantaeAdminWebApp.Tests\QuantaeAdminWebApp.Tests.csproj", "{5C4733EF-A501-4398-B735-074864CDFAB5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeWebApp.Tests", "QuantaeWebApp.Tests\QuantaeWebApp.Tests.csproj", "{848B9A84-97DA-4075-AC1B-6C3877E76DB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMvcApp", "TestMvcApp\TestMvcApp.csproj", "{906E2EFA-B75F-46E4-887F-6AE829EAD11A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,16 @@ Global
 		{848B9A84-97DA-4075-AC1B-6C3877E76DB9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{848B9A84-97DA-4075-AC1B-6C3877E76DB9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{848B9A84-97DA-4075-AC1B-6C3877E76DB9}.Release|x86.ActiveCfg = Release|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{906E2EFA-B75F-46E4-887F-6AE829EAD11A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

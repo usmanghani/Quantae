@@ -1,0 +1,7 @@
+D:\Quantae\TestMvcApp\bin\TestMvcApp.dll
+D:\Quantae\TestMvcApp\bin\TestMvcApp.pdb
+D:\Quantae\TestMvcApp\bin\EntityFramework.dll
+D:\Quantae\TestMvcApp\bin\EntityFramework.xml
+D:\Quantae\TestMvcApp\obj\Debug\ResolveAssemblyReference.cache
+D:\Quantae\TestMvcApp\obj\Debug\TestMvcApp.dll
+D:\Quantae\TestMvcApp\obj\Debug\TestMvcApp.pdb
