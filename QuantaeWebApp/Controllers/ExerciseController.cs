@@ -20,13 +20,15 @@ namespace QuantaeWebApp.Controllers
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
             GetNextSentenceResult result = engine.GetNextSentence(profile);
 
-            ExerciseViewModel model = new ExerciseViewModel();
+            // TODO: Create the right model here based on the resutl received
+            //ExerciseViewModel model = new ExerciseViewModel();
 
             if (result.Success)
             {
                                 
             }
-            return View(ViewNames.Exercise.ExerciseIndexView, model);
+            //return View(ViewNames.Exercise.ExerciseIndexView, model);
+            return View();
         }
 
     }

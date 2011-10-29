@@ -81,12 +81,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\BaseSentenceModel.cs" />
     <Compile Include="Models\DepthModels.cs" />
     <Compile Include="Models\ExerciseModels.cs" />
     <Compile Include="Models\ExtrasModels.cs" />
     <Compile Include="Models\IntroModels.cs" />
     <Compile Include="Models\LessonModels.cs" />
     <Compile Include="Models\ReviewModels.cs" />
+    <Compile Include="Models\SentenceModelTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewNames.cs" />
   </ItemGroup>

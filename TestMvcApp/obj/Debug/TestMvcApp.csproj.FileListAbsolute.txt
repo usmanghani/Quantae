@@ -5,3 +5,10 @@ D:\Quantae\TestMvcApp\bin\EntityFramework.xml
 D:\Quantae\TestMvcApp\obj\Debug\ResolveAssemblyReference.cache
 D:\Quantae\TestMvcApp\obj\Debug\TestMvcApp.dll
 D:\Quantae\TestMvcApp\obj\Debug\TestMvcApp.pdb
+C:\code\QEnlist\TestMvcApp\bin\TestMvcApp.dll
+C:\code\QEnlist\TestMvcApp\bin\TestMvcApp.pdb
+C:\code\QEnlist\TestMvcApp\bin\EntityFramework.dll
+C:\code\QEnlist\TestMvcApp\bin\EntityFramework.xml
+C:\code\QEnlist\TestMvcApp\obj\Debug\ResolveAssemblyReference.cache
+C:\code\QEnlist\TestMvcApp\obj\Debug\TestMvcApp.dll
+C:\code\QEnlist\TestMvcApp\obj\Debug\TestMvcApp.pdb
