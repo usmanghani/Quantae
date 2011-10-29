@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TestMvcApp.Models;
 
 namespace TestMvcApp.Controllers
 {
@@ -27,6 +28,24 @@ namespace TestMvcApp.Controllers
             model.GrammarEntries.Add(new Models.GrammarEntry { Word = "word", Translation = "translation" });
 
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Choices()
+        {
+            TestMvcApp.Models.TestChoiceModel model = new Models.TestChoiceModel();
+            model.Choices.Add(new TestMvcApp.Models.Choice { Selection = "Choice1" });
+            model.Choices.Add(new TestMvcApp.Models.Choice { Selection = "Choice2" });
+            model.Choices.Add(new TestMvcApp.Models.Choice { Selection = "Choice3" });
+            model.Choices.Add(new TestMvcApp.Models.Choice { Selection = "Choice4" });
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Choices(TestChoiceModel Choices)
+        {
+            JsonResult result = Json(Choices);
+            return result;
         }
     }
 }

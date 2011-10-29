@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace TestMvcApp.Models
 {
@@ -32,5 +33,23 @@ namespace TestMvcApp.Models
     public class TestModelDerived : TestModel
     {
         public int Index { get; set; }
+    }
+
+    public class Choice
+    {
+        public string Selection { get; set; }
+    }
+
+    public class TestChoiceModel
+    {
+        public List<Choice> Choices { get; set; }
+        
+        [Required]
+        public string SelectedChoice { get; set; }
+        
+        public TestChoiceModel()
+        {
+            this.Choices = new List<Choice>();
+        }
     }
 }

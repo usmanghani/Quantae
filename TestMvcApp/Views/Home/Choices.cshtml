@@ -1,0 +1,21 @@
+﻿@model TestMvcApp.Models.TestChoiceModel
+@{
+    ViewBag.Title = "Choices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>
+    Choices</h2>
+@using (Html.BeginForm("Choices", "Home", FormMethod.Post))
+{
+    @Html.ValidationSummary()
+
+    foreach (var choice in Model.Choices)
+    {
+        //@Html.RadioButton("choices", choice.Selection)
+        @Html.RadioButtonFor(m => m.SelectedChoice, choice.Selection, new { id = choice.Selection }) 
+        @Html.Label("Selection", choice.Selection)
+        <br />
+    }
+
+    <input type="submit" value="Submit" />
+}
