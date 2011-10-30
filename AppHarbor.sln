@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeEngine", "QuantaeEng
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeWebApp", "QuantaeWebApp\QuantaeWebApp.csproj", "{76743732-65F7-48EE-ADD9-7B5CBD7584AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel.sql", "DataModel.sql\DataModel.sql.csproj", "{22933172-F97F-4B57-9C1B-7E88600A23C4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeWebApp.Tests", "QuantaeWebApp.Tests\QuantaeWebApp.Tests.csproj", "{848B9A84-97DA-4075-AC1B-6C3877E76DB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMvcApp", "TestMvcApp\TestMvcApp.csproj", "{906E2EFA-B75F-46E4-887F-6AE829EAD11A}"
