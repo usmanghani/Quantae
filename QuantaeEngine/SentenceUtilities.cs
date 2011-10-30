@@ -24,8 +24,11 @@ namespace Quantae.Engine
             IDictionary<int, IElementContext> GrammarContexts { get; }
             IDictionary<int, IElementContext> GrammarAnalysisContexts { get; }
 
-            int ValueIndex { get; set; }
             bool IsGrammarEntryTranslation { get; set; }
+
+            int ValueIndex { get; set; }
+            int LineNumber { get; set; }
+            int ColIndex { get; set; }
         }
 
         private class ParserContext : IParserContext
@@ -51,6 +54,8 @@ namespace Quantae.Engine
 
             public int ValueIndex { get; set; }
             public bool IsGrammarEntryTranslation { get; set; }
+            public int LineNumber { get; set; }
+            public int ColIndex { get; set; }
         }
 
         private class VocabContext : IElementContext
@@ -175,7 +180,8 @@ namespace Quantae.Engine
                     || columnName.Equals(WordTranslation)
                     || columnName.Equals(Conjugation)
                     || columnName.Equals(GrammarEntries)
-                    || columnName.Equals(GrammarRoles);
+                    || columnName.Equals(GrammarRoles)
+                    || columnName.Equals(Arrows);
             }
 
             public static ParserContext ProcessColumn(string colName, ParserContext context, string colValue, Sentence sentence)
@@ -218,18 +224,22 @@ namespace Quantae.Engine
                     if (context.ValueIndex >= context.VocabContexts.Count())
                     {
                         // TODO: Throw a meaningful exception here.
+                        ReportError("Value Index out of range when parsing vocab entry translation", context);
                     }
 
-                    var results = Repositories.Repositories.Vocabulary.FindAs(VocabQueries.GetVocabEntryByText(
-                        (context.VocabContexts[context.ValueIndex] as VocabContext).Text), indexHint: "Text");
+                    string vocabText = (context.VocabContexts[context.ValueIndex] as VocabContext).Text;
+                    var results = Repositories.Repositories.Vocabulary.FindAs(
+                        VocabQueries.GetVocabEntryByText(vocabText), indexHint: "Text");
 
                     if (results.Count() > 0)
                     {
                         results.First().Translation = colValue;
+                        Repositories.Repositories.Vocabulary.Save(results.First());
                     }
                     else
                     {
                         // TODO: Vocab entry not found, throw meaningful error
+                        ReportError(string.Format("Vocab entry not found {0}, translation {1}", vocabText, colValue), context);
                     }
 
                     (context.VocabContexts[context.ValueIndex] as VocabContext).Translation = colValue;
@@ -239,21 +249,25 @@ namespace Quantae.Engine
                     if (context.ValueIndex >= context.GrammarContexts.Count())
                     {
                         // TODO: Throw a meaningful exception here.
+                        ReportError("Value Index out of range when parsing grammar entry translation", context);
                     }
 
-                    var results = Repositories.Repositories.GrammarEntries.FindAs(GrammarEntryQueries.GetGrammarEntryByText(
-                        (context.VocabContexts[context.ValueIndex] as GrammarEntryContext).Text), indexHint: "Text");
+                    string grammarEntryText = (context.GrammarContexts[context.ValueIndex] as GrammarEntryContext).Text;
+                    var results = Repositories.Repositories.GrammarEntries.FindAs(
+                        GrammarEntryQueries.GetGrammarEntryByText(grammarEntryText), indexHint: "Text");
 
                     if (results.Count() > 0)
                     {
                         results.First().Translation = colValue;
+                        Repositories.Repositories.GrammarEntries.Save(results.First());
                     }
                     else
                     {
                         // TODO: Vocab entry not found, throw meaningful error
+                        ReportError(string.Format("Grammar entry not found {0}, translation {1}", grammarEntryText, colValue), context);
                     }
 
-                    (context.VocabContexts[context.ValueIndex] as GrammarEntryContext).Translation = colValue;
+                    (context.GrammarContexts[context.ValueIndex] as GrammarEntryContext).Translation = colValue;
 
                 }
 
@@ -265,18 +279,21 @@ namespace Quantae.Engine
                 if (context.ValueIndex >= context.VocabContexts.Count())
                 {
                     // TODO: Throw a meaningful exception here.
+                    ReportError("Value Index out of range when parsing vocab entry conjugation", context);
                 }
 
-                var results = Repositories.Repositories.Vocabulary.FindAs(VocabQueries.GetVocabEntryByText(
-                    (context.VocabContexts[context.ValueIndex] as VocabContext).Text), indexHint: "Text");
+                string vocabText = (context.VocabContexts[context.ValueIndex] as VocabContext).Text;
+                var results = Repositories.Repositories.Vocabulary.FindAs(VocabQueries.GetVocabEntryByText(vocabText), indexHint: "Text");
 
                 if (results.Count() > 0)
                 {
                     results.First().Conjugation = ParseConjugation(colValue);
+                    Repositories.Repositories.Vocabulary.Save(results.First());
                 }
                 else
                 {
                     // TODO: Vocab entry not found, throw meaningful error
+                    ReportError(string.Format("Vocab entry not found {0}, conjugation {1}", vocabText, colValue), context);
                 }
 
                 (context.VocabContexts[context.ValueIndex] as VocabContext).Conjugation = colValue;
@@ -296,27 +313,70 @@ namespace Quantae.Engine
 
             public static ParserContext ProcessGrammarRole(ParserContext context, string colValue, Sentence sentence)
             {
-                GrammarEntryHandle handle = CreateGrammarEntryIfNotExist(colValue);
-                sentence.GrammarEntries.Add(handle);
+                GrammarRoleHandle handle = CreateGrammarRoleIfNotExist(colValue);
 
-                GrammarEntryContext gec = new GrammarEntryContext() { Text = colValue };
-                context.GrammarContexts.Add(context.ValueIndex, gec);
+                GrammarAnalysisContext gac = new GrammarAnalysisContext() { GrammarRole = colValue };
+                context.GrammarAnalysisContexts.Add(context.ValueIndex, gac);
 
                 return context;
             }
 
             public static ParserContext ProcessGrammaticalAnalysisElement(ParserContext context, string colValue, Sentence sentence)
             {
+                if (context.ValueIndex >= context.GrammarAnalysisContexts.Count())
+                {
+                    // TODO: Throw a meaningful exception here.
+                    ReportError("Value Index out of range when parsing grammar role analysis entry", context);
+                }
+
+                string roleText = (context.GrammarAnalysisContexts[context.ValueIndex] as GrammarAnalysisContext).GrammarRole;
+                var results = Repositories.Repositories.GrammarRoles.FindAs(GrammarRoleQueries.GetGrammarRoleByName(roleText), indexHint: "RoleName");
+
+                //if (results.Count() > 0)
+                //{
+                //    results.First(). = ParseConjugation(colValue);
+                //}
+                //else
+                //{
+                //    // TODO: Vocab entry not found, throw meaningful error
+                //    ReportError(string.Format("Vocab entry not found {0}, conjugation {1}", vocabText, colValue), context);
+                //}
+
+                //(context.VocabContexts[context.ValueIndex] as VocabContext).Conjugation = colValue;
                 return context;
             }
 
             public static ParserContext ProcessContextualAnalysisElement(ParserContext context, string colValue, Sentence sentence)
             {
+                string processedValue = colValue.Replace("\"", "").Trim();
+                string[] indices = processedValue.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                List<int> list = new List<int>();
+                foreach (var i in indices)
+                {
+                    int a = int.Parse(i.Trim());
+                    list.Add(a);
+                }
+
+                sentence.ContextualAnalysis.Add(list.ToArray());
+
                 return context;
             }
 
             public static ParserContext ProcessRoleConjugationPair(ParserContext context, string colValue, Sentence sentence)
             {
+                string role = string.Empty;
+                Conjugation conjugation = ParseRules(colValue, out role);
+                role = role.Trim();
+                if (!string.IsNullOrEmpty(role) && conjugation != null)
+                {
+                    CreateGrammarRoleIfNotExist(role);
+                    GrammarRole gr = Repositories.Repositories.GrammarRoles.FindOneAs(GrammarRoleQueries.GetGrammarRoleByName(role));
+                    QuantaeTuple<GrammarRoleHandle, DataModel.Conjugation> tuple =
+                        new QuantaeTuple<GrammarRoleHandle, DataModel.Conjugation>(new GrammarRoleHandle(gr), conjugation);
+                    sentence.RoleConjugationPairs.Add(tuple);
+                }
+
                 return context;
             }
 
@@ -347,18 +407,24 @@ namespace Quantae.Engine
 
             public static ParserContext ProcessIncludedTopic(ParserContext context, string colValue, Sentence sentence)
             {
+                int topicIndex = int.Parse(colValue.Trim());
+                Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(topicIndex));
+                sentence.SecondaryTopics.Add(new TopicHandle(t));
                 return context;
             }
 
             public static ParserContext ProcessTag(ParserContext context, string colValue, Sentence sentence)
             {
+                sentence.Tags.Add(colValue.Trim());
                 return context;
             }
 
-            private static VocabEntryHandle CreateVocabEntryIfNotExist(string colValue)
+            private static VocabEntryHandle CreateVocabEntryIfNotExist(string vocab)
             {
                 VocabEntry entry = null;
-                var results = Repositories.Repositories.Vocabulary.FindAs(VocabQueries.GetVocabEntryByText(colValue), indexHint: "Text");
+                var results = Repositories.Repositories.Vocabulary.FindAs(
+                    VocabQueries.GetVocabEntryByText(vocab), indexHint: "Text");
+
                 if (results.Count() > 0)
                 {
                     entry = results.First();
@@ -366,16 +432,19 @@ namespace Quantae.Engine
                 else
                 {
                     entry = new VocabEntry();
-                    entry.Text = colValue;
+                    entry.Text = vocab;
+                    Repositories.Repositories.Vocabulary.Save(entry);
                 }
 
                 return new VocabEntryHandle(entry);
             }
 
-            private static GrammarEntryHandle CreateGrammarEntryIfNotExist(string colValue)
+            private static GrammarEntryHandle CreateGrammarEntryIfNotExist(string grammarEntry)
             {
                 GrammarEntry entry = null;
-                var results = Repositories.Repositories.GrammarEntries.FindAs(GrammarEntryQueries.GetGrammarEntryByText(colValue), indexHint: "Text");
+                var results = Repositories.Repositories.GrammarEntries.FindAs(
+                    GrammarEntryQueries.GetGrammarEntryByText(grammarEntry), indexHint: "Text");
+
                 if (results.Count() > 0)
                 {
                     entry = results.First();
@@ -383,10 +452,31 @@ namespace Quantae.Engine
                 else
                 {
                     entry = new GrammarEntry();
-                    entry.Text = colValue;
+                    entry.Text = grammarEntry;
+                    Repositories.Repositories.GrammarEntries.Save(entry);
                 }
 
                 return new GrammarEntryHandle(entry);
+            }
+
+            private static GrammarRoleHandle CreateGrammarRoleIfNotExist(string role)
+            {
+                GrammarRole gr = null;
+                var results = Repositories.Repositories.GrammarRoles.FindAs(
+                    GrammarRoleQueries.GetGrammarRoleByName(role), indexHint: "RoleName");
+
+                if (results.Count() > 0)
+                {
+                    gr = results.First();
+                }
+                else
+                {
+                    gr = new GrammarRole();
+                    gr.RoleName = role;
+                    Repositories.Repositories.GrammarRoles.Save(gr);
+                }
+
+                return new GrammarRoleHandle(gr);
             }
 
             private static Conjugation ParseConjugation(string colValue)
@@ -450,6 +540,13 @@ namespace Quantae.Engine
 
                 return conjugation;
             }
+
+            private static void ReportError(string message, ParserContext context)
+            {
+
+                string msg = string.Format("{0} @ {1}, {2}", context.LineNumber, context.ColIndex);
+                throw new InvalidDataException(msg);
+            }
         }
 
 
@@ -458,11 +555,14 @@ namespace Quantae.Engine
             Repositories.Repositories.Vocabulary.EnsureIndex(new string[] { "Text" });
             Repositories.Repositories.GrammarEntries.EnsureIndex(new string[] { "Text" });
 
+            ParserContext context = new ParserContext();
+            context.LineNumber = 0;
+
             var lines = File.ReadAllLines(filename);
             foreach (var line in lines)
             {
+                ++context.LineNumber;
                 Sentence sentence = new Sentence();
-                ParserContext context = new ParserContext();
                 string currentColName = string.Empty;
 
                 if (string.IsNullOrWhiteSpace(line))
@@ -471,13 +571,14 @@ namespace Quantae.Engine
                 }
 
                 var tokens = line.Split("\t".ToCharArray());
-
+                context.ColIndex = 0;
                 foreach (var token in tokens)
                 {
+                    ++context.ColIndex;
                     // 1. if the token is a column name.
                     if (Columns.IsColumnName(token.Trim()))
                     {
-                        if (token.Trim().Equals(Columns.WordTranslation) 
+                        if (token.Trim().Equals(Columns.WordTranslation)
                             && currentColName.Equals(Columns.GrammarEntries))
                         {
                             context.IsGrammarEntryTranslation = true;
@@ -499,105 +600,77 @@ namespace Quantae.Engine
             }
         }
 
-        public static List<QuantaeTuple<GrammarRoleHandle, Conjugation>> ParseRules(string rules)
+        public static Conjugation ParseRules(string rules, out string role)
         {
+            role = string.Empty;
             if (string.IsNullOrWhiteSpace(rules))
             {
-                return Enumerable.Empty<QuantaeTuple<GrammarRoleHandle, Conjugation>>().ToList();
+                return null;
             }
-
-            List<QuantaeTuple<GrammarRoleHandle, Conjugation>> list = new List<QuantaeTuple<GrammarRoleHandle, Conjugation>>();
 
             string regex = @"((?<role>\(.*?\))(?<conj>(,(.*?))*);)*";
 
             var matches = Regex.Matches(rules, regex);
-            foreach (Match m in matches)
+            Match m = matches[0];
+            role = m.Groups["role"].Value;
+            role = role.Replace("(", "").Replace(")", "");
+
+            string conj = m.Groups["conj"].Value;
+            var conjs = conj.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            Conjugation conjugation = null;
+            if (conjs.Length <= 2 && !role.Equals("Verb"))
             {
-                string role = m.Groups["role"].Value;
+                conjugation = new NounConjugation();
 
-                if (string.IsNullOrWhiteSpace(role))
+                foreach (var c in conjs)
                 {
-                    continue;
-                }
-
-                role = role.Replace("(", "").Replace(")", "");
-
-                GrammarRole gr = new GrammarRole() { RoleName = role };
-
-                if (Repositories.Repositories.GrammarRoles.FindOneAs(GrammarRoleQueries.GetGrammarRoleByName(gr.RoleName)) == null)
-                {
-                    Repositories.Repositories.GrammarRoles.Save(gr);
-                }
-                else
-                {
-                    gr = Repositories.Repositories.GrammarRoles.FindAs(GrammarRoleQueries.GetGrammarRoleByName(role)).First();
-                }
-
-                GrammarRoleHandle grh = new GrammarRoleHandle(gr);
-
-                string conj = m.Groups["conj"].Value;
-
-                var conjs = conj.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-                Conjugation conjugation = null;
-                if (conjs.Length <= 2 && !role.Equals("Verb"))
-                {
-                    conjugation = new NounConjugation();
-
-                    foreach (var c in conjs)
+                    var c1 = c.Trim();
+                    if (IsGender(c1))
                     {
-                        var c1 = c.Trim();
-                        if (IsGender(c1))
-                        {
-                            conjugation.Gender = (GenderRule)Enum.Parse(typeof(GenderRule), c1, true);
-                        }
+                        conjugation.Gender = (GenderRule)Enum.Parse(typeof(GenderRule), c1, true);
+                    }
 
-                        if (IsNumber(c1))
-                        {
-                            conjugation.Number = (NumberRule)Enum.Parse(typeof(NumberRule), c1, true);
-                        }
+                    if (IsNumber(c1))
+                    {
+                        conjugation.Number = (NumberRule)Enum.Parse(typeof(NumberRule), c1, true);
                     }
                 }
-                else if (conjs.Length > 2 || role.Equals("Verb"))
+            }
+            else if (conjs.Length > 2 || role.Equals("Verb"))
+            {
+                conjugation = new VerbConjugation();
+
+                foreach (var c in conjs)
                 {
-                    conjugation = new VerbConjugation();
+                    var c1 = c.Trim();
 
-                    foreach (var c in conjs)
+                    if (IsGender(c1))
                     {
-                        var c1 = c.Trim();
+                        conjugation.Gender = (GenderRule)Enum.Parse(typeof(GenderRule), c1, true);
+                        continue;
+                    }
 
-                        if (IsGender(c1))
-                        {
-                            conjugation.Gender = (GenderRule)Enum.Parse(typeof(GenderRule), c1, true);
-                            continue;
-                        }
+                    if (IsNumber(c1))
+                    {
+                        conjugation.Number = (NumberRule)Enum.Parse(typeof(NumberRule), c1, true);
+                        continue;
+                    }
 
-                        if (IsNumber(c1))
-                        {
-                            conjugation.Number = (NumberRule)Enum.Parse(typeof(NumberRule), c1, true);
-                            continue;
-                        }
+                    if (IsTense(c1))
+                    {
+                        (conjugation as VerbConjugation).Tense = (TenseRule)Enum.Parse(typeof(TenseRule), c1, true);
+                        continue;
+                    }
 
-                        if (IsTense(c1))
-                        {
-                            (conjugation as VerbConjugation).Tense = (TenseRule)Enum.Parse(typeof(TenseRule), c1, true);
-                            continue;
-                        }
-
-                        if (IsPerson(c1))
-                        {
-                            (conjugation as VerbConjugation).Person = (PersonRule)Enum.Parse(typeof(PersonRule), c1, true);
-                            continue;
-                        }
+                    if (IsPerson(c1))
+                    {
+                        (conjugation as VerbConjugation).Person = (PersonRule)Enum.Parse(typeof(PersonRule), c1, true);
+                        continue;
                     }
                 }
-
-                QuantaeTuple<GrammarRoleHandle, Conjugation> kvp = new QuantaeTuple<GrammarRoleHandle, Conjugation>(grh, conjugation);
-
-                list.Add(kvp);
             }
 
-            return list;
+            return conjugation;
         }
 
         public static bool IsGender(string str)
