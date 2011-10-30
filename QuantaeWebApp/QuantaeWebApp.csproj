@@ -83,6 +83,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseSentenceModel.cs" />
     <Compile Include="Models\DepthModels.cs" />
+    <Compile Include="Models\ExcerciseModelFactory.cs" />
     <Compile Include="Models\ExerciseModels.cs" />
     <Compile Include="Models\ExtrasModels.cs" />
     <Compile Include="Models\IntroModels.cs" />

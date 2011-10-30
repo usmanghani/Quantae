@@ -19,16 +19,14 @@ namespace QuantaeWebApp.Controllers
             ISentenceSelectionEngine engine = new SentenceSelectionEngine();
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
             GetNextSentenceResult result = engine.GetNextSentence(profile);
-
-            // TODO: Create the right model here based on the resutl received
-            //ExerciseViewModel model = new ExerciseViewModel();
+            
+            BaseSentenceModel model = null;
 
             if (result.Success)
             {
-                                
+                model = ExcerciseViewModelFactory.CreateExcerciseViewModel(result, profile);                                
             }
-            //return View(ViewNames.Exercise.ExerciseIndexView, model);
-            return View();
+            return View(ViewNames.Exercise.ExerciseIndexView, model);            
         }
 
     }

@@ -55,18 +55,18 @@ namespace QuantaeWebApp.Models
         public string RoleEnd { get; set; }
     }
 
-    public struct AnswerChoice
+    public struct ViewModelAnswerChoice
     {
         // Example:
         //answerChoices: [ <choice1>, <choice2>, <choice3>, <choice4> ]
         public string Choice { get; set; }
     }
 
-    public struct QuestionFragment
+    public struct AnswerSegment
     {
         // Example:
         //questionFragments: [ <frag1>, <frag2>, … ]
-        public string Fragment { get; set; }
+        public string Text { get; set; }
     }
 
 
