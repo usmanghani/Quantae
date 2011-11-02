@@ -62,10 +62,7 @@ namespace Quantae
             //ts.Flush();
             //ts.Close();
 
-            DataStore dataStore = new DataStore("QuantaeTestDb");
-            dataStore.Connect();
-            Repositories.Repositories.Init(dataStore);
-            FilterManager.CreateFilters();
+            QuantaeEngine.Init("QuantaeTestDb");
             SentenceUtilities.PopulateSentences(@"c:\\sample data.txt", 1);
 
             //Repositories.Repositories.Users.Save(new UserProfile());

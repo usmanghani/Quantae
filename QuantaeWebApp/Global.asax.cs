@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Quantae.Engine;
+using System.Configuration;
 
 namespace QuantaeWebApp
 {
@@ -37,7 +38,14 @@ namespace QuantaeWebApp
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            QuantaeEngine.Init("QuantaeTestDb");
+            if (ConfigurationManager.AppSettings["Environment"] == "Debug")
+            {
+                QuantaeEngine.Init("QuantaeTestDb");
+            }
+            else
+            {
+                QuantaeEngine.Init("QuantaeTestDb", ConfigurationManager.AppSettings["MONGOHQ_URL"]);
+            }
         }
     }
 }
