@@ -12,6 +12,7 @@ namespace Quantae.DataModel
         public List<AnswerChoice> AnswerChoices { get; set; }
         public List<string> AnswerSegments { get; set; }
         public int BlankPosition { get; set; }
+        public int CorrectAnswerIndex { get; set; }
 
         /// <summary>
         /// This is exclusively used to identify the umbrella topic being covered in revision questions.

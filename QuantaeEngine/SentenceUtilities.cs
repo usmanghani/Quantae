@@ -33,27 +33,21 @@ namespace Quantae.Engine
 
         private class ParserContext : IParserContext
         {
-            private Dictionary<int, IElementContext> vocabContexts = new Dictionary<int, IElementContext>();
-            private Dictionary<int, IElementContext> grammarContexts = new Dictionary<int, IElementContext>();
-            private Dictionary<int, IElementContext> grammarAnalysisContexts = new Dictionary<int, IElementContext>();
-
-            public IDictionary<int, IElementContext> VocabContexts
+            public ParserContext()
             {
-                get { return vocabContexts; }
+                this.VocabContexts = new Dictionary<int, IElementContext>();
+                this.GrammarContexts = new Dictionary<int, IElementContext>();
+                this.GrammarAnalysisContexts = new Dictionary<int, IElementContext>();
+                this.QuestionContexts = new Dictionary<int, IElementContext>();
             }
 
-            public IDictionary<int, IElementContext> GrammarContexts
-            {
-                get { return grammarContexts; }
-            }
+            public IDictionary<int, IElementContext> VocabContexts { get; private set; }
+            public IDictionary<int, IElementContext> GrammarContexts { get; private set; }
+            public IDictionary<int, IElementContext> GrammarAnalysisContexts { get; private set; }
+            public IDictionary<int, IElementContext> QuestionContexts { get; private set; }
 
-            public IDictionary<int, IElementContext> GrammarAnalysisContexts
-            {
-                get { return grammarAnalysisContexts; }
-            }
-
-            public int ValueIndex { get; set; }
             public bool IsGrammarEntryTranslation { get; set; }
+            public int ValueIndex { get; set; }
             public int LineNumber { get; set; }
             public int ColIndex { get; set; }
         }
@@ -75,6 +69,19 @@ namespace Quantae.Engine
         {
             public string GrammarRole { get; set; }
             public string AnalysisEntry { get; set; }
+        }
+
+        private class QuestionContext : IElementContext
+        {
+            public string QuestionString { get; set; }
+            public string QuestionSubstring { get; set; }
+            public QuestionDimension Dimension { get; set; }
+            public List<string> QuestionSelections { get; set; }
+
+            public QuestionContext()
+            {
+                this.QuestionSelections = new List<string>();
+            }
         }
 
         private class Columns
@@ -132,6 +139,7 @@ namespace Quantae.Engine
                 Tags
             };
 
+            public static Func<ParserContext, string, Sentence, ParserContext> EmptyParseFunc = (ctx, val, s) => ctx;
             public static Dictionary<string, Func<ParserContext, string, Sentence, ParserContext>> ColumnProcessorMap =
                 new Dictionary<string, Func<ParserContext, string, Sentence, ParserContext>>() 
             {
@@ -145,18 +153,18 @@ namespace Quantae.Engine
                 { Arrows, ProcessGrammaticalAnalysisElement },
                 { Boxes, ProcessContextualAnalysisElement },
                 { RoleConjugationPairs, ProcessRoleConjugationPair },
-                { Question1, ProcessQuestion },
-                { Question2, ProcessQuestion },
-                { Question3, ProcessQuestion },
-                { Question4,ProcessQuestion },
-                { Question5,ProcessQuestion },
-                { QuestionString,ProcessQuestionString },
-                { QuestionSubstring,ProcessQuestionSubstring },
+                { Question1, EmptyParseFunc },
+                { Question2, EmptyParseFunc },
+                { Question3, EmptyParseFunc },
+                { Question4, EmptyParseFunc },
+                { Question5, EmptyParseFunc },
+                { QuestionString, ProcessQuestionString },
+                { QuestionSubstring, ProcessQuestionSubstring },
                 { QuestionDimensionColumn, ProcessQuestionDimension }, 
                 { QuestionSelection01, ProcessQuestionSelection },
                 { QuestionSelection02, ProcessQuestionSelection },
                 { QuestionSelection03, ProcessQuestionSelection },
-                { QuestionSelection04,ProcessQuestionSelection },
+                { QuestionSelection04, ProcessQuestionSelection },
                 { IncludedTopics, ProcessIncludedTopic },
                 { Tags, ProcessTag }
             };
@@ -332,17 +340,35 @@ namespace Quantae.Engine
                 string roleText = (context.GrammarAnalysisContexts[context.ValueIndex] as GrammarAnalysisContext).GrammarRole;
                 var results = Repositories.Repositories.GrammarRoles.FindAs(GrammarRoleQueries.GetGrammarRoleByName(roleText), indexHint: "RoleName");
 
-                //if (results.Count() > 0)
-                //{
-                //    results.First(). = ParseConjugation(colValue);
-                //}
-                //else
-                //{
-                //    // TODO: Vocab entry not found, throw meaningful error
-                //    ReportError(string.Format("Vocab entry not found {0}, conjugation {1}", vocabText, colValue), context);
-                //}
+                if (results.Count() <= 0)
+                {
+                    // TODO: Grammar Role not found, throw meaningful error
+                    ReportError(string.Format("Grammar Role not found {0}", roleText), context);
+                }
 
-                //(context.VocabContexts[context.ValueIndex] as VocabContext).Conjugation = colValue;
+                var tuple = ParseArrows(colValue);
+
+                GrammarAnalysisElement gae = new GrammarAnalysisElement();
+                GrammarRoleHandle startingRoleHandle = null;
+                if (tuple.Item1.Count == 1 && tuple.Item1[0] != 0)
+                {
+                    GrammarAnalysisContext gac = (context.GrammarAnalysisContexts[tuple.Item1[0]] as GrammarAnalysisContext);
+                    gac.AnalysisEntry = colValue;
+                    string startingRoleText = gac.GrammarRole;
+                    GrammarRole startingRole = Repositories.Repositories.GrammarRoles.FindOneAs(GrammarRoleQueries.GetGrammarRoleByName(startingRoleText));
+                    if (startingRole == null)
+                    {
+                        ReportError(string.Format("Grammar Role not found {0}", startingRoleText), context);
+                    }
+
+                    startingRoleHandle = new GrammarRoleHandle(startingRole);
+                }
+
+                gae.StartSegmentRolePair = new QuantaeTuple<List<int>, GrammarRoleHandle>(tuple.Item1, startingRoleHandle);
+                gae.EndSegmentRolePair = new QuantaeTuple<List<int>, GrammarRoleHandle>(tuple.Item2, new GrammarRoleHandle(results.First()));
+
+                sentence.GrammarAnalysis.Add(gae);
+
                 return context;
             }
 
@@ -382,26 +408,49 @@ namespace Quantae.Engine
 
             public static ParserContext ProcessQuestion(ParserContext context, string colValue, Sentence sentence)
             {
+                // DO NOTHING FOR NOW.
+                // Since there is not value associated with this column, this method will never be called.
                 return context;
             }
 
             public static ParserContext ProcessQuestionString(ParserContext context, string colValue, Sentence sentence)
             {
+                QuestionContext qc = new QuestionContext();
+                qc.QuestionString = colValue;
+                context.QuestionContexts.Add(context.QuestionContexts.Count, qc);
                 return context;
             }
 
             public static ParserContext ProcessQuestionSubstring(ParserContext context, string colValue, Sentence sentence)
             {
+                QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
+                qc.QuestionSubstring = colValue;
                 return context;
             }
 
             public static ParserContext ProcessQuestionDimension(ParserContext context, string colValue, Sentence sentence)
             {
+                QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
+                qc.Dimension = (QuestionDimension)Enum.Parse(typeof(QuestionDimension), colValue);
+                // we now have enough information to insert this question into the sentence.
+
+                Question q = new Question();
+                q.QuestionString = qc.QuestionString;
+                q.QuestionSubstring = qc.QuestionSubstring;
+                q.Dimension = qc.Dimension;
+
+                sentence.Questions.Add(qc.Dimension, q);
+
                 return context;
             }
 
             public static ParserContext ProcessQuestionSelection(ParserContext context, string colValue, Sentence sentence)
             {
+                QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
+                qc.QuestionSelections.Add(colValue);
+                AnswerChoice choice = new AnswerChoice();
+                choice.Answer = colValue;
+                sentence.Questions[qc.Dimension].AnswerChoices.Add(choice);
                 return context;
             }
 
@@ -479,6 +528,27 @@ namespace Quantae.Engine
                 return new GrammarRoleHandle(gr);
             }
 
+            private static Tuple<List<int>, List<int>> ParseArrows(string arrowsStr)
+            {
+                string[] tokens = arrowsStr.Split("<--".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                string[] startIndicesStrings = tokens[1].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                string[] endIndicesStrings = tokens[0].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                List<int> startIndices = new List<int>();
+                foreach (var i in startIndicesStrings)
+                {
+                    startIndices.Add(int.Parse(i));
+                }
+
+                List<int> endIndices = new List<int>();
+                foreach (var i in endIndicesStrings)
+                {
+                    endIndices.Add(int.Parse(i));
+                }
+
+                return Tuple.Create(startIndices, endIndices);
+            }
+
             private static Conjugation ParseConjugation(string colValue)
             {
                 string processed = colValue.Replace("\"", "");
@@ -547,6 +617,52 @@ namespace Quantae.Engine
                 string msg = string.Format("{0} @ {1}, {2}", context.LineNumber, context.ColIndex);
                 throw new InvalidDataException(msg);
             }
+
+            private static Conjugation ParseRules(string rules, out string role)
+            {
+                role = string.Empty;
+                if (string.IsNullOrWhiteSpace(rules))
+                {
+                    return null;
+                }
+
+                string regex = @"((?<role>\(.*?\))(?<conj>(,(.*?))*);)*";
+
+                var matches = Regex.Matches(rules, regex);
+                Match m = matches[0];
+                role = m.Groups["role"].Value;
+                role = role.Replace("(", "").Replace(")", "");
+
+                Conjugation conjugation = null;
+                string conj = m.Groups["conj"].Value;
+                if (!string.IsNullOrEmpty(conj))
+                {
+                    conjugation = ParseConjugation(conj);
+                }
+
+                return conjugation;
+            }
+
+            private static bool IsGender(string str)
+            {
+                return str.Equals("Masculine") || str.Equals("Feminine") || str.Equals("Neutral");
+            }
+
+            private static bool IsNumber(string str)
+            {
+                return str.Equals("Singular") || str.Equals("Plural") || str.Equals("Dual");
+            }
+
+            private static bool IsPerson(string str)
+            {
+                return str.Equals("First") || str.Equals("Second") || str.Equals("Third");
+            }
+
+            private static bool IsTense(string str)
+            {
+                return str.Equals("Past") || str.Equals("PresentFuture") || str.Equals("Command");
+            }
+
         }
 
 
@@ -599,99 +715,5 @@ namespace Quantae.Engine
                 }
             }
         }
-
-        public static Conjugation ParseRules(string rules, out string role)
-        {
-            role = string.Empty;
-            if (string.IsNullOrWhiteSpace(rules))
-            {
-                return null;
-            }
-
-            string regex = @"((?<role>\(.*?\))(?<conj>(,(.*?))*);)*";
-
-            var matches = Regex.Matches(rules, regex);
-            Match m = matches[0];
-            role = m.Groups["role"].Value;
-            role = role.Replace("(", "").Replace(")", "");
-
-            string conj = m.Groups["conj"].Value;
-            var conjs = conj.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            Conjugation conjugation = null;
-            if (conjs.Length <= 2 && !role.Equals("Verb"))
-            {
-                conjugation = new NounConjugation();
-
-                foreach (var c in conjs)
-                {
-                    var c1 = c.Trim();
-                    if (IsGender(c1))
-                    {
-                        conjugation.Gender = (GenderRule)Enum.Parse(typeof(GenderRule), c1, true);
-                    }
-
-                    if (IsNumber(c1))
-                    {
-                        conjugation.Number = (NumberRule)Enum.Parse(typeof(NumberRule), c1, true);
-                    }
-                }
-            }
-            else if (conjs.Length > 2 || role.Equals("Verb"))
-            {
-                conjugation = new VerbConjugation();
-
-                foreach (var c in conjs)
-                {
-                    var c1 = c.Trim();
-
-                    if (IsGender(c1))
-                    {
-                        conjugation.Gender = (GenderRule)Enum.Parse(typeof(GenderRule), c1, true);
-                        continue;
-                    }
-
-                    if (IsNumber(c1))
-                    {
-                        conjugation.Number = (NumberRule)Enum.Parse(typeof(NumberRule), c1, true);
-                        continue;
-                    }
-
-                    if (IsTense(c1))
-                    {
-                        (conjugation as VerbConjugation).Tense = (TenseRule)Enum.Parse(typeof(TenseRule), c1, true);
-                        continue;
-                    }
-
-                    if (IsPerson(c1))
-                    {
-                        (conjugation as VerbConjugation).Person = (PersonRule)Enum.Parse(typeof(PersonRule), c1, true);
-                        continue;
-                    }
-                }
-            }
-
-            return conjugation;
-        }
-
-        public static bool IsGender(string str)
-        {
-            return str.Equals("Masculine") || str.Equals("Feminine") || str.Equals("Neutral");
-        }
-
-        public static bool IsNumber(string str)
-        {
-            return str.Equals("Singular") || str.Equals("Plural") || str.Equals("Dual");
-        }
-
-        public static bool IsPerson(string str)
-        {
-            return str.Equals("First") || str.Equals("Second") || str.Equals("Third");
-        }
-
-        public static bool IsTense(string str)
-        {
-            return str.Equals("Past") || str.Equals("PresentFuture") || str.Equals("Command");
-        }
-
     }
 }

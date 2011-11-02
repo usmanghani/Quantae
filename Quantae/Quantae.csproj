@@ -152,10 +152,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataModel.sql\DataModel.sql.csproj">
-      <Project>{22933172-F97F-4B57-9C1B-7E88600A23C4}</Project>
-      <Name>DataModel.sql</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataModel\DataModel.csproj">
       <Project>{84696870-FD21-43F4-9FD9-6C7D01A32FC7}</Project>
       <Name>DataModel</Name>
