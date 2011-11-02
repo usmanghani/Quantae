@@ -691,6 +691,11 @@ namespace Quantae.Engine
                 foreach (var token in tokens)
                 {
                     ++context.ColIndex;
+                    if (token.Trim() == "###")
+                    {
+                        continue;
+                    }
+
                     // 1. if the token is a column name.
                     if (Columns.IsColumnName(token.Trim()))
                     {
