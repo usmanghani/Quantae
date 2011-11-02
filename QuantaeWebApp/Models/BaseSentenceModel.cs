@@ -12,5 +12,11 @@ namespace Quantae.ViewModels
         public SentenceTypes SentenceType { get; protected set; }
         public string SentenceText { get; set; }
         public string SentenceTranslation { get; set; }
+
+        public BaseSentenceModel(string text, string translation)
+        {
+            SentenceText = text;
+            SentenceTranslation = translation;
+        }
     }
 }

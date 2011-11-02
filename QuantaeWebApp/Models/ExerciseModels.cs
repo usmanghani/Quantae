@@ -13,7 +13,8 @@ namespace Quantae.ViewModels
         public List<GrammarEntryModel> GrammarEntries { get; set; }
         public List<ContextualAnalysis> ContextualAnalysis { get; set; }
 
-        public ContextualExcerciseViewModel()
+        public ContextualExcerciseViewModel(string text, string translation)
+            : base (text, translation)
         {
             ObjectType = ObjectTypes.Sentence;
             ViewType = ViewTypes.Contextual;
@@ -30,7 +31,8 @@ namespace Quantae.ViewModels
         public List<GrammarEntryModel> GrammarEntries { get; set; }
         public List<GrammarAnalysis> GrammarAnalysis { get; set; }
 
-        public AnalyticalExcerciseViewModel()
+        public AnalyticalExcerciseViewModel(string text, string translation)
+            : base(text, translation)
         {
             ObjectType = ObjectTypes.Sentence;
             SentenceType = SentenceTypes.Sample;
@@ -48,7 +50,8 @@ namespace Quantae.ViewModels
         public int BlankIndex { get; set; }
         public int CorrectAnswerChoice { get; set; }
 
-        public QuestionExcerciseViewModel()
+        public QuestionExcerciseViewModel(string text, string translation)
+            : base(text, translation)
         {
             ObjectType = ObjectTypes.Question;
             SentenceType = SentenceTypes.VocabQuestion;
@@ -62,7 +65,8 @@ namespace Quantae.ViewModels
         public List<GrammarEntryModel> GrammarEntries { get; set; }
         public List<GrammarAnalysis> GrammarAnalysis { get; set; }
 
-        public GrammarQuestionExcerciseViewModel()
+        public GrammarQuestionExcerciseViewModel(string text, string translation)
+            : base(text, translation)
         {
             ObjectType = ObjectTypes.Question;
             SentenceType = SentenceTypes.GrammarQuestion;

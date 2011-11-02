@@ -28,111 +28,28 @@ namespace Quantae.ViewModels
                 if (!isGrammarQ)
                 {
                     // If it's not grammar question it's a default contextual question
-                    var model = new QuestionExcerciseViewModel();
+                    var model = new QuestionExcerciseViewModel(sentence.SentenceText, sentence.SentenceTranslation);
                     resultModel = model;
-                    model.SentenceText = sentence.SentenceText;
-                    model.SentenceTranslation = sentence.SentenceTranslation;
 
-                    // Retriev all the Question related information from the sentence           
-                    Question q;
-                    if (sentence.Questions.TryGetValue(sentenceResult.QuestionDimension, out q))
-                    {
-                        model.QuestionSubText = q.QuestionSubstring;
-                        model.BlankIndex = q.BlankPosition;
-
-                        for (int i = 0; i < q.AnswerChoices.Count; i++)
-                        {
-                            ViewModelAnswerChoice vmac = new ViewModelAnswerChoice();
-                            vmac.Choice = q.AnswerChoices[i].Answer;
-                            if (q.AnswerChoices[i].IsCorrect)
-                                model.CorrectAnswerChoice = i;
-
-                            model.AnswerChoices.Add(vmac);
-                        }
-
-                        foreach (var seg in q.AnswerSegments)
-                        {
-                            AnswerSegment answerSeg = new AnswerSegment();
-                            answerSeg.Text = seg;
-                            model.AnswerSegments.Add(answerSeg);
-                        }
-                    }
-                    else
-                    {
-                        // TODO: Handle internal errors like this.  Should stop the flow?
-                        Trace.TraceError("Failed to get retrieve Question from sentence.");
-                    }
+                    // Retriev all the Question related information from the sentence
+                    PopulateQuestionFields(sentenceResult, model);
                 }
                 else
                 {
                     // Create a Grammar Question
-                    var model = new GrammarQuestionExcerciseViewModel();
+                    var model = new GrammarQuestionExcerciseViewModel(sentence.SentenceText, sentence.SentenceTranslation);
                     resultModel = model;
-                    model.SentenceText = sentence.SentenceText;
-                    model.SentenceTranslation = sentence.SentenceTranslation;
 
                     // Retriev all the Question related information from the sentence           
-                    Question q;
-                    if (sentence.Questions.TryGetValue(sentenceResult.QuestionDimension, out q))
-                    {
-                        model.QuestionSubText = q.QuestionSubstring;
-                        model.BlankIndex = q.BlankPosition;
-
-                        for (int i = 0; i < q.AnswerChoices.Count; i++)
-                        {
-                            ViewModelAnswerChoice vmac = new ViewModelAnswerChoice();
-                            vmac.Choice = q.AnswerChoices[i].Answer;
-                            if (q.AnswerChoices[i].IsCorrect)
-                                model.CorrectAnswerChoice = i;
-
-                            model.AnswerChoices.Add(vmac);
-                        }
-
-                        foreach (var seg in q.AnswerSegments)
-                        {
-                            AnswerSegment answerSeg = new AnswerSegment();
-                            answerSeg.Text = seg;
-                            model.AnswerSegments.Add(answerSeg);
-                        }
-                    }
+                    PopulateQuestionFields(sentenceResult, model);
 
                     //
                     // Populate Grammar Analysis related model fields
-                    foreach (var a in sentence.GrammarAnalysis)
-                    {
-                        GrammarAnalysis ga = new GrammarAnalysis();
-
-                        // Start Role -----
-                        ga.StartIndex = new int[a.StartSegmentRolePair.Item1.Count];
-                        a.StartSegmentRolePair.Item1.CopyTo(ga.StartIndex);
-
-                        GrammarRole gr = Repositories.Repositories.GrammarRoles.GetItemByHandle<GrammarRoleHandle>(a.StartSegmentRolePair.Item2);
-                        ga.RoleStart = gr.RoleName;
-
-                        // End Role ----
-                        ga.EndIndex = new int[a.EndSegmentRolePair.Item1.Count];
-                        a.EndSegmentRolePair.Item1.CopyTo(ga.EndIndex);
-
-                        GrammarRole gr2 = Repositories.Repositories.GrammarRoles.GetItemByHandle<GrammarRoleHandle>(a.EndSegmentRolePair.Item2);
-                        ga.RoleEnd = gr2.RoleName;
-
-                        // Update the model
-                        model.GrammarAnalysis.Add(ga);
-                    }
+                    PopulateGrammarAnalysisFields(sentence, model.GrammarAnalysis);
 
                     //
                     // Populate Grammar Entries related model fields
-                    foreach (var e in sentence.GrammarEntries)
-                    {
-                        GrammarEntryModel ge = new GrammarEntryModel();
-                        GrammarEntry entry = Repositories.Repositories.GrammarEntries.GetItemByHandle<GrammarEntryHandle>(e);
-
-                        ge.Word = entry.Text;
-                        ge.Translation = entry.Translation;
-
-                        // Update the model
-                        model.GrammarEntries.Add(ge);
-                    }
+                    PopulateGrammarEntriesFields(sentence, model.GrammarEntries);
                 }
             }
             else
@@ -142,74 +59,102 @@ namespace Quantae.ViewModels
 
                 if (LearningTypeScorePolicies.IsAnalytical(profile))
                 {
-                    var model = new AnalyticalExcerciseViewModel();
+                    var model = new AnalyticalExcerciseViewModel(sentence.SentenceText, sentence.SentenceTranslation);
                     resultModel = model;
-                    model.SentenceText = sentenceResult.Sentence.SentenceText;
-                    model.SentenceTranslation = sentenceResult.Sentence.SentenceTranslation;
-
 
                     //
                     // Populate Grammar Analysis related model fields
-                    foreach (var a in sentence.GrammarAnalysis)
-                    {
-                        GrammarAnalysis ga = new GrammarAnalysis();
-
-                        // Start Role -----
-                        ga.StartIndex = new int[a.StartSegmentRolePair.Item1.Count];
-                        a.StartSegmentRolePair.Item1.CopyTo(ga.StartIndex);
-
-                        GrammarRole gr = Repositories.Repositories.GrammarRoles.GetItemByHandle<GrammarRoleHandle>(a.StartSegmentRolePair.Item2);
-                        ga.RoleStart = gr.RoleName;
-
-                        // End Role ----
-                        ga.EndIndex = new int[a.EndSegmentRolePair.Item1.Count];
-                        a.EndSegmentRolePair.Item1.CopyTo(ga.EndIndex);
-
-                        GrammarRole gr2 = Repositories.Repositories.GrammarRoles.GetItemByHandle<GrammarRoleHandle>(a.EndSegmentRolePair.Item2);
-                        ga.RoleEnd = gr2.RoleName;
-
-                        // Update the model
-                        model.GrammarAnalysis.Add(ga);
-                    }
+                    PopulateGrammarAnalysisFields(sentence, model.GrammarAnalysis);
 
                     //
                     // Populate Grammar Entries related model fields
-                    foreach (var e in sentence.GrammarEntries)
-                    {
-                        GrammarEntryModel ge = new GrammarEntryModel();
-                        GrammarEntry entry = Repositories.Repositories.GrammarEntries.GetItemByHandle<GrammarEntryHandle>(e);
-
-                        ge.Word = entry.Text;
-                        ge.Translation = entry.Translation;
-
-                        // Update the model
-                        model.GrammarEntries.Add(ge);
-                    }
+                    PopulateGrammarEntriesFields(sentence, model.GrammarEntries);
                 }
                 else
                 {
-                    var model = new ContextualExcerciseViewModel();
+                    var model = new ContextualExcerciseViewModel(sentence.SentenceText, sentence.SentenceTranslation);
                     resultModel = model;
-                    model.SentenceText = sentenceResult.Sentence.SentenceText;
-                    model.SentenceTranslation = sentenceResult.Sentence.SentenceTranslation;
 
                     //
                     // Populate Grammar Entries related model fields
-                    foreach (var e in sentence.GrammarEntries)
-                    {
-                        GrammarEntryModel ge = new GrammarEntryModel();
-                        GrammarEntry entry = Repositories.Repositories.GrammarEntries.GetItemByHandle<GrammarEntryHandle>(e);
-
-                        ge.Word = entry.Text;
-                        ge.Translation = entry.Translation;
-
-                        // Update the model
-                        model.GrammarEntries.Add(ge);
-                    }
+                    PopulateGrammarEntriesFields(sentence, model.GrammarEntries);
                 }
             }
 
             return resultModel;
+        }
+
+        private static void PopulateGrammarEntriesFields(Sentence sentence, List<GrammarEntryModel> entries)
+        {
+            foreach (var e in sentence.GrammarEntries)
+            {
+                GrammarEntryModel ge = new GrammarEntryModel();
+                GrammarEntry entry = Repositories.Repositories.GrammarEntries.GetItemByHandle<GrammarEntryHandle>(e);
+
+                ge.Word = entry.Text;
+                ge.Translation = entry.Translation;
+
+                // Update the entries
+                entries.Add(ge);
+            }
+        }
+
+        private static void PopulateGrammarAnalysisFields(Sentence sentence, List<GrammarAnalysis> analysis)
+        {
+            foreach (var a in sentence.GrammarAnalysis)
+            {
+                GrammarAnalysis ga = new GrammarAnalysis();
+
+                // Start Role -----
+                ga.StartIndex = new int[a.StartSegmentRolePair.Item1.Count];
+                a.StartSegmentRolePair.Item1.CopyTo(ga.StartIndex);
+
+                GrammarRole gr = Repositories.Repositories.GrammarRoles.GetItemByHandle<GrammarRoleHandle>(a.StartSegmentRolePair.Item2);
+                ga.RoleStart = gr.RoleName;
+
+                // End Role ----
+                ga.EndIndex = new int[a.EndSegmentRolePair.Item1.Count];
+                a.EndSegmentRolePair.Item1.CopyTo(ga.EndIndex);
+
+                GrammarRole gr2 = Repositories.Repositories.GrammarRoles.GetItemByHandle<GrammarRoleHandle>(a.EndSegmentRolePair.Item2);
+                ga.RoleEnd = gr2.RoleName;
+
+                // Update the analysis
+                analysis.Add(ga);
+            }
+        }
+
+        private static void PopulateQuestionFields(GetNextSentenceResult sentenceResult, QuestionExcerciseViewModel model)
+        {
+            var sentence = sentenceResult.Sentence;
+            Question q;
+            if (sentence.Questions.TryGetValue(sentenceResult.QuestionDimension, out q))
+            {
+                model.QuestionSubText = q.QuestionSubstring;
+                model.BlankIndex = q.BlankPosition;
+
+                for (int i = 0; i < q.AnswerChoices.Count; i++)
+                {
+                    ViewModelAnswerChoice vmac = new ViewModelAnswerChoice();
+                    vmac.Choice = q.AnswerChoices[i].Answer;
+                    if (q.AnswerChoices[i].IsCorrect)
+                        model.CorrectAnswerChoice = i;
+
+                    model.AnswerChoices.Add(vmac);
+                }
+
+                foreach (var seg in q.AnswerSegments)
+                {
+                    AnswerSegment answerSeg = new AnswerSegment();
+                    answerSeg.Text = seg;
+                    model.AnswerSegments.Add(answerSeg);
+                }
+            }
+            else
+            {
+                // TODO: Handle internal errors like this.  Should stop the flow?
+                Trace.TraceError("Failed to get retrieve Question from sentence.");
+            }
         }
     }
 }
