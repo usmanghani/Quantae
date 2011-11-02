@@ -76,13 +76,12 @@ namespace Quantae.ViewModels
                     {
                         model.QuestionSubText = q.QuestionSubstring;
                         model.BlankIndex = q.BlankPosition;
+                        model.CorrectAnswerChoice = q.CorrectAnswerIndex;
 
                         for (int i = 0; i < q.AnswerChoices.Count; i++)
                         {
                             ViewModelAnswerChoice vmac = new ViewModelAnswerChoice();
                             vmac.Choice = q.AnswerChoices[i].Answer;
-                            if (q.AnswerChoices[i].IsCorrect)
-                                model.CorrectAnswerChoice = i;
 
                             model.AnswerChoices.Add(vmac);
                         }
