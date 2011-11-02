@@ -39,13 +39,22 @@ namespace Quantae.ViewModels
                     {
                         model.QuestionSubText = q.QuestionSubstring;
                         model.BlankIndex = q.BlankPosition;
+<<<<<<< HEAD
                         model.CorrectAnswerChoice = q.CorrectAnswerIndex;
+=======
+>>>>>>> a4ca24a21ca721ff7267e5029e4de49630e764c4
 
                         for (int i = 0; i < q.AnswerChoices.Count; i++)
                         {
                             ViewModelAnswerChoice vmac = new ViewModelAnswerChoice();
                             vmac.Choice = q.AnswerChoices[i].Answer;
+<<<<<<< HEAD
                             
+=======
+                            if (q.AnswerChoices[i].IsCorrect)
+                                model.CorrectAnswerChoice = i;
+
+>>>>>>> a4ca24a21ca721ff7267e5029e4de49630e764c4
                             model.AnswerChoices.Add(vmac);
                         }
 
@@ -70,7 +79,7 @@ namespace Quantae.ViewModels
                     model.SentenceText = sentence.SentenceText;
                     model.SentenceTranslation = sentence.SentenceTranslation;
 
-                    // Retrieve all the Question related information from the sentence           
+                    // Retriev all the Question related information from the sentence           
                     Question q;
                     if (sentence.Questions.TryGetValue(sentenceResult.QuestionDimension, out q))
                     {

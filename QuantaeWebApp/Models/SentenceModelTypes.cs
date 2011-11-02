@@ -33,7 +33,7 @@ namespace QuantaeWebApp.Models
         public int EndIndex { get; set; }
     }
 
-    public struct GrammarEntry
+    public struct GrammarEntryModel
     {
         // Example:
         // grammarEntries: [ { word: <word>, translation: <trans> }, {word: <word>, translation: <trans>}, … ]
