@@ -10,7 +10,7 @@ namespace Quantae.ViewModels
     {
         public string PictureLink { get; set; }
         public ViewTypes ViewType { get; private set; }
-        public List<GrammarEntry> GrammarEntries { get; set; }
+        public List<GrammarEntryModel> GrammarEntries { get; set; }
         public List<ContextualAnalysis> ContextualAnalysis { get; set; }
 
         public ContextualExcerciseViewModel()
@@ -18,7 +18,7 @@ namespace Quantae.ViewModels
             ObjectType = ObjectTypes.Sentence;
             ViewType = ViewTypes.Contextual;
             SentenceType = SentenceTypes.Sample;
-            GrammarEntries = new List<GrammarEntry>();
+            GrammarEntries = new List<GrammarEntryModel>();
             ContextualAnalysis = new List<ContextualAnalysis>();
         }
     }
@@ -27,7 +27,7 @@ namespace Quantae.ViewModels
     {
         public string PictureLink { get; set; }
         public ViewTypes ViewType { get; private set; }
-        public List<GrammarEntry> GrammarEntries { get; set; }
+        public List<GrammarEntryModel> GrammarEntries { get; set; }
         public List<GrammarAnalysis> GrammarAnalysis { get; set; }
 
         public AnalyticalExcerciseViewModel()
@@ -36,7 +36,7 @@ namespace Quantae.ViewModels
             SentenceType = SentenceTypes.Sample;
             ViewType = ViewTypes.Analytical;
             GrammarAnalysis = new List<GrammarAnalysis>();
-            GrammarEntries = new List<GrammarEntry>();
+            GrammarEntries = new List<GrammarEntryModel>();
         }
     }
 
@@ -59,14 +59,14 @@ namespace Quantae.ViewModels
 
     public class GrammarQuestionExcerciseViewModel : QuestionExcerciseViewModel
     {
-        public List<GrammarEntry> GrammarEntries { get; set; }
+        public List<GrammarEntryModel> GrammarEntries { get; set; }
         public List<GrammarAnalysis> GrammarAnalysis { get; set; }
 
         public GrammarQuestionExcerciseViewModel()
         {
             ObjectType = ObjectTypes.Question;
             SentenceType = SentenceTypes.GrammarQuestion;
-            GrammarEntries = new List<GrammarEntry>();
+            GrammarEntries = new List<GrammarEntryModel>();
             GrammarAnalysis = new List<GrammarAnalysis>();
         }
     }
