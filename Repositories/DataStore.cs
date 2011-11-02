@@ -27,12 +27,19 @@ namespace Quantae.Repositories
 
             if (uri != null)
             {
-                MongoConnectionStringBuilder connectionStringBuilder = new MongoConnectionStringBuilder();
-                connectionStringBuilder.DatabaseName = databaseName;
-                connectionStringBuilder.Username = creds.Username;
-                connectionStringBuilder.Password = creds.Password;
-                connectionStringBuilder.Server = new MongoServerAddress(uri.Host, uri.Port);
-                this.Server = MongoServer.Create(connectionStringBuilder);
+                if (creds == null)
+                {
+                    this.Server = MongoServer.Create(uri);
+                }
+                else
+                {
+                    MongoConnectionStringBuilder connectionStringBuilder = new MongoConnectionStringBuilder();
+                    connectionStringBuilder.DatabaseName = databaseName;
+                    connectionStringBuilder.Username = creds.Username;
+                    connectionStringBuilder.Password = creds.Password;
+                    connectionStringBuilder.Server = new MongoServerAddress(uri.Host, uri.Port);
+                    this.Server = MongoServer.Create(connectionStringBuilder);
+                }
             }
             else
             {
