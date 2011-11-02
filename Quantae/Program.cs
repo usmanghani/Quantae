@@ -66,6 +66,7 @@ namespace Quantae
             dataStore.Connect();
             Repositories.Repositories.Init(dataStore);
             FilterManager.CreateFilters();
+            SentenceUtilities.PopulateSentences(@"c:\\sample data.txt", 1);
 
             //Repositories.Repositories.Users.Save(new UserProfile());
 
