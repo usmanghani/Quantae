@@ -44,7 +44,7 @@ namespace QuantaeWebApp
             }
             else
             {
-                QuantaeEngine.Init("QuantaeTestDb", ConfigurationManager.AppSettings["MONGOHQ_URL"]);
+                QuantaeEngine.Init("5836dfd5-24c0-407d-a7a0-50679a4dd2d9", ConfigurationManager.AppSettings["MONGOHQ_URL"]);
             }
         }
     }
