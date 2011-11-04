@@ -38,7 +38,7 @@ namespace QuantaeWebApp
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            QuantaeEngine.Init("5836dfd5-24c0-407d-a7a0-50679a4dd2d9", ConfigurationManager.AppSettings["MONGOHQ_URL"]);
+            QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
         }
     }
 }
