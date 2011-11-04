@@ -18,5 +18,10 @@ namespace Quantae.DataModel
         /// This is exclusively used to identify the umbrella topic being covered in revision questions.
         /// </summary>
         public string RevisionTopicTag { get; set; }
+
+        public Question()
+        {
+            this.AnswerChoices = new List<AnswerChoice>();
+        }
     }
 }

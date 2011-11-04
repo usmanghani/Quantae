@@ -10,6 +10,6 @@ namespace Quantae.Repositories
 {
     public class TopicRepository : RepositoryBase<Topic>
     {
-        public TopicRepository(DataStore dataStore) : base(dataStore, "Topics") { }
+        public TopicRepository(DataStore dataStore, params string[] indices) : base(dataStore, "Topics", indices) { }
     }
 }

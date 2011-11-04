@@ -18,13 +18,13 @@ namespace Quantae.Repositories
 
         public static void Init(DataStore dataStore)
         {
-            Sentences = new SentenceRepository(dataStore);
-            Vocabulary = new VocabRepository(dataStore);
-            GrammarEntries = new GrammarEntryRepository(dataStore);
-            GrammarRoles = new GrammarRolesRepository(dataStore);
-            Users = new UserRepository(dataStore);
-            Topics = new TopicRepository(dataStore);
-            Sessions = new SessionRepository(dataStore);
+            Sentences = new SentenceRepository(dataStore, "SentenceText");
+            Vocabulary = new VocabRepository(dataStore, "Text");
+            GrammarEntries = new GrammarEntryRepository(dataStore, "Text");
+            GrammarRoles = new GrammarRolesRepository(dataStore, "RoleName");
+            Users = new UserRepository(dataStore, "UserID", "Email");
+            Topics = new TopicRepository(dataStore, "Index", "ToicName");
+            Sessions = new SessionRepository(dataStore, "UserID");
         }
     }
 }

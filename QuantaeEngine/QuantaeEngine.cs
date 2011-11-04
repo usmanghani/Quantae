@@ -20,6 +20,12 @@ namespace Quantae.Engine
             dataStore.Connect();
             Repositories.Repositories.Init(dataStore);
             FilterManager.CreateFilters();
+
+            Repositories.Repositories.Vocabulary.EnsureIndex(new string[] { "Text" });
+            Repositories.Repositories.GrammarEntries.EnsureIndex(new string[] { "Text" });
+            Repositories.Repositories.GrammarRoles.EnsureIndex(new string[] { "RoleName" });
+            Repositories.Repositories.Sentences.EnsureIndex(new string[] { "SentenceText" });
+
         }
     }
 }

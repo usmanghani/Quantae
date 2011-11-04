@@ -62,8 +62,9 @@ namespace Quantae
             //ts.Flush();
             //ts.Close();
 
-            QuantaeEngine.Init("QuantaeTestDb");
-            SentenceUtilities.PopulateSentences(@"c:\\sample data.txt", 1);
+            QuantaeEngine.Init("5836dfd5-24c0-407d-a7a0-50679a4dd2d9");
+            //TopicGraphUtilities.PopulateTopics(@"C:\graph.txt");
+            SentenceUtilities.PopulateSentences(@"c:\abc.txt", 1);
 
             //Repositories.Repositories.Users.Save(new UserProfile());
 

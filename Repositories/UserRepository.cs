@@ -11,6 +11,6 @@ namespace Quantae.Repositories
 {
     public class UserRepository : RepositoryBase<UserProfile>
     {
-        public UserRepository(DataStore dataStore) : base(dataStore, "UserProfiles") { }
+        public UserRepository(DataStore dataStore, params string[] indices) : base(dataStore, "UserProfiles", indices) { }
     }
 }

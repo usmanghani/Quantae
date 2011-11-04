@@ -9,6 +9,6 @@ namespace Quantae.Repositories
 {
     public class VocabRepository : RepositoryBase<VocabEntry>
     {
-        public VocabRepository(DataStore dataStore) : base(dataStore, "Vocabulary") { }
+        public VocabRepository(DataStore dataStore, params string[] indices) : base(dataStore, "Vocabulary", indices) { }
     }
 }

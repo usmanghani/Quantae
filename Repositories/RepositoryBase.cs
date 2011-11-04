@@ -15,12 +15,15 @@ namespace Quantae.Repositories
         public DataStore DataStore { get; protected set; }
         public string CollectionName { get; protected set; }
         public MongoCollection<TObject> Collection { get; protected set; }
+        public string[] Indices { get; protected set; }
 
-        public RepositoryBase(DataStore store, string collectionName)
+        public RepositoryBase(DataStore store, string collectionName, params string[] indices)
         {
             this.DataStore = store;
             this.CollectionName = collectionName;
             this.Collection = store.GetCollection<TObject>(collectionName);
+            this.Indices = indices;
+            this.Collection.EnsureIndex(this.Indices);
         }
 
         public IEnumerable<TObject> GetAllItems()
@@ -60,7 +63,7 @@ namespace Quantae.Repositories
 
             if (!string.IsNullOrEmpty(indexHint))
             {
-                cursor.SetHint(indexHint);
+                cursor.SetHint(new BsonDocument(new BsonElement(indexHint, new BsonInt32(1))));
             }
 
             if (tableScan)

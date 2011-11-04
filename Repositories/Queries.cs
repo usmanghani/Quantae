@@ -67,6 +67,11 @@ namespace Quantae.Repositories
         {
             return Query.EQ("PrimaryTopic", new BsonObjectId(handle.ObjectId.Value));
         }
+
+        public static IMongoQuery GetSentencesByText(string sentenceText)
+        {
+            return Query.EQ("SentenceText", new BsonString(sentenceText));
+        }
     }
 
     public class VocabQueries

@@ -76,6 +76,7 @@ namespace Quantae.DataModel
             this.GrammarAnalysis = new List<GrammarAnalysisElement>();
             this.ContextualAnalysis = new List<int[]>();
             this.GrammarEntries = new List<GrammarEntryHandle>();
+            this.VocabEntries = new List<VocabEntryHandle>();
         }
     }
 

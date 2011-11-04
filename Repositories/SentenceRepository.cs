@@ -10,7 +10,7 @@ namespace Quantae.Repositories
 {
     public class SentenceRepository : RepositoryBase<Sentence>
     {
-        public SentenceRepository(DataStore dataStore) : base(dataStore, "Sentences") { }
+        public SentenceRepository(DataStore dataStore, params string[] indices) : base(dataStore, "Sentences", indices) { }
 
         public IEnumerable<Sentence> GetSentencesByTopic(TopicHandle topicHandle, int skip = 0, int limit = 0)
         {

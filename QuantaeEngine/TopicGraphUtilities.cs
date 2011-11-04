@@ -58,12 +58,12 @@ namespace Quantae.Engine
 
                 int index = int.Parse(tokens[0]);
                 string name = tokens[1];
-                string rules = tokens[2];
+                //string rules = tokens[2];
 
                 List<int> dependencies = new List<int>();
-                if (tokens.Length > 3)
+                if (tokens.Length > 2)
                 {
-                    dependencies.AddRange(tokens.Skip(3).Select(i => string.IsNullOrWhiteSpace(i) ? 0 : int.Parse(i)));
+                    dependencies.AddRange(tokens.Skip(2).Where(i => !string.IsNullOrWhiteSpace(i)).Select(i => int.Parse(i)));
                 }
 
                 Topic t = new Topic() { Index = index, TopicName = name };

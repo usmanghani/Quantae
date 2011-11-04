@@ -10,6 +10,6 @@ namespace Quantae.Repositories
 {
     public class GrammarRolesRepository : RepositoryBase<GrammarRole>
     {
-        public GrammarRolesRepository(DataStore dataStore) : base(dataStore, "GrammarRoles") { }
+        public GrammarRolesRepository(DataStore dataStore, params string[] indices) : base(dataStore, "GrammarRoles", indices) { }
     }
 }
