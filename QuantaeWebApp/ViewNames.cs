@@ -34,5 +34,10 @@ namespace QuantaeWebApp
         {
             public const string ExerciseIndexView = "Index";
         }
+
+        public class Review
+        {
+            public const string ReviewIndexView = "Review";
+        }
     }
 }
