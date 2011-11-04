@@ -21,7 +21,7 @@ namespace QuantaeWebApp.Controllers
             GetNextSentenceResult result = engine.GetNextSentence(profile);
             
             BaseSentenceModel model = null;
-
+            
             if (result.Success)
             {
                 model = ExcerciseViewModelFactory.CreateExcerciseViewModel(result, profile);                                
