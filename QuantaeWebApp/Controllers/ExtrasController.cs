@@ -15,7 +15,7 @@ namespace QuantaeWebApp.Controllers
     {
         //
         // GET: /Extras/
-
+        [Authorize]
         public ActionResult Index()
         {
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
@@ -31,6 +31,7 @@ namespace QuantaeWebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Select(ExtrasHubResponseModel responseModel)
         {
             ActionResult result = RedirectToAction("Index");

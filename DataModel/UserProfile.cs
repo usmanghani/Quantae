@@ -76,6 +76,14 @@ namespace Quantae.DataModel
 
             this.Weaknesses = new Dictionary<Weakness, int>();
         }
+
+        public bool IsUserNew
+        {
+            get
+            {
+                return (this.History.TopicHistory.Count <= 0);
+            }
+        }
     }
 
     public class UserProfileHandle : QuantaeObjectHandle<UserProfile>

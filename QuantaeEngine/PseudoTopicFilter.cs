@@ -12,29 +12,28 @@ namespace Quantae.Engine
         {
             TopicHistoryItem thi = profile.CurrentState.CourseLocationInfo.CurrentTopic;
 
+            bool result = false;
+
+            // deactivate yourself when not in pseudo topic
             if (!thi.IsPseudoTopic)
             {
-                return true;
+                result = true;
             }
-
-            if (thi.WeaknessForPseudoTopic.WeaknessType == WeaknessType.GenderAgreement)
+            else if (thi.WeaknessForPseudoTopic.WeaknessType == WeaknessType.GenderAgreement)
             {
-                return sentence.RoleConjugationPairs.Any(qt => qt.Item2.Gender != GenderRule.Unknown);
+                result = sentence.RoleConjugationPairs.Any(qt => qt.Item2.Gender != GenderRule.Unknown);
             }
             else if (thi.WeaknessForPseudoTopic.WeaknessType == WeaknessType.NumberAgreement)
             {
-                return sentence.RoleConjugationPairs.Any(qt => qt.Item2.Number != NumberRule.Unknown);
+                result = sentence.RoleConjugationPairs.Any(qt => qt.Item2.Number != NumberRule.Unknown);
             }
             else if(thi.WeaknessForPseudoTopic.WeaknessType == WeaknessType.UmbrellaTopic)
             {
                 string umbrellaTopicName = thi.WeaknessForPseudoTopic.UmbrellaTopicName;
-                if (sentence.Tags.Any(u => u.Equals(umbrellaTopicName, StringComparison.OrdinalIgnoreCase)))
-                {
-                    return true;
-                }
+                result = sentence.Tags.Any(u => u.Equals(umbrellaTopicName, StringComparison.OrdinalIgnoreCase));
             }
 
-            return false;
+            return result;
         }
     }
 }

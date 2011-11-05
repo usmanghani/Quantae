@@ -24,7 +24,10 @@ namespace Quantae.Engine
         {
             return nextTopic.Dependencies.All(th =>
             {
-                var topicHistoryEntry = userProfile.History.TopicHistory.Where(thi => thi.Topic.Equals(th)).FirstOrDefault();
+                var topicHistoryEntry = userProfile.History.TopicHistory.Where(thi =>
+                    Repositories.Repositories.Topics.GetItemByHandle(thi.Topic).Index == th
+                ).FirstOrDefault();
+
                 if (topicHistoryEntry != null && (topicHistoryEntry.IsSuccessful || topicHistoryEntry.IsSkipped))
                 {
                     return true;

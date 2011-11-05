@@ -14,7 +14,7 @@ namespace QuantaeWebApp.Controllers
     {
         //
         // GET: /Review/
-
+        [Authorize]
         public ActionResult Index()
         {
             // TODO: implement Review controller logic here

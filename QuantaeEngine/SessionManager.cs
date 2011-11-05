@@ -20,7 +20,7 @@ namespace Quantae.Engine
             var sessions = Repositories.Repositories.Sessions.GetAllItems();
             foreach (var session in sessions)
             {
-                session.SentenceBatch = SentenceOperations.LoadBatch(session.UserProfile);
+                // session.SentenceBatch = SentenceOperations.LoadBatch(session.UserProfile);
                 Current.SessionStore.Add(session.Token, session);
             }
         }

@@ -14,7 +14,7 @@ namespace QuantaeWebApp.Controllers
     {
         //
         // GET: /Depth/
-
+        [Authorize]
         public ActionResult Index()
         {
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);

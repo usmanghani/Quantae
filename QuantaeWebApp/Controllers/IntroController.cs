@@ -14,7 +14,7 @@ namespace QuantaeWebApp.Controllers
     {
         //
         // GET: /Intro/
-
+        [Authorize]
         public ActionResult Index()
         {
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
@@ -36,9 +36,12 @@ namespace QuantaeWebApp.Controllers
 
         private static string GetNextIntroSlideContent(UserProfile userProfile)
         {
+            string currentIntroSlideContent = string.Empty;
+
             Topic currentTopic = Repositories.Topics.GetItemByHandle(userProfile.CurrentState.CourseLocationInfo.CurrentTopic.Topic);
 
-            if (userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
+            if (currentTopic.IntroSection.Pages.Count > 0 &&
+                userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.CurrentSection == TopicSectionType.Intro &&
                !userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IsIntroComplete &&
                 userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IntroSlideIndex < currentTopic.IntroSection.Pages.Count)
             {
@@ -46,11 +49,14 @@ namespace QuantaeWebApp.Controllers
 
                 // BUG: Separate this out.
                 VocabOperations.UpdateVocabulary(userProfile, currentTopic.IntroSection.Pages[idx].VocabEntries, VocabRankTypes.CorrectOrSeenInIntro);
-                return currentTopic.IntroSection.Pages[idx].Content;
+                currentIntroSlideContent = currentTopic.IntroSection.Pages[idx].Content;
+            }
+            else
+            { 
+                userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IsIntroComplete = true; 
             }
 
-            userProfile.CurrentState.CourseLocationInfo.TopicLocationInfo.IsIntroComplete = true;
-            return string.Empty;
+            return currentIntroSlideContent;
         }
     }
 }

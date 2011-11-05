@@ -12,16 +12,17 @@ namespace Quantae.Engine
         {
             var verbConjugations = sentence.RoleConjugationPairs.Where(t => t.Item2.GetType() == typeof(VerbConjugation)).Select(t => t.Item2 as VerbConjugation);
             var userVerbConjugations = user.History.VerbConjugationHistory.Select(vchi => vchi.VerbConjugation);
+            bool result = true;
 
             foreach (var vc in verbConjugations)
             {
                 if (!userVerbConjugations.Contains(vc))
                 {
-                    return false;
+                    result = false;
                 }
             }
 
-            return true;
+            return result;
         }
     }
 }

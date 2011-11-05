@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Quantae.Engine;
 using System.Configuration;
+using log4net;
+using log4net.Config;
 
 namespace QuantaeWebApp
 {
@@ -38,7 +40,10 @@ namespace QuantaeWebApp
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
+            log4net.Config.BasicConfigurator.Configure();
             QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
+
+            SessionManager.Load();
         }
     }
 }

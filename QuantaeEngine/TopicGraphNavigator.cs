@@ -14,6 +14,7 @@ namespace Quantae.Engine
     public interface ITopicGraphNavigator
     {
         GetNextTopicResult GetNextTopic(UserProfile userProfile);
+        GetNextTopicResult GetFirstTopicForNewUser(UserProfile userProfile);
     }
 
     public class TopicGraphNavigator : ITopicGraphNavigator
@@ -53,6 +54,7 @@ namespace Quantae.Engine
             // The list is reversed.
             // BUG: FirstOrDefault is not supposed to return the absolute first, only the first
             // it sees. Change topic history to a stack.
+            
             TopicHistoryItem thi = userProfile.History.TopicHistory.FirstOrDefault(h => !h.IsPseudoTopic);
 
             // First try to move to the topic immediately following this one.
@@ -94,9 +96,13 @@ namespace Quantae.Engine
             if (!found)
             {
                 var majorWeaknesses = userProfile.Weaknesses.Where(kvp => WeaknessPolicies.IsMajorWeakness(kvp.Key, kvp.Value));
-                pseudoTopicType = majorWeaknesses.ElementAt(0).Key.WeaknessType;
-                found = true;
-                isPseudo = true;
+
+                if (majorWeaknesses.Count() > 0)
+                {
+                    pseudoTopicType = majorWeaknesses.ElementAt(0).Key.WeaknessType;
+                    found = true;
+                    isPseudo = true;
+                }
             }
 
             #endregion
@@ -151,6 +157,18 @@ namespace Quantae.Engine
 
             //#endregion
 
+        }
+
+
+        public GetNextTopicResult GetFirstTopicForNewUser(UserProfile userProfile)
+        {
+            TopicHistoryItem thi = userProfile.History.TopicHistory.FirstOrDefault(h => !h.IsPseudoTopic);
+
+            // First try to move to the topic immediately following this one.
+            // BUG: thi could be NULL
+            Topic currentTopic = Repositories.Repositories.Topics.GetItemByHandle(thi.Topic);
+
+            return new GetNextTopicResult(true, false, WeaknessType.Unknown, currentTopic);
         }
     }
 }

@@ -176,6 +176,27 @@ namespace Quantae.Engine
             item.IsPseudoTopic = result.IsPseudo;
         }
 
+        public static void InitializeNewUserTopicHistory(UserProfile profile)
+        {
+            // HACK: Hardcoded constant, with the assumption that topic with index 1 is the first one.
+            // TODO: Fix this to let the topic graph navigator determine what is the right first topic.
+            Topic topic = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(1));
+
+            TopicHistoryItem item = new TopicHistoryItem();
+            item.Topic = new TopicHandle(topic);
+            profile.History.TopicHistory.Add(item);
+            
+            profile.CurrentState.CourseLocationInfo.CurrentTopic = item;
+            
+            Repositories.Repositories.Users.Save(profile);
+        }
+
+        public static void InitializeNewUser(UserProfile profile)
+        {
+            // TODO: Fill in other init steps.
+            InitializeNewUserTopicHistory(profile);
+        }
+
         private static string CalculateHash(string str)
         {
             return BitConverter.ToString(new SHA512CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(str)));

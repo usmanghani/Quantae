@@ -7,8 +7,9 @@ namespace Quantae.Engine
         public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {
             int minSentenceScore = VocabPolicies.CalculateMinSentenceScore(sentence);
-
             int currentSentenceScore = 0;
+            bool result = false;
+
             foreach (var vocabEntry in sentence.VocabEntries)
             {
                 currentSentenceScore += VocabPolicies.GetVocabEntryRank(user, vocabEntry);
@@ -17,10 +18,10 @@ namespace Quantae.Engine
             // TODO: ask zeeshan about this comparison function.
             if (currentSentenceScore >= minSentenceScore)
             {
-                return true;
+                result = true;
             }
 
-            return false;
+            return result;
         }
     }
 }

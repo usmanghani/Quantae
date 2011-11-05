@@ -8,6 +8,7 @@ using Quantae.ViewModels;
 using Quantae.DataModel;
 using Quantae.Repositories;
 using System.Diagnostics;
+using System.Web.Security;
 
 namespace QuantaeWebApp.Controllers
 {
@@ -31,6 +32,12 @@ namespace QuantaeWebApp.Controllers
             // POST: Returns the Lesson Hub
 
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
+            if (profile == null)
+            {
+                FormsAuthentication.SignOut();
+                return RedirectToAction("LogOn", "Account");
+            }
+
             TopicHistoryItem currentTopicHistoryItem = profile.CurrentState.CourseLocationInfo.CurrentTopic;
             ITopicGraphNavigator nav = new TopicGraphNavigator(Repositories.Topics);
             LessonHubViewModel model = null;
@@ -40,7 +47,16 @@ namespace QuantaeWebApp.Controllers
             // OR we are starting anew.
             if (currentTopicHistoryItem == null)
             {
-                result = nav.GetNextTopic(profile);
+                if (profile.IsUserNew)
+                {
+                    UserOperations.InitializeNewUser(profile);
+                    result = nav.GetFirstTopicForNewUser(profile);
+                }
+                else
+                {
+                    result = nav.GetNextTopic(profile);
+                }
+
                 if (result.Success)
                 {
                     model = new LessonHubViewModel(result.TargetTopic.TopicName, true);
@@ -71,6 +87,12 @@ namespace QuantaeWebApp.Controllers
             }
 
             return View(ViewNames.Lesson.LessonHubView, model);
+        }
+
+        [Authorize]
+        public ActionResult Continue()
+        {
+            return View();
         }
 
         //
@@ -104,9 +126,14 @@ namespace QuantaeWebApp.Controllers
             return RedirectToAction("Index", "Section");
         }
 
+        [Authorize]
+        public ActionResult Skip()
+        {
+            return View();
+        }
+
         //
         // POST: /Lesson/Skip/
-
         [Authorize]
         [HttpPost]
         public ActionResult Skip(LessonHubViewModel viewModel)
@@ -133,7 +160,6 @@ namespace QuantaeWebApp.Controllers
 
         //
         // POST: /Lesson/Next/
-
         [Authorize]
         [HttpPost]
         public ActionResult Next(LessonHubViewModel viewModel)

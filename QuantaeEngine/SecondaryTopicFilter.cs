@@ -11,16 +11,17 @@ namespace Quantae.Engine
         public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {
             var userTopicHistory = user.History.TopicHistory.Select(thi => thi.Topic);
-
+            bool result = true;
             foreach (var topic in sentence.SecondaryTopics)
             {
                 if (!userTopicHistory.Contains(topic))
                 {
-                    return false;
+                    result = false;
+                    break;
                 }
             }
 
-            return true;
+            return result;
         }
     }
 }

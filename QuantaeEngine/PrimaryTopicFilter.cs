@@ -11,12 +11,14 @@ namespace Quantae.Engine
         public bool IsSentenceValid(UserProfile user, Sentence sentence)
         {
             TopicHistoryItem currentTopic = user.CurrentState.CourseLocationInfo.CurrentTopic;
+            bool result = true;
+
             if (!currentTopic.IsPseudoTopic)
             {
-                return currentTopic.Topic.Equals(sentence.PrimaryTopic);
+                result = currentTopic.Topic.Equals(sentence.PrimaryTopic);
             }
 
-            return true;
+            return result;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Quantae.DataModel
 
         public override bool Equals(object obj)
         {
-            return this.ObjectId.Equals((obj as QuantaeObjectHandle<TObject>).ObjectId);
+            return this.ObjectId.Equals(((QuantaeObjectHandle<TObject>)obj).ObjectId);
         }
 
         public override int GetHashCode()

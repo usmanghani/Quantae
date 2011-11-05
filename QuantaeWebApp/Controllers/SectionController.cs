@@ -14,7 +14,7 @@ namespace QuantaeWebApp.Controllers
     {
         //
         // GET: /Section/
-
+        [Authorize]
         public ActionResult Index()
         {
             RedirectToRouteResult result = null;
@@ -72,6 +72,7 @@ namespace QuantaeWebApp.Controllers
         /// /Section/Next
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult Next()
         {
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);

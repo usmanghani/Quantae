@@ -7,17 +7,21 @@ using System.Web.Routing;
 using System.Web.Security;
 using Quantae.ViewModels;
 using Quantae.Engine;
+using log4net;
+using log4net.Config;
 
 namespace QuantaeWebApp.Controllers
 {
     public class AccountController : Controller
     {
+        private static ILog log = LogManager.GetLogger(typeof(AccountController).Name);
 
         //
         // GET: /Account/LogOn
 
         public ActionResult LogOn()
         {
+            log.Info("LogOn Called");
             return View();
         }
 
@@ -27,6 +31,7 @@ namespace QuantaeWebApp.Controllers
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
+            log.Info("LogOn Called");
             if (ModelState.IsValid)
             {
                 // TODO: Add our code here to create session.
@@ -43,7 +48,7 @@ namespace QuantaeWebApp.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Lesson");
                     }
                 }
                 else
@@ -93,7 +98,7 @@ namespace QuantaeWebApp.Controllers
                 //if (createStatus == MembershipCreateStatus.Success)
                 {
                     FormsAuthentication.SetAuthCookie(createStatus.Token, false /* createPersistentCookie */);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Lesson");
                 }
                 else
                 {

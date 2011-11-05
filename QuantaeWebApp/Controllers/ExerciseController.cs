@@ -13,7 +13,7 @@ namespace QuantaeWebApp.Controllers
     {
         //
         // GET: /Exercise/
-
+        [Authorize]
         public ActionResult Index()
         {
             ISentenceSelectionEngine engine = new SentenceSelectionEngine();
@@ -26,6 +26,7 @@ namespace QuantaeWebApp.Controllers
             {
                 model = ExcerciseViewModelFactory.CreateExcerciseViewModel(result, profile);                                
             }
+
             return View(ViewNames.Exercise.ExerciseIndexView, model);            
         }
 
