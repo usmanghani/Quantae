@@ -21,7 +21,7 @@ namespace QuantaeWebApp.Controllers
 
         public ActionResult LogOn()
         {
-            log.Info("LogOn Called");
+            //log.Info("LogOn Called");
             return View();
         }
 
@@ -31,7 +31,7 @@ namespace QuantaeWebApp.Controllers
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
-            log.Info("LogOn Called");
+            //log.Info("LogOn Called");
             if (ModelState.IsValid)
             {
                 // TODO: Add our code here to create session.
