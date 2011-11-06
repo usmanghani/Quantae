@@ -14,8 +14,6 @@ namespace Quantae.ViewModels
         public List<string> TopicHistory { get; set; }
         public bool IsCurrentTopicNew { get; set; }
 
-        public LessonHubResponseModel ResponseModel { get; set; }
-
         public LessonHubViewModel()
         {
         }
@@ -41,7 +39,4 @@ namespace Quantae.ViewModels
         }
     }
 
-    public class LessonHubResponseModel
-    {
-    }
 }

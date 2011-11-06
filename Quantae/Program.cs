@@ -10,6 +10,7 @@ using Quantae.DataModel;
 using Quantae.Repositories;
 using MongoDB.Driver.Builders;
 using FluentCassandra.Types;
+using System.Configuration;
 
 namespace Quantae
 {
@@ -62,8 +63,9 @@ namespace Quantae
             //ts.Flush();
             //ts.Close();
 
-            QuantaeEngine.Init("QuantaeTestDb");
-            //TopicGraphUtilities.PopulateTopics(@"C:\graph.txt");
+            //QuantaeEngine.Init("QuantaeTestDb");
+            QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
+            TopicGraphUtilities.PopulateTopics(@"C:\graph.txt");
             SentenceUtilities.PopulateSentences(@"c:\sample data.txt", 1);
 
             //Repositories.Repositories.Users.Save(new UserProfile());

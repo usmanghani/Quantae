@@ -89,26 +89,18 @@ namespace QuantaeWebApp.Controllers
             return View(ViewNames.Lesson.LessonHubView, model);
         }
 
+        //
+        // GET: /Lesson/Continue/
         [Authorize]
         public ActionResult Continue()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Lesson/Continue/
-        [Authorize]
-        [HttpPost]
-        public ActionResult Continue(LessonHubViewModel viewModel)
         {
             return RedirectToAction("Index", "Section");
         }
 
         //
-        // POST: /Lesson/Restart/
+        // GET: /Lesson/Restart/
         [Authorize]
-        [HttpPost]
-        public ActionResult Restart(LessonHubViewModel viewModel)
+        public ActionResult Restart()
         {
             // PRE: Start Session.
             // PRE: Token in the cookie.
@@ -126,17 +118,10 @@ namespace QuantaeWebApp.Controllers
             return RedirectToAction("Index", "Section");
         }
 
+        //
+        // GET: /Lesson/Skip/
         [Authorize]
         public ActionResult Skip()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Lesson/Skip/
-        [Authorize]
-        [HttpPost]
-        public ActionResult Skip(LessonHubViewModel viewModel)
         {
             // PRE: Start Session
             // PRE: Token in the cookie.
@@ -159,10 +144,9 @@ namespace QuantaeWebApp.Controllers
         }
 
         //
-        // POST: /Lesson/Next/
+        // GET: /Lesson/Next/
         [Authorize]
-        [HttpPost]
-        public ActionResult Next(LessonHubViewModel viewModel)
+        public ActionResult Next()
         {
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
             TopicOperations.MarkCurrentTopicComplete(profile, false);
