@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,14 +13,15 @@ using log4net.Config;
 namespace QuantaeWebApp.Controllers
 {
     public class AccountController : Controller
-    {
+	{
+		
         private static ILog log = LogManager.GetLogger(typeof(AccountController).Name);
 
         //
         // GET: /Account/LogOn
 
         public ActionResult LogOn()
-        {
+		{
             //log.Info("LogOn Called");
             return View();
         }
@@ -207,3 +208,4 @@ namespace QuantaeWebApp.Controllers
         #endregion
     }
 }
+

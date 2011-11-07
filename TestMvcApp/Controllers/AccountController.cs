@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,11 +6,36 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using TestMvcApp.Models;
+using DotNetOpenAuth.ApplicationBlock;
+using DotNetOpenAuth.OAuth;
+using DotNetOpenAuth.OpenId;
+using TestMvcApp.Services;
 
 namespace TestMvcApp.Controllers
 {
     public class AccountController : Controller
     {
+        private static InMemoryTokenManager tokenManager = new InMemoryTokenManager("qSCMwxRpDEtHFZX0DJmcw", "EjB0G4L1cZhIjnS2TSkyMZvIlJysNe7Vn2fGbmRTgVI");
+
+        public ActionResult StartTwitterAuth()
+        {
+            var client = new TwitterClient(tokenManager);
+            client.StartAuthentication();
+            return null;
+        }
+
+        public ActionResult TwitterCallback()
+        {
+            var client = new TwitterClient(tokenManager);
+            if (client.FinishAuthentication())
+            {
+                return new RedirectResult("/");
+            }
+
+
+            // show error
+            return View("LogOn");
+        }
 
         //
         // GET: /Account/LogOn
@@ -191,3 +216,4 @@ namespace TestMvcApp.Controllers
         #endregion
     }
 }
+

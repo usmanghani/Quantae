@@ -12,3 +12,5 @@ C:\code\QEnlist\TestMvcApp\bin\EntityFramework.xml
 C:\code\QEnlist\TestMvcApp\obj\Debug\ResolveAssemblyReference.cache
 C:\code\QEnlist\TestMvcApp\obj\Debug\TestMvcApp.dll
 C:\code\QEnlist\TestMvcApp\obj\Debug\TestMvcApp.pdb
+D:\Quantae\TestMvcApp\bin\DotNetOpenAuth.dll
+D:\Quantae\TestMvcApp\bin\DotNetOpenAuth.xml

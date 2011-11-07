@@ -7,15 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransliterationLibrary", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\DataModel.csproj", "{84696870-FD21-43F4-9FD9-6C7D01A32FC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeAdminWebApp", "QuantaeAdminWebApp\QuantaeAdminWebApp.csproj", "{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{A1508D2D-6E65-4AB4-B34A-57AE20C73434}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeEngine", "QuantaeEngine\QuantaeEngine.csproj", "{FDFB052E-3E57-4A39-B064-E98846A66F52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeWebApp", "QuantaeWebApp\QuantaeWebApp.csproj", "{76743732-65F7-48EE-ADD9-7B5CBD7584AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeAdminWebApp.Tests", "QuantaeAdminWebApp.Tests\QuantaeAdminWebApp.Tests.csproj", "{5C4733EF-A501-4398-B735-074864CDFAB5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantaeWebApp.Tests", "QuantaeWebApp.Tests\QuantaeWebApp.Tests.csproj", "{848B9A84-97DA-4075-AC1B-6C3877E76DB9}"
 EndProject
@@ -61,16 +57,6 @@ Global
 		{84696870-FD21-43F4-9FD9-6C7D01A32FC7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{84696870-FD21-43F4-9FD9-6C7D01A32FC7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{84696870-FD21-43F4-9FD9-6C7D01A32FC7}.Release|x86.ActiveCfg = Release|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E9070790-8C86-4B45-83D9-AE8DD64E9D4E}.Release|x86.ActiveCfg = Release|Any CPU
 		{A1508D2D-6E65-4AB4-B34A-57AE20C73434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1508D2D-6E65-4AB4-B34A-57AE20C73434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1508D2D-6E65-4AB4-B34A-57AE20C73434}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -101,16 +87,6 @@ Global
 		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{76743732-65F7-48EE-ADD9-7B5CBD7584AD}.Release|x86.ActiveCfg = Release|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{5C4733EF-A501-4398-B735-074864CDFAB5}.Release|x86.ActiveCfg = Release|Any CPU
 		{848B9A84-97DA-4075-AC1B-6C3877E76DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{848B9A84-97DA-4075-AC1B-6C3877E76DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{848B9A84-97DA-4075-AC1B-6C3877E76DB9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
