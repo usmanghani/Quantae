@@ -14,3 +14,9 @@ C:\code\QEnlist\TestMvcApp\obj\Debug\TestMvcApp.dll
 C:\code\QEnlist\TestMvcApp\obj\Debug\TestMvcApp.pdb
 D:\Quantae\TestMvcApp\bin\DotNetOpenAuth.dll
 D:\Quantae\TestMvcApp\bin\DotNetOpenAuth.xml
+D:\Quantae\TestMvcApp\bin\Facebook.dll
+D:\Quantae\TestMvcApp\bin\Facebook.Web.dll
+D:\Quantae\TestMvcApp\bin\Facebook.Web.Mvc.dll
+D:\Quantae\TestMvcApp\bin\Facebook.xml
+D:\Quantae\TestMvcApp\bin\Facebook.Web.xml
+D:\Quantae\TestMvcApp\bin\Facebook.Web.Mvc.xml

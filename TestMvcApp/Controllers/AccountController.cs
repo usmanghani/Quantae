@@ -10,12 +10,15 @@ using DotNetOpenAuth.ApplicationBlock;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OpenId;
 using TestMvcApp.Services;
+using Facebook;
 
 namespace TestMvcApp.Controllers
 {
     public class AccountController : Controller
     {
-        private static InMemoryTokenManager tokenManager = new InMemoryTokenManager("qSCMwxRpDEtHFZX0DJmcw", "EjB0G4L1cZhIjnS2TSkyMZvIlJysNe7Vn2fGbmRTgVI");
+        private static InMemoryTokenManager tokenManager = new InMemoryTokenManager(
+            "qSCMwxRpDEtHFZX0DJmcw", 
+            "EjB0G4L1cZhIjnS2TSkyMZvIlJysNe7Vn2fGbmRTgVI");
 
         public ActionResult StartTwitterAuth()
         {
@@ -29,12 +32,21 @@ namespace TestMvcApp.Controllers
             var client = new TwitterClient(tokenManager);
             if (client.FinishAuthentication())
             {
-                return new RedirectResult("/");
+                FormsAuthentication.SetAuthCookie(client.UserName, true);
+                return RedirectToAction("Index", "Home");
             }
 
 
             // show error
             return View("LogOn");
+        }
+
+        public ActionResult FacebookAuth()
+        {
+            var oauthClient = new FacebookOAuthClient(FacebookApplication.Current);
+            //oauthClient.RedirectUri = new Uri(
+
+            return null;
         }
 
         //

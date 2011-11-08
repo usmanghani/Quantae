@@ -33,6 +33,8 @@ namespace Quantae.Engine
             int PrimaryTopic { get; set; }
             string CurrentColValue { get; set; }
             Sentence Sentence { get; set; }
+            bool IsExistingSentence { get; set; }
+            bool HasSentenceBeenCleared { get; set; }
         }
 
         private class ParserContext : IParserContext
@@ -57,7 +59,9 @@ namespace Quantae.Engine
             public int PrimaryTopic { get; set; }
             public string CurrentColValue { get; set; }
             public Sentence Sentence { get; set; }
-            public string CurrentColName{get;set;}
+            public string CurrentColName { get; set; }
+            public bool IsExistingSentence { get; set; }
+            public bool HasSentenceBeenCleared { get; set; }
         }
 
         private class VocabContext : IElementContext
@@ -214,15 +218,17 @@ namespace Quantae.Engine
             {
                 context.Sentence.SentenceText = context.CurrentColValue;
 
-                //Sentence sFromRepo = Repositories.Repositories.Sentences.FindOneAs(SentenceQueries.GetSentencesByText(context.Sentence.SentenceText));
+                Sentence sFromRepo = Repositories.Repositories.Sentences.FindOneAs(
+                    SentenceQueries.GetSentencesByText(context.Sentence.SentenceText));
 
-                //if (sFromRepo != null)
-                //{
-                //    if (sFromRepo.PrimaryTopic.ObjectId.Equals(context.Sentence.PrimaryTopic.ObjectId))
-                //    {
-                //        context.Sentence = sFromRepo;
-                //    }
-                //}
+                if (sFromRepo != null)
+                {
+                    if (sFromRepo.PrimaryTopic.ObjectId.Equals(context.Sentence.PrimaryTopic.ObjectId))
+                    {
+                        context.Sentence = sFromRepo;
+                        context.IsExistingSentence = true;
+                    }
+                }
 
                 return context;
             }
@@ -312,7 +318,9 @@ namespace Quantae.Engine
                 }
 
                 string vocabText = (context.VocabContexts[context.ValueIndex] as VocabContext).Text;
-                var results = Repositories.Repositories.Vocabulary.FindAs(VocabQueries.GetVocabEntryByText(vocabText), indexHint: "Text");
+                var results = Repositories.Repositories.Vocabulary.FindAs(
+                    VocabQueries.GetVocabEntryByText(vocabText), indexHint: "Text");
+
                 VocabEntry ve = results.FirstOrDefault();
                 if (ve != null)
                 {
@@ -376,7 +384,9 @@ namespace Quantae.Engine
                     GrammarAnalysisContext gac = (context.GrammarAnalysisContexts[tuple.Item1[0] - 1] as GrammarAnalysisContext);
                     gac.AnalysisEntry = context.CurrentColValue;
                     string startingRoleText = gac.GrammarRole;
-                    GrammarRole startingRole = Repositories.Repositories.GrammarRoles.FindOneAs(GrammarRoleQueries.GetGrammarRoleByName(startingRoleText));
+                    GrammarRole startingRole = Repositories.Repositories.GrammarRoles.FindOneAs(
+                        GrammarRoleQueries.GetGrammarRoleByName(startingRoleText));
+
                     if (startingRole == null)
                     {
                         ReportError(string.Format("Grammar Role not found {0}", startingRoleText), context);
@@ -386,7 +396,9 @@ namespace Quantae.Engine
                 }
 
                 gae.StartSegmentRolePair = new QuantaeTuple<List<int>, GrammarRoleHandle>(tuple.Item1, startingRoleHandle);
-                gae.EndSegmentRolePair = new QuantaeTuple<List<int>, GrammarRoleHandle>(tuple.Item2, new GrammarRoleHandle(results.First()));
+                gae.EndSegmentRolePair = new QuantaeTuple<List<int>, GrammarRoleHandle>(
+                    tuple.Item2, 
+                    new GrammarRoleHandle(results.First()));
 
                 context.Sentence.GrammarAnalysis.Add(gae);
 
@@ -671,9 +683,7 @@ namespace Quantae.Engine
             {
                 return str.Equals("Past") || str.Equals("PresentFuture") || str.Equals("Command");
             }
-
         }
-
 
         public static void PopulateSentences(string filename, int topic)
         {
@@ -731,16 +741,39 @@ namespace Quantae.Engine
 
                     context.CurrentColValue = token.Trim();
                     context = Columns.ProcessColumn(currentColName, context);
+
+                    if (context.IsExistingSentence && !context.HasSentenceBeenCleared)
+                    {
+                        ClearSentenceFields(context.Sentence);
+                        context.HasSentenceBeenCleared = true;
+                    }
                 }
 
-                Repositories.Repositories.Sentences.Save(sentence);
+                Repositories.Repositories.Sentences.Save(context.Sentence);
                 context.GrammarAnalysisContexts.Clear();
                 context.GrammarContexts.Clear();
                 context.IsGrammarEntryTranslation = false;
                 context.QuestionContexts.Clear();
                 context.VocabContexts.Clear();
                 context.ValueIndex = -1;
+                context.IsExistingSentence = false;
+                context.HasSentenceBeenCleared = false;
             }
+        }
+
+        private static void ClearSentenceFields(Sentence sentence)
+        {
+            // This method only clears the collection fields. It doesn't clear text, translation etc as those
+            // are already replaced while parsing.
+
+            sentence.ContextualAnalysis.Clear();
+            sentence.GrammarAnalysis.Clear();
+            sentence.VocabEntries.Clear();
+            sentence.GrammarEntries.Clear();
+            sentence.Questions.Clear();
+            sentence.RoleConjugationPairs.Clear();
+            sentence.SecondaryTopics.Clear();
+            sentence.Tags.Clear();
         }
     }
 }
