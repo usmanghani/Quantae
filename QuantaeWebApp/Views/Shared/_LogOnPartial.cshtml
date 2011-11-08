@@ -1,9 +1,10 @@
-@if(Request.IsAuthenticated) {
-    <text>Welcome @User.Identity.Name !
+@if (Request.IsAuthenticated)
+{
+    <text>Welcome <strong>@User.Identity.Name.Split(",".ToCharArray())[0]</strong> !
     [ @Html.ActionLink("Log Off", "LogOff", "Account") ]</text>
 }
-else {
+else
+{
     @:[ @Html.ActionLink("Log On", "LogOn", "Account") ]
     @:[ @Html.ActionLink("Register", "Register", "Account") ]
 }
-

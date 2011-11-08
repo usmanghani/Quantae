@@ -439,13 +439,6 @@ namespace Quantae.Engine
                 return context;
             }
 
-            public static IParserContext ProcessQuestion(IParserContext context)
-            {
-                // DO NOTHING FOR NOW.
-                // Since there is not value associated with this column, this method will never be called.
-                return context;
-            }
-
             public static IParserContext ProcessQuestionString(IParserContext context)
             {
                 QuestionContext qc = new QuestionContext();
