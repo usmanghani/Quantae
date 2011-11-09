@@ -11,6 +11,7 @@ using Quantae.Repositories;
 using MongoDB.Driver.Builders;
 using FluentCassandra.Types;
 using System.Configuration;
+using Microsoft.Office.Interop.Excel;
 
 namespace Quantae
 {
@@ -63,10 +64,60 @@ namespace Quantae
             //ts.Flush();
             //ts.Close();
 
+            ///// EXPORT FROM EXCEL
+            //var files = Directory.GetFiles(@"C:\Users\ughani\Dropbox\Database\Topic Excel Sheets", "Database - Topic*xlsm");
+
+            //var excelApp = new Application();
+            //excelApp.Visible = true;
+            //int i = 1;
+            //foreach (var file in files)
+            //{
+            //    Workbook workBook = excelApp.Workbooks.Open(file, UpdateLinks: 3);
+            //    workBook.RunAutoMacros(XlRunAutoMacro.xlAutoOpen);
+            //    workBook.Activate();
+            //    var outputSheet = (Worksheet)workBook.Sheets.get_Item("Output");
+            //    outputSheet.Activate();
+            //    string filename = string.Format("d:\\tmp\\topic{0}.txt", i.ToString("D3"));
+            //    try
+            //    {
+            //        outputSheet.SaveAs(Filename: filename, FileFormat: XlFileFormat.xlUnicodeText);
+            //    }
+            //    catch
+            //    {
+            //    }
+
+            //    i++;
+            //}
+
+            //excelApp.Quit();
+            //System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
+            //Environment.Exit(0);
+            /////// EXPORT FROM EXCEL
+
+            //// TRANSFORM TEXT FILES
+            //var files = Directory.GetFiles(@"d:\\tmp", "topic*.txt");
+            //foreach (var file in files)
+            //{
+            //    var lines = File.ReadAllLines(file);
+            //    File.Delete(file);
+            //    File.WriteAllLines(file, lines.Skip(1));
+            //}
+            
+            //Environment.Exit(0);
+            ///// TRANSFORM TEXT FILES
+
             //QuantaeEngine.Init("QuantaeTestDb");
             QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
             TopicGraphUtilities.PopulateTopics(@"C:\graph.txt");
-            SentenceUtilities.PopulateSentences(@"c:\sample data.txt", 1);
+            //SentenceUtilities.PopulateSentences(@"c:\sample data.txt", 1);
+
+            for (int topic = 1; topic <= 20; topic++)
+            {
+                string filename = string.Format("d:\\tmp\\topic{0}.txt", topic.ToString("D3"));
+                SentenceUtilities.PopulateSentences(filename, topic);
+            }
+
+            Environment.Exit(0);
 
             //Repositories.Repositories.Users.Save(new UserProfile());
 

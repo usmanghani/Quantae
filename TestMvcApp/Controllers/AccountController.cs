@@ -11,14 +11,15 @@ using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OpenId;
 using TestMvcApp.Services;
 using Facebook;
+using System.Configuration;
 
 namespace TestMvcApp.Controllers
 {
     public class AccountController : Controller
     {
         private static InMemoryTokenManager tokenManager = new InMemoryTokenManager(
-            "qSCMwxRpDEtHFZX0DJmcw", 
-            "EjB0G4L1cZhIjnS2TSkyMZvIlJysNe7Vn2fGbmRTgVI");
+            ConfigurationManager.AppSettings["twitterConsumerKey"],
+            ConfigurationManager.AppSettings["twitterConsumerSecret"]);
 
         public ActionResult StartTwitterAuth()
         {
@@ -43,8 +44,12 @@ namespace TestMvcApp.Controllers
 
         public ActionResult FacebookAuth()
         {
+            var request = System.Web.HttpContext.Current.Request;
+            var callBackUrl = new Uri(request.Url.Scheme + "://" +
+                     request.Url.Authority + "/Account/FacebookCallback");
+
             var oauthClient = new FacebookOAuthClient(FacebookApplication.Current);
-            //oauthClient.RedirectUri = new Uri(
+            oauthClient.RedirectUri = callBackUrl;
 
             return null;
         }

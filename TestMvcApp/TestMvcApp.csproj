@@ -84,7 +84,6 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\TestModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\FacebookClient.cs" />
     <Compile Include="Services\InMemoryTokenManager.cs" />
     <Compile Include="Services\TwitterClient.cs" />
   </ItemGroup>

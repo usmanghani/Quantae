@@ -653,7 +653,7 @@ namespace Quantae.Engine
 
                 rules = rules.Replace("\"", "");
 
-                string regex = @"\((?<role>.*?)\)\s*(?<conj>.*?);";
+                string regex = @"\((?<role>.*?)\)\s*(?<conj>.*?);?";
 
                 var matches = Regex.Matches(rules, regex);
                 Match m = matches[0];
