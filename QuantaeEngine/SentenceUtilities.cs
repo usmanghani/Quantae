@@ -89,6 +89,7 @@ namespace Quantae.Engine
             public string QuestionSubstring { get; set; }
             public QuestionDimension Dimension { get; set; }
             public List<string> QuestionSelections { get; set; }
+            public int BlankIndex { get; set; }
 
             public QuestionContext()
             {
@@ -122,6 +123,7 @@ namespace Quantae.Engine
             public const string QuestionSelection04 = "QuestionSelection04";
             public const string IncludedTopics = "IncludedTopics";
             public const string Tags = "Tags";
+            public const string BlankIndex = "BlankIndex";
 
             public static string[] ColumnNames = 
             {
@@ -148,7 +150,8 @@ namespace Quantae.Engine
                 QuestionSelection03,
                 QuestionSelection04,
                 IncludedTopics,
-                Tags
+                Tags,
+                BlankIndex,
             };
 
             public static Func<IParserContext, IParserContext> EmptyParseFunc = ctx => ctx;
@@ -178,7 +181,8 @@ namespace Quantae.Engine
                 { QuestionSelection03, ProcessQuestionSelection },
                 { QuestionSelection04, ProcessQuestionSelection },
                 { IncludedTopics, ProcessIncludedTopic },
-                { Tags, ProcessTag }
+                { Tags, ProcessTag },
+                {BlankIndex, ProcessBlankIndex },
             };
 
             public static bool IsColumnName(string token)
@@ -397,7 +401,7 @@ namespace Quantae.Engine
 
                 gae.StartSegmentRolePair = new QuantaeTuple<List<int>, GrammarRoleHandle>(tuple.Item1, startingRoleHandle);
                 gae.EndSegmentRolePair = new QuantaeTuple<List<int>, GrammarRoleHandle>(
-                    tuple.Item2, 
+                    tuple.Item2,
                     new GrammarRoleHandle(results.First()));
 
                 context.Sentence.GrammarAnalysis.Add(gae);
@@ -467,6 +471,14 @@ namespace Quantae.Engine
 
                 context.Sentence.Questions.Add(qc.Dimension, q);
 
+                return context;
+            }
+
+            public static IParserContext ProcessBlankIndex(IParserContext context)
+            {
+                QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
+                qc.BlankIndex = int.Parse(context.CurrentColValue);
+                context.Sentence.Questions[qc.Dimension].BlankPosition = qc.BlankIndex;
                 return context;
             }
 
