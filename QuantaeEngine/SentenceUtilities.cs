@@ -532,6 +532,11 @@ namespace Quantae.Engine
             {
                 int topicIndex = int.Parse(context.CurrentColValue.Trim());
                 Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(topicIndex));
+                if (t == null)
+                {
+                    ReportError(string.Format("Included Topic {0} not found.", topicIndex), context);
+                }
+
                 context.Sentence.SecondaryTopics.Add(new TopicHandle(t));
                 return context;
             }
@@ -676,7 +681,7 @@ namespace Quantae.Engine
             private static void ReportError(string message, IParserContext context)
             {
 
-                string msg = string.Format("{0} @ {1}, {2}", context.LineNumber, context.ColIndex);
+                string msg = string.Format("{0} @ {1}:{2},{3}", message, context.FileName, context.LineNumber, context.ColIndex);
                 throw new InvalidDataException(msg);
             }
 
