@@ -47,7 +47,7 @@ namespace Quantae.ViewModels
         public List<ViewModelAnswerChoice> AnswerChoices { get; set; }
         public string QuestionSubText { get; set; }
         public List<AnswerSegment> AnswerSegments { get; set; }
-        public int BlankIndex { get; set; }
+        public List<int> BlankIndices { get; set; }
         public int CorrectAnswerChoice { get; set; }
 
         public QuestionExcerciseViewModel(string text, string translation)
@@ -57,6 +57,7 @@ namespace Quantae.ViewModels
             SentenceType = SentenceTypes.VocabQuestion;
             AnswerChoices = new List<ViewModelAnswerChoice>();
             AnswerSegments = new List<AnswerSegment>();
+            BlankIndices = new List<int>();
         }
     }
 

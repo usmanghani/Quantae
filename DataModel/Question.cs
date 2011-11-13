@@ -11,7 +11,7 @@ namespace Quantae.DataModel
 
         public List<AnswerChoice> AnswerChoices { get; set; }
         public List<string> AnswerSegments { get; set; }
-        public int BlankPosition { get; set; }
+        public List<int> BlankPositions { get; set; }
         public int CorrectAnswerIndex { get; set; }
 
         /// <summary>

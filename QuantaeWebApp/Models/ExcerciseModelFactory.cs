@@ -131,7 +131,7 @@ namespace Quantae.ViewModels
             if (sentence.Questions.TryGetValue(sentenceResult.QuestionDimension, out q))
             {
                 model.QuestionSubText = q.QuestionSubstring;
-                model.BlankIndex = q.BlankPosition;
+                model.BlankIndices = q.BlankPositions;
                 model.CorrectAnswerChoice = q.CorrectAnswerIndex;
 
                 foreach (var a in q.AnswerChoices)

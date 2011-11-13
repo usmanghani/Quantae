@@ -25,10 +25,11 @@ namespace Quantae.Engine
             IDictionary<int, IElementContext> GrammarAnalysisContexts { get; }
             IDictionary<int, IElementContext> QuestionContexts { get; }
 
-            bool IsGrammarEntryTranslation { get; set; }
-            int ValueIndex { get; set; }
+            string FileName { get; set; }
             int LineNumber { get; set; }
             int ColIndex { get; set; }
+            bool IsGrammarEntryTranslation { get; set; }
+            int ValueIndex { get; set; }
             string CurrentColName { get; set; }
             int PrimaryTopic { get; set; }
             string CurrentColValue { get; set; }
@@ -52,10 +53,11 @@ namespace Quantae.Engine
             public IDictionary<int, IElementContext> GrammarAnalysisContexts { get; private set; }
             public IDictionary<int, IElementContext> QuestionContexts { get; private set; }
 
-            public bool IsGrammarEntryTranslation { get; set; }
-            public int ValueIndex { get; set; }
+            public string FileName { get; set; }
             public int LineNumber { get; set; }
             public int ColIndex { get; set; }
+            public bool IsGrammarEntryTranslation { get; set; }
+            public int ValueIndex { get; set; }
             public int PrimaryTopic { get; set; }
             public string CurrentColValue { get; set; }
             public Sentence Sentence { get; set; }
@@ -88,12 +90,12 @@ namespace Quantae.Engine
             public string QuestionString { get; set; }
             public string QuestionSubstring { get; set; }
             public QuestionDimension Dimension { get; set; }
-            public List<string> QuestionSelections { get; set; }
-            public int BlankIndex { get; set; }
+            public List<Tuple<string, AnswerDimension>> QuestionSelections { get; set; }
+            public List<int> BlankIndices { get; set; }
 
             public QuestionContext()
             {
-                this.QuestionSelections = new List<string>();
+                this.QuestionSelections = new List<Tuple<string, AnswerDimension>>();
             }
         }
 
@@ -114,6 +116,7 @@ namespace Quantae.Engine
             public const string Question3 = "Question3";
             public const string Question4 = "Question4";
             public const string Question5 = "Question5";
+            public const string Question6 = "Question6";
             public const string QuestionString = "QuestionString";
             public const string QuestionSubstring = "QuestionSubstring";
             public const string QuestionDimensionColumn = "QuestionDimension";
@@ -121,6 +124,10 @@ namespace Quantae.Engine
             public const string QuestionSelection02 = "QuestionSelection02";
             public const string QuestionSelection03 = "QuestionSelection03";
             public const string QuestionSelection04 = "QuestionSelection04";
+            public const string AnswerDimension01 = "AnswerDimension01";
+            public const string AnswerDimension02 = "AnswerDimension02";
+            public const string AnswerDimension03 = "AnswerDimension03";
+            public const string AnswerDimension04 = "AnswerDimension04";
             public const string IncludedTopics = "IncludedTopics";
             public const string Tags = "Tags";
             public const string BlankIndex = "BlankIndex";
@@ -142,6 +149,7 @@ namespace Quantae.Engine
                 Question3,
                 Question4,
                 Question5,
+                Question6,
                 QuestionString,
                 QuestionSubstring,
                 QuestionDimensionColumn,
@@ -149,6 +157,10 @@ namespace Quantae.Engine
                 QuestionSelection02,
                 QuestionSelection03,
                 QuestionSelection04,
+                AnswerDimension01,
+                AnswerDimension02,
+                AnswerDimension03,
+                AnswerDimension04,
                 IncludedTopics,
                 Tags,
                 BlankIndex,
@@ -173,6 +185,7 @@ namespace Quantae.Engine
                 { Question3, EmptyParseFunc },
                 { Question4, EmptyParseFunc },
                 { Question5, EmptyParseFunc },
+                { Question6, EmptyParseFunc },
                 { QuestionString, ProcessQuestionString },
                 { QuestionSubstring, ProcessQuestionSubstring },
                 { QuestionDimensionColumn, ProcessQuestionDimension }, 
@@ -180,9 +193,13 @@ namespace Quantae.Engine
                 { QuestionSelection02, ProcessQuestionSelection },
                 { QuestionSelection03, ProcessQuestionSelection },
                 { QuestionSelection04, ProcessQuestionSelection },
+                { AnswerDimension01, ProcessAnswerDimension },
+                { AnswerDimension02, ProcessAnswerDimension },
+                { AnswerDimension03, ProcessAnswerDimension },
+                { AnswerDimension04, ProcessAnswerDimension },
                 { IncludedTopics, ProcessIncludedTopic },
                 { Tags, ProcessTag },
-                {BlankIndex, ProcessBlankIndex },
+                { BlankIndex, ProcessBlankIndex },
             };
 
             public static bool IsColumnName(string token)
@@ -477,18 +494,37 @@ namespace Quantae.Engine
             public static IParserContext ProcessBlankIndex(IParserContext context)
             {
                 QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
-                qc.BlankIndex = int.Parse(context.CurrentColValue);
-                context.Sentence.Questions[qc.Dimension].BlankPosition = qc.BlankIndex;
+                qc.BlankIndices = ParseBlankIndices(context.CurrentColValue);
+                context.Sentence.Questions[qc.Dimension].BlankPositions = qc.BlankIndices;
                 return context;
             }
 
             public static IParserContext ProcessQuestionSelection(IParserContext context)
             {
                 QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
-                qc.QuestionSelections.Add(context.CurrentColValue);
+                Tuple<string, AnswerDimension> selection = Tuple.Create<string, AnswerDimension>(context.CurrentColValue, AnswerDimension.Unknown);
+                qc.QuestionSelections.Add(selection);
                 AnswerChoice choice = new AnswerChoice();
                 choice.Answer = context.CurrentColValue;
                 context.Sentence.Questions[qc.Dimension].AnswerChoices.Add(choice);
+                return context;
+            }
+
+            public static IParserContext ProcessAnswerDimension(IParserContext context)
+            {
+                if (string.IsNullOrWhiteSpace(context.CurrentColValue))
+                {
+                    return context;
+                }
+
+                QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
+                var answerDimension = (AnswerDimension)Enum.Parse(typeof(AnswerDimension), context.CurrentColValue);
+                int index = ExtractIndexFromColName(context.CurrentColName, "AnswerDimension");
+                string existingQuestionSelection = qc.QuestionSelections[index - 1].Item1;
+                qc.QuestionSelections[index - 1] = Tuple.Create(existingQuestionSelection, answerDimension);
+
+                context.Sentence.Questions[qc.Dimension].AnswerChoices[index - 1].Dimension = answerDimension;
+
                 return context;
             }
 
@@ -556,6 +592,7 @@ namespace Quantae.Engine
 
             private static Tuple<List<int>, List<int>> ParseArrows(string arrowsStr)
             {
+                arrowsStr = arrowsStr.Replace("\"", "");
                 string[] tokens = arrowsStr.Split("<--".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 string[] startIndicesStrings = tokens[1].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 string[] endIndicesStrings = tokens[0].Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -688,11 +725,31 @@ namespace Quantae.Engine
             {
                 return str.Equals("Past") || str.Equals("PresentFuture") || str.Equals("Command");
             }
+
+            private static int ExtractIndexFromColName(string colName, string prefix)
+            {
+                return int.Parse(colName.Replace(prefix, ""));
+            }
+
+            private static List<int> ParseBlankIndices(string colValue)
+            {
+                colValue = colValue.Replace("\"", "");
+                var tokens = colValue.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                List<int> result = new List<int>();
+                foreach (var token in tokens)
+                {
+                    result.Add(int.Parse(token));
+                }
+
+                return result;
+            }
         }
 
         public static void PopulateSentences(string filename, int topic)
         {
             IParserContext context = new ParserContext();
+            context.FileName = filename;
             context.PrimaryTopic = topic;
             context.LineNumber = 0;
 
@@ -717,7 +774,7 @@ namespace Quantae.Engine
                 context.ColIndex = 0;
                 foreach (var token in tokens)
                 {
-                    ++context.ColIndex;
+                    context.ColIndex += token.Length + 4;
                     if (token.Trim() == "###")
                     {
                         continue;
