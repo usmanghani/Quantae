@@ -32,22 +32,22 @@ namespace Quantae
 
         private void cmbPersonRule_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PersonRule = (PersonRule)Enum.Parse(typeof(PersonRule), cmbPersonRule.SelectedItem.ToString());
+            PersonRule = (PersonRule)Enum.Parse(typeof(PersonRule), cmbPersonRule.SelectedItem.ToString(), true);
         }
 
         private void cmbTenseRule_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TenseRule = (TenseRule)Enum.Parse(typeof(TenseRule), cmbTenseRule.SelectedItem.ToString());
+            TenseRule = (TenseRule)Enum.Parse(typeof(TenseRule), cmbTenseRule.SelectedItem.ToString(), true);
         }
 
         private void cmbNumber_SelectedIndexChanged(object sender, EventArgs e)
         {
-            NumberRule = (NumberRule)Enum.Parse(typeof(NumberRule), cmbNumber.SelectedItem.ToString());
+            NumberRule = (NumberRule)Enum.Parse(typeof(NumberRule), cmbNumber.SelectedItem.ToString(), true);
         }
 
         private void cmbGender_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GenderRule = (GenderRule)Enum.Parse(typeof(GenderRule), cmbGender.SelectedItem.ToString());
+            GenderRule = (GenderRule)Enum.Parse(typeof(GenderRule), cmbGender.SelectedItem.ToString(), true);
         }
     }
 }

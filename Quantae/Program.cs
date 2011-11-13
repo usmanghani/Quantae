@@ -111,8 +111,14 @@ namespace Quantae
             TopicGraphUtilities.PopulateTopics(@"C:\graph.txt");
             //SentenceUtilities.PopulateSentences(@"c:\sample data.txt", 1);
 
+            HashSet<int> skippedTopics = new HashSet<int>() { 18 };
             for (int topic = 1; topic <= 20; topic++)
             {
+                if(skippedTopics.Contains(topic))
+                {
+                    continue;
+                }
+
                 string filename = string.Format("d:\\tmp\\topic{0}.txt", topic.ToString("D3"));
                 SentenceUtilities.PopulateSentences(filename, topic);
             }

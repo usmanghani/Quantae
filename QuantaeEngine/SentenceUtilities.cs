@@ -478,7 +478,7 @@ namespace Quantae.Engine
             public static IParserContext ProcessQuestionDimension(IParserContext context)
             {
                 QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
-                qc.Dimension = (QuestionDimension)Enum.Parse(typeof(QuestionDimension), context.CurrentColValue);
+                qc.Dimension = (QuestionDimension)Enum.Parse(typeof(QuestionDimension), context.CurrentColValue, true);
                 // we now have enough information to insert this question into the sentence.
 
                 Question q = new Question();
@@ -518,7 +518,7 @@ namespace Quantae.Engine
                 }
 
                 QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
-                var answerDimension = (AnswerDimension)Enum.Parse(typeof(AnswerDimension), context.CurrentColValue);
+                var answerDimension = (AnswerDimension)Enum.Parse(typeof(AnswerDimension), context.CurrentColValue, true);
                 int index = ExtractIndexFromColName(context.CurrentColName, "AnswerDimension");
                 string existingQuestionSelection = qc.QuestionSelections[index - 1].Item1;
                 qc.QuestionSelections[index - 1] = Tuple.Create(existingQuestionSelection, answerDimension);
