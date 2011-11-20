@@ -74,80 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArrowTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ArrowTest.Designer.cs">
-      <DependentUpon>ArrowTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SentenceEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SentenceEditorForm.Designer.cs">
-      <DependentUpon>SentenceEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SlideControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SlideControl.Designer.cs">
-      <DependentUpon>SlideControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SlideEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SlideEditorForm.Designer.cs">
-      <DependentUpon>SlideEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TopicControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TopicControl.Designer.cs">
-      <DependentUpon>TopicControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TopicEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TopicEditorForm.Designer.cs">
-      <DependentUpon>TopicEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="VerbConjugationControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="VerbConjugationControl.Designer.cs">
-      <DependentUpon>VerbConjugationControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GrammarInterfaceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GrammarInterfaceForm.Designer.cs">
-      <DependentUpon>GrammarInterfaceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NounConjugationControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="NounConjugationControl.Designer.cs">
-      <DependentUpon>NounConjugationControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WordUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="WordUserControl.Designer.cs">
-      <DependentUpon>WordUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WordUserControl2.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="WordUserControl2.Designer.cs">
-      <DependentUpon>WordUserControl2.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -172,42 +100,6 @@
       <Project>{36AEA523-BB68-4761-B5E3-3ED14D643D62}</Project>
       <Name>TransliterationLibrary</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SentenceEditorForm.resx">
-      <DependentUpon>SentenceEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SlideControl.resx">
-      <DependentUpon>SlideControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SlideEditorForm.resx">
-      <DependentUpon>SlideEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TopicControl.resx">
-      <DependentUpon>TopicControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TopicEditorForm.resx">
-      <DependentUpon>TopicEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="VerbConjugationControl.resx">
-      <DependentUpon>VerbConjugationControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GrammarInterfaceForm.resx">
-      <DependentUpon>GrammarInterfaceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NounConjugationControl.resx">
-      <DependentUpon>NounConjugationControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WordUserControl.resx">
-      <DependentUpon>WordUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WordUserControl2.resx">
-      <DependentUpon>WordUserControl2.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="EFCodeFirstReadMe.txt" />
