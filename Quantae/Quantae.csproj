@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MongoParserRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -87,6 +88,10 @@
     <ProjectReference Include="..\DataModel\DataModel.csproj">
       <Project>{84696870-FD21-43F4-9FD9-6C7D01A32FC7}</Project>
       <Name>DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParserLibrary\ParserLibrary.csproj">
+      <Project>{5649793F-262F-47A3-A5DA-6A55CE338ECF}</Project>
+      <Name>ParserLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\QuantaeEngine\QuantaeEngine.csproj">
       <Project>{FDFB052E-3E57-4A39-B064-E98846A66F52}</Project>
