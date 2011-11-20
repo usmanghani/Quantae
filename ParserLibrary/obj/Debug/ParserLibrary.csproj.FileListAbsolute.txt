@@ -1,0 +1,13 @@
+D:\Quantae\ParserLibrary\obj\Debug\ResolveAssemblyReference.cache
+D:\Quantae\ParserLibrary\bin\Debug\ParserLibrary.dll
+D:\Quantae\ParserLibrary\bin\Debug\ParserLibrary.pdb
+D:\Quantae\ParserLibrary\bin\Debug\MongoDB.Bson.dll
+D:\Quantae\ParserLibrary\bin\Debug\MongoDB.Driver.dll
+D:\Quantae\ParserLibrary\bin\Debug\Quantae.DataModel.dll
+D:\Quantae\ParserLibrary\bin\Debug\Quantae.DataModel.pdb
+D:\Quantae\ParserLibrary\bin\Debug\MongoDB.Bson.pdb
+D:\Quantae\ParserLibrary\bin\Debug\MongoDB.Bson.xml
+D:\Quantae\ParserLibrary\bin\Debug\MongoDB.Driver.pdb
+D:\Quantae\ParserLibrary\bin\Debug\MongoDB.Driver.xml
+D:\Quantae\ParserLibrary\obj\Debug\ParserLibrary.dll
+D:\Quantae\ParserLibrary\obj\Debug\ParserLibrary.pdb
