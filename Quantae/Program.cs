@@ -12,72 +12,69 @@ using MongoDB.Driver.Builders;
 using FluentCassandra.Types;
 using System.Configuration;
 using Microsoft.Office.Interop.Excel;
+using Quantae.ParserLibrary;
 
 namespace Quantae
 {
-    class A { public string Aa = null; public ObjectId ID = ObjectId.GenerateNewId(); }
-    class B : A { public string Bb = null;}
-    class C : A { public string Cc = null;}
-
-    //class MyStateMachine : StateMachineWorkflowActivity
-    //{
-    //    public StateActivity state1 = new StateActivity("blah");
-    //    public StateActivity state2 = new StateActivity("blah2");
-
-    //    public MyStateMachine()
-    //    {
-    //        this.Activities.Add(state1);
-    //        this.Activities.Add(state2);
-    //        this.InitialStateName = state1.Name;
-    //        this.CompletedStateName = state2.Name;
-    //    }
-    //}
-
-
     class Program
     {
         static void Main(string[] args)
         {
-            //using (var db = new Quantae.DataModel.Sql.QuantaeDbContext())
-            //{
-            //    var user = new Quantae.DataModel.Sql.UserProfile() { Email = "usman.ghani@gmail.com", ObjectId = 1 };
-            //    db.Users.Add(user);
-            //    int recordsAffected = db.SaveChanges();
-            //    Console.WriteLine(recordsAffected);
-            //}
+            if (!Directory.Exists(@"C:\tmp"))
+            {
+                Directory.CreateDirectory(@"c:\tmp");
+            }
 
-            //Environment.Exit(1);
-
-            //DoCassandraStuff();
-            //var server = MongoServer.Create();
-            //server.Connect();
-            //var result = server.RunAdminCommand(new CommandDocument(new BsonElement("fsync", new BsonInt32(1))));
-
-            //System.Diagnostics.TraceSource ts = new System.Diagnostics.TraceSource("QuantaeTestTraceSource", SourceLevels.All);
-
-            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo", "format", new object[] { "arg1", "arg2" });
-            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo");
-            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo");
-            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo");
-            //ts.TraceData(TraceEventType.Critical, 1, "none", "helooo");
-
-            //ts.Flush();
-            //ts.Close();
-
-            ///// EXPORT FROM EXCEL
-            var files = Directory.GetFiles(@"C:\Users\ughani\Dropbox\Database\Topic Excel Sheets", "Database - Topic*xlsm");
+            QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
+            MongoParserRepository repository = new MongoParserRepository();
+            TopicsParser topicsParser = new TopicsParser(repository);
 
             var excelApp = new Application();
-            excelApp.Visible = true;
+            //excelApp.Visible = true;
+
+            Workbook workBook = excelApp.Workbooks.Open(@"C:\Dropbox\Database\Grammar Topic - Dependency Graph.xlsx", UpdateLinks: 3);
+
+            workBook.RunAutoMacros(XlRunAutoMacro.xlAutoOpen);
+            workBook.Activate();
+            var outputSheet = (Worksheet)workBook.Sheets.get_Item("Output");
+            outputSheet.Activate();
+
+            string filename = @"c:\graph.txt";
+
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+
+            try
+            {
+                outputSheet.SaveAs(Filename: filename, FileFormat: XlFileFormat.xlUnicodeText);
+            }
+            catch
+            {
+            }
+
+            workBook.Close(SaveChanges: false);
+
+            excelApp.Quit();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
+
+            topicsParser.PopulateTopics(filename);
+
+            ///// EXPORT FROM EXCEL
+            var files = Directory.GetFiles(@"C:\Dropbox\Database\Topic Excel Sheets", "Database - Topic*xlsm");
+
+            excelApp = new Application();
+            //excelApp.Visible = true;
             int i = 1;
             foreach (var file in files)
             {
-                Workbook workBook = excelApp.Workbooks.Open(file, UpdateLinks: 3);
+                workBook = excelApp.Workbooks.Open(file, UpdateLinks: 3);
                 workBook.RunAutoMacros(XlRunAutoMacro.xlAutoOpen);
                 workBook.Activate();
-                var outputSheet = (Worksheet)workBook.Sheets.get_Item("Output");
+                outputSheet = (Worksheet)workBook.Sheets.get_Item("Output");
                 outputSheet.Activate();
-                string filename = string.Format("d:\\tmp\\topic{0}.txt", i.ToString("D3"));
+                filename = string.Format("c:\\tmp\\topic{0}.txt", i.ToString("D3"));
                 if (File.Exists(filename))
                 {
                     File.Delete(filename);
@@ -100,7 +97,7 @@ namespace Quantae
             /////// EXPORT FROM EXCEL
 
             //// TRANSFORM TEXT FILES
-            files = Directory.GetFiles(@"d:\\tmp", "topic*.txt");
+            files = Directory.GetFiles(@"c:\\tmp", "topic*.txt");
             foreach (var file in files)
             {
                 var lines = File.ReadAllLines(file);
@@ -109,13 +106,10 @@ namespace Quantae
             }
             ///// TRANSFORM TEXT FILES
 
-            //QuantaeEngine.Init("QuantaeTestDb");
-            QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
-            TopicGraphUtilities.PopulateTopics(@"C:\graph.txt");
-            //SentenceUtilities.PopulateSentences(@"c:\sample data.txt", 1);
+            HashSet<int> skippedTopics = new HashSet<int>();
 
-            HashSet<int> skippedTopics = new HashSet<int>(); 
-            //{ 18, 20 };
+            SentenceParser sentenceParser = new SentenceParser(repository);
+
             for (int topic = 1; topic <= 20; topic++)
             {
                 if(skippedTopics.Contains(topic))
@@ -123,61 +117,9 @@ namespace Quantae
                     continue;
                 }
 
-                string filename = string.Format("d:\\tmp\\topic{0}.txt", topic.ToString("D3"));
-                SentenceUtilities.PopulateSentences(filename, topic);
+                filename = string.Format("c:\\tmp\\topic{0}.txt", topic.ToString("D3"));
+                sentenceParser.PopulateSentences(filename, topic);
             }
-
-            //Repositories.Repositories.Users.Save(new UserProfile());
-
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    var cursor = Repositories.Repositories.Topics.Collection.FindAll();
-
-            //    cursor.SetSkip(i).SetSortOrder(SortBy.Ascending("Index")).SetFields("Index");
-
-            //    if (cursor.Size() > 0)
-            //    {
-            //        Console.WriteLine(cursor.Size() + "::" + cursor.ElementAt(0).Index);
-            //    }
-            //}
-
-            //TopicGraphUtilities.PopulateTopics("d:\\downloads\\dependencies-parseable.txt");
-            //TopicGraphUtilities.CreateForwardLinks();
-            //EnumerateTopics();
-
-            //UserProfile profile = CreateUserTopicHistory(userTopicHistory12);
-            //UserProfile profile2 = Repositories.Repositories.Users.FindOneAs(UserProfileQueries.GetUserByUserName("usman.ghani"));
-            //profile2.History.TopicHistory = profile.History.TopicHistory;
-            //Repositories.Repositories.Users.Save(profile2);
-
-            //TopicHandle topicHandle = TopicGraphOperations.GetNextTopic(profile);
-
-            //if (topicHandle != null)
-            //{
-            //    Console.WriteLine(Repositories.Repositories.Topics.GetItemByHandle(topicHandle).Index);
-            //}
-            //else
-            //{
-            //    Console.WriteLine("STUCK");
-            //}
-
-            //DoChains();
-
-            //Topic topic = Repositories.Repositories.Topics.GetItemByHandle(topicHandle);
-
-            //if (topic == null)
-            //{
-            //    Console.WriteLine("<null>");
-            //}
-            //else
-            //{
-            //    Console.WriteLine(topic.Index + " -> " + topic.TopicName);
-            //}
-
-            //CheckUserValidity();
-            //DoQuantaeDataModelStuff();
-            //DoGraphStuff();
-            //DoTransliterationStuff();
         }
 
         private static void DoChains()
@@ -207,14 +149,6 @@ namespace Quantae
             writer.WriteLine(">>>>>>>>>>><<<<<<<<<<<<<<<");
             writer.Flush();
             writer.Close();
-        }
-
-        private static void DoCassandraStuff()
-        {
-            using (var db = new FluentCassandra.CassandraContext(keyspace: "quantae", host: "localhost"))
-            {
-                var family = db.GetColumnFamily<UTF8Type, UTF8Type>("userprofiles");
-            }
         }
 
         private static int ShowChain(int p, int indent, StreamWriter writer)
@@ -432,16 +366,6 @@ namespace Quantae
             Console.WriteLine(up.UserID + "=>" + up.Email);
         }
 
-        //private static void DoWorkflowStuff()
-        //{
-        //    MyStateMachine statemachine = new MyStateMachine();
-        //    using (WorkflowRuntime runtime = new WorkflowRuntime())
-        //    {
-        //        runtime.StartRuntime();
-        //        WorkflowInstance instance = runtime.CreateWorkflow(typeof(MyStateMachine));
-        //        instance.Start();
-        //    }
-        //}
 
         private static void DoTransliterationStuff()
         {
@@ -458,7 +382,7 @@ namespace Quantae
             System.IO.File.WriteAllText("c:\\blah2", encoder.Decode(another));
         }
 
-        private static Quantae.DataModel.UserProfile CreateUserTopicHistory(Dictionary<int, bool> topicHistory)
+        private static UserProfile CreateUserTopicHistory(Dictionary<int, bool> topicHistory)
         {
             UserProfile profile = new UserProfile();
 
