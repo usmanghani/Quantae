@@ -58,5 +58,24 @@ namespace Quantae.ParserLibrary
         {
             Repositories.Repositories.GrammarRoles.Save(role);
         }
+<<<<<<< HEAD
+=======
+
+        public long GetTopicCount()
+        {
+            return Repositories.Repositories.Topics.CountItems();
+        }
+
+        public Topic GetTopicByName(string name)
+        {
+            return Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByName(name));
+
+        }
+
+        public void SaveTopic(Topic t)
+        {
+            Repositories.Repositories.Topics.Save(t);
+        }
+>>>>>>> 9494cc3c71e44ac8c4e65ed5dcf08038906fcbc4
     }
 }

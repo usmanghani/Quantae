@@ -11,3 +11,19 @@ D:\Quantae\ParserLibrary\bin\Debug\MongoDB.Driver.pdb
 D:\Quantae\ParserLibrary\bin\Debug\MongoDB.Driver.xml
 D:\Quantae\ParserLibrary\obj\Debug\ParserLibrary.dll
 D:\Quantae\ParserLibrary\obj\Debug\ParserLibrary.pdb
+<<<<<<< HEAD
+=======
+C:\Quantae\ParserLibrary\bin\Debug\ParserLibrary.dll
+C:\Quantae\ParserLibrary\bin\Debug\ParserLibrary.pdb
+C:\Quantae\ParserLibrary\bin\Debug\MongoDB.Bson.dll
+C:\Quantae\ParserLibrary\bin\Debug\MongoDB.Driver.dll
+C:\Quantae\ParserLibrary\bin\Debug\Quantae.DataModel.dll
+C:\Quantae\ParserLibrary\bin\Debug\Quantae.DataModel.pdb
+C:\Quantae\ParserLibrary\bin\Debug\MongoDB.Bson.pdb
+C:\Quantae\ParserLibrary\bin\Debug\MongoDB.Bson.xml
+C:\Quantae\ParserLibrary\bin\Debug\MongoDB.Driver.pdb
+C:\Quantae\ParserLibrary\bin\Debug\MongoDB.Driver.xml
+C:\Quantae\ParserLibrary\obj\Debug\ResolveAssemblyReference.cache
+C:\Quantae\ParserLibrary\obj\Debug\ParserLibrary.dll
+C:\Quantae\ParserLibrary\obj\Debug\ParserLibrary.pdb
+>>>>>>> 9494cc3c71e44ac8c4e65ed5dcf08038906fcbc4

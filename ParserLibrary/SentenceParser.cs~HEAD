@@ -5,98 +5,199 @@ using System.Text;
 using Quantae.DataModel;
 using System.IO;
 using System.Text.RegularExpressions;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Bson;
-using Quantae.Repositories;
 
-namespace Quantae.Engine
+namespace Quantae.ParserLibrary
 {
-    public class SentenceUtilities
+    internal interface IElementContext
     {
-        private interface IElementContext
+    }
+
+    internal interface IParserContext : IElementContext
+    {
+        IParserRepository RepositoryContext { get; }
+
+        IDictionary<int, IElementContext> VocabContexts { get; }
+        IDictionary<int, IElementContext> GrammarContexts { get; }
+        IDictionary<int, IElementContext> GrammarAnalysisContexts { get; }
+        IDictionary<int, IElementContext> QuestionContexts { get; }
+
+        string FileName { get; set; }
+        int LineNumber { get; set; }
+        int ColIndex { get; set; }
+        bool IsGrammarEntryTranslation { get; set; }
+        int ValueIndex { get; set; }
+        string CurrentColName { get; set; }
+        int PrimaryTopic { get; set; }
+        string CurrentColValue { get; set; }
+        Sentence Sentence { get; set; }
+        bool IsExistingSentence { get; set; }
+        bool HasSentenceBeenCleared { get; set; }
+    }
+
+    internal class ParserContext : IParserContext
+    {
+        public ParserContext(IParserRepository repositoryContext)
         {
+            this.RepositoryContext = repositoryContext;
+
+            this.VocabContexts = new Dictionary<int, IElementContext>();
+            this.GrammarContexts = new Dictionary<int, IElementContext>();
+            this.GrammarAnalysisContexts = new Dictionary<int, IElementContext>();
+            this.QuestionContexts = new Dictionary<int, IElementContext>();
         }
 
-        private interface IParserContext : IElementContext
-        {
-            IDictionary<int, IElementContext> VocabContexts { get; }
-            IDictionary<int, IElementContext> GrammarContexts { get; }
-            IDictionary<int, IElementContext> GrammarAnalysisContexts { get; }
-            IDictionary<int, IElementContext> QuestionContexts { get; }
+        public IParserRepository RepositoryContext { get; private set; }
 
-            string FileName { get; set; }
-            int LineNumber { get; set; }
-            int ColIndex { get; set; }
-            bool IsGrammarEntryTranslation { get; set; }
-            int ValueIndex { get; set; }
-            string CurrentColName { get; set; }
-            int PrimaryTopic { get; set; }
-            string CurrentColValue { get; set; }
-            Sentence Sentence { get; set; }
-            bool IsExistingSentence { get; set; }
-            bool HasSentenceBeenCleared { get; set; }
+        public IDictionary<int, IElementContext> VocabContexts { get; private set; }
+        public IDictionary<int, IElementContext> GrammarContexts { get; private set; }
+        public IDictionary<int, IElementContext> GrammarAnalysisContexts { get; private set; }
+        public IDictionary<int, IElementContext> QuestionContexts { get; private set; }
+
+        public string FileName { get; set; }
+        public int LineNumber { get; set; }
+        public int ColIndex { get; set; }
+        public bool IsGrammarEntryTranslation { get; set; }
+        public int ValueIndex { get; set; }
+        public int PrimaryTopic { get; set; }
+        public string CurrentColValue { get; set; }
+        public Sentence Sentence { get; set; }
+        public string CurrentColName { get; set; }
+        public bool IsExistingSentence { get; set; }
+        public bool HasSentenceBeenCleared { get; set; }
+    }
+
+    internal class VocabContext : IElementContext
+    {
+        public string Text { get; set; }
+        public string Translation { get; set; }
+        public string Conjugation { get; set; }
+    }
+
+    internal class GrammarEntryContext : IElementContext
+    {
+        public string Text { get; set; }
+        public string Translation { get; set; }
+    }
+
+    internal class GrammarAnalysisContext : IElementContext
+    {
+        public string GrammarRole { get; set; }
+        public string AnalysisEntry { get; set; }
+    }
+
+    internal class QuestionContext : IElementContext
+    {
+        public string QuestionString { get; set; }
+        public string QuestionSubstring { get; set; }
+        public QuestionDimension Dimension { get; set; }
+        public List<Tuple<string, AnswerDimension>> QuestionSelections { get; set; }
+        public List<int> BlankIndices { get; set; }
+
+        public QuestionContext()
+        {
+            this.QuestionSelections = new List<Tuple<string, AnswerDimension>>();
+        }
+    }
+
+    public class SentenceParser
+    {
+        IParserRepository repositoryContext;
+
+        public SentenceParser(IParserRepository repositoryContext)
+        {
+            this.repositoryContext = repositoryContext;
         }
 
-        private class ParserContext : IParserContext
+        public void PopulateSentences(string filename, int topic)
         {
-            public ParserContext()
+            IParserContext context = new ParserContext(this.repositoryContext);
+            context.FileName = filename;
+            context.PrimaryTopic = topic;
+            context.LineNumber = 0;
+
+            Topic primaryTopic = this.repositoryContext.GetTopicByIndex(topic);
+
+            var lines = File.ReadAllLines(filename);
+            foreach (var line in lines)
             {
-                this.VocabContexts = new Dictionary<int, IElementContext>();
-                this.GrammarContexts = new Dictionary<int, IElementContext>();
-                this.GrammarAnalysisContexts = new Dictionary<int, IElementContext>();
-                this.QuestionContexts = new Dictionary<int, IElementContext>();
+                ++context.LineNumber;
+                Sentence sentence = new Sentence();
+                sentence.PrimaryTopic = new TopicHandle(primaryTopic);
+                context.Sentence = sentence;
+
+                string currentColName = string.Empty;
+
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                var tokens = line.Split("\t".ToCharArray());
+                context.ColIndex = 0;
+                foreach (var token in tokens)
+                {
+                    context.ColIndex += token.Length + 4;
+                    if (token.Trim() == "###")
+                    {
+                        continue;
+                    }
+
+                    // 1. if the token is a column name.
+                    if (Columns.IsColumnName(token.Trim()))
+                    {
+                        if (token.Trim().Equals(Columns.WordTranslation)
+                            && currentColName.Equals(Columns.GrammarEntries))
+                        {
+                            context.IsGrammarEntryTranslation = true;
+                        }
+
+                        currentColName = token.Trim();
+                        context.CurrentColName = currentColName;
+                        context.ValueIndex = -1;
+                        continue;
+                    }
+
+                    // 2. else its a column value.
+                    if (Columns.ShouldMaintainValueIndexCount(currentColName))
+                    {
+                        context.ValueIndex++;
+                    }
+
+                    context.CurrentColValue = token.Trim();
+                    context = Columns.ProcessColumn(currentColName, context);
+
+                    if (context.IsExistingSentence && !context.HasSentenceBeenCleared)
+                    {
+                        ClearSentenceFields(context.Sentence);
+                        context.HasSentenceBeenCleared = true;
+                    }
+                }
+
+                this.repositoryContext.SaveSentence(context.Sentence);
+                context.GrammarAnalysisContexts.Clear();
+                context.GrammarContexts.Clear();
+                context.IsGrammarEntryTranslation = false;
+                context.QuestionContexts.Clear();
+                context.VocabContexts.Clear();
+                context.ValueIndex = -1;
+                context.IsExistingSentence = false;
+                context.HasSentenceBeenCleared = false;
             }
-
-            public IDictionary<int, IElementContext> VocabContexts { get; private set; }
-            public IDictionary<int, IElementContext> GrammarContexts { get; private set; }
-            public IDictionary<int, IElementContext> GrammarAnalysisContexts { get; private set; }
-            public IDictionary<int, IElementContext> QuestionContexts { get; private set; }
-
-            public string FileName { get; set; }
-            public int LineNumber { get; set; }
-            public int ColIndex { get; set; }
-            public bool IsGrammarEntryTranslation { get; set; }
-            public int ValueIndex { get; set; }
-            public int PrimaryTopic { get; set; }
-            public string CurrentColValue { get; set; }
-            public Sentence Sentence { get; set; }
-            public string CurrentColName { get; set; }
-            public bool IsExistingSentence { get; set; }
-            public bool HasSentenceBeenCleared { get; set; }
         }
 
-        private class VocabContext : IElementContext
+        private static void ClearSentenceFields(Sentence sentence)
         {
-            public string Text { get; set; }
-            public string Translation { get; set; }
-            public string Conjugation { get; set; }
-        }
+            // This method only clears the collection fields. It doesn't clear text, translation etc as those
+            // are already replaced while parsing.
 
-        private class GrammarEntryContext : IElementContext
-        {
-            public string Text { get; set; }
-            public string Translation { get; set; }
-        }
-
-        private class GrammarAnalysisContext : IElementContext
-        {
-            public string GrammarRole { get; set; }
-            public string AnalysisEntry { get; set; }
-        }
-
-        private class QuestionContext : IElementContext
-        {
-            public string QuestionString { get; set; }
-            public string QuestionSubstring { get; set; }
-            public QuestionDimension Dimension { get; set; }
-            public List<Tuple<string, AnswerDimension>> QuestionSelections { get; set; }
-            public List<int> BlankIndices { get; set; }
-
-            public QuestionContext()
-            {
-                this.QuestionSelections = new List<Tuple<string, AnswerDimension>>();
-            }
+            sentence.ContextualAnalysis.Clear();
+            sentence.GrammarAnalysis.Clear();
+            sentence.VocabEntries.Clear();
+            sentence.GrammarEntries.Clear();
+            sentence.Questions.Clear();
+            sentence.RoleConjugationPairs.Clear();
+            sentence.SecondaryTopics.Clear();
+            sentence.Tags.Clear();
         }
 
         private class Columns
@@ -239,8 +340,7 @@ namespace Quantae.Engine
             {
                 context.Sentence.SentenceText = context.CurrentColValue;
 
-                Sentence sFromRepo = Repositories.Repositories.Sentences.FindOneAs(
-                    SentenceQueries.GetSentencesByText(context.Sentence.SentenceText));
+                Sentence sFromRepo = context.RepositoryContext.GetSentenceByText(context.Sentence.SentenceText);
 
                 if (sFromRepo != null)
                 {
@@ -262,7 +362,7 @@ namespace Quantae.Engine
 
             public static IParserContext ProcessVocabEntry(IParserContext context)
             {
-                VocabEntryHandle handle = CreateVocabEntryIfNotExist(context.CurrentColValue);
+                VocabEntryHandle handle = CreateVocabEntryIfNotExist(context.RepositoryContext, context.CurrentColValue);
                 context.Sentence.VocabEntries.Add(handle);
 
                 VocabContext vc = new VocabContext() { Text = context.CurrentColValue };
@@ -282,14 +382,13 @@ namespace Quantae.Engine
                     }
 
                     string vocabText = (context.VocabContexts[context.ValueIndex] as VocabContext).Text;
-                    var results = Repositories.Repositories.Vocabulary.FindAs(
-                        VocabQueries.GetVocabEntryByText(vocabText), indexHint: "Text");
+                    var results = context.RepositoryContext.GetVocabEntriesByText(vocabText);
 
                     VocabEntry ve = results.FirstOrDefault();
                     if (ve != null)
                     {
                         ve.Translation = context.CurrentColValue;
-                        Repositories.Repositories.Vocabulary.Save(ve);
+                        context.RepositoryContext.SaveVocabEntry(ve);
                     }
                     else
                     {
@@ -308,14 +407,13 @@ namespace Quantae.Engine
                     }
 
                     string grammarEntryText = (context.GrammarContexts[context.ValueIndex] as GrammarEntryContext).Text;
-                    var results = Repositories.Repositories.GrammarEntries.FindAs(
-                        GrammarEntryQueries.GetGrammarEntryByText(grammarEntryText), indexHint: "Text");
+                    var results = context.RepositoryContext.GetGrammarEntriesByText(grammarEntryText);
 
                     GrammarEntry ge = results.FirstOrDefault();
                     if (ge != null)
                     {
                         ge.Translation = context.CurrentColValue;
-                        Repositories.Repositories.GrammarEntries.Save(ge);
+                        context.RepositoryContext.SaveGrammarEntry(ge);
                     }
                     else
                     {
@@ -339,14 +437,13 @@ namespace Quantae.Engine
                 }
 
                 string vocabText = (context.VocabContexts[context.ValueIndex] as VocabContext).Text;
-                var results = Repositories.Repositories.Vocabulary.FindAs(
-                    VocabQueries.GetVocabEntryByText(vocabText), indexHint: "Text");
+                var results = context.RepositoryContext.GetVocabEntriesByText(vocabText);
 
                 VocabEntry ve = results.FirstOrDefault();
                 if (ve != null)
                 {
                     ve.Conjugation = ParseConjugation(context.CurrentColValue);
-                    Repositories.Repositories.Vocabulary.Save(ve);
+                    context.RepositoryContext.SaveVocabEntry(ve);
                 }
                 else
                 {
@@ -360,7 +457,7 @@ namespace Quantae.Engine
 
             public static IParserContext ProcessGrammarEntry(IParserContext context)
             {
-                GrammarEntryHandle handle = CreateGrammarEntryIfNotExist(context.CurrentColValue);
+                GrammarEntryHandle handle = CreateGrammarEntryIfNotExist(context.RepositoryContext, context.CurrentColValue);
                 context.Sentence.GrammarEntries.Add(handle);
 
                 GrammarEntryContext gec = new GrammarEntryContext() { Text = context.CurrentColValue };
@@ -371,7 +468,7 @@ namespace Quantae.Engine
 
             public static IParserContext ProcessGrammarRole(IParserContext context)
             {
-                GrammarRoleHandle handle = CreateGrammarRoleIfNotExist(context.CurrentColValue);
+                GrammarRoleHandle handle = CreateGrammarRoleIfNotExist(context.RepositoryContext, context.CurrentColValue);
 
                 GrammarAnalysisContext gac = new GrammarAnalysisContext() { GrammarRole = context.CurrentColValue };
                 context.GrammarAnalysisContexts.Add(context.ValueIndex, gac);
@@ -388,7 +485,7 @@ namespace Quantae.Engine
                 }
 
                 string roleText = (context.GrammarAnalysisContexts[context.ValueIndex] as GrammarAnalysisContext).GrammarRole;
-                var results = Repositories.Repositories.GrammarRoles.FindAs(GrammarRoleQueries.GetGrammarRoleByName(roleText), indexHint: "RoleName");
+                var results = context.RepositoryContext.GetGrammarRolesByName(roleText);
 
                 if (results.Count() <= 0)
                 {
@@ -405,8 +502,7 @@ namespace Quantae.Engine
                     GrammarAnalysisContext gac = (context.GrammarAnalysisContexts[tuple.Item1[0] - 1] as GrammarAnalysisContext);
                     gac.AnalysisEntry = context.CurrentColValue;
                     string startingRoleText = gac.GrammarRole;
-                    GrammarRole startingRole = Repositories.Repositories.GrammarRoles.FindOneAs(
-                        GrammarRoleQueries.GetGrammarRoleByName(startingRoleText));
+                    GrammarRole startingRole = context.RepositoryContext.GetGrammarRoleByName(startingRoleText);
 
                     if (startingRole == null)
                     {
@@ -450,8 +546,8 @@ namespace Quantae.Engine
                 role = role.Trim();
                 if (!string.IsNullOrEmpty(role) && conjugation != null)
                 {
-                    CreateGrammarRoleIfNotExist(role);
-                    GrammarRole gr = Repositories.Repositories.GrammarRoles.FindOneAs(GrammarRoleQueries.GetGrammarRoleByName(role));
+                    CreateGrammarRoleIfNotExist(context.RepositoryContext, role);
+                    GrammarRole gr = context.RepositoryContext.GetGrammarRoleByName(role);
                     QuantaeTuple<GrammarRoleHandle, DataModel.Conjugation> tuple =
                         new QuantaeTuple<GrammarRoleHandle, DataModel.Conjugation>(new GrammarRoleHandle(gr), conjugation);
                     context.Sentence.RoleConjugationPairs.Add(tuple);
@@ -531,7 +627,7 @@ namespace Quantae.Engine
             public static IParserContext ProcessIncludedTopic(IParserContext context)
             {
                 int topicIndex = int.Parse(context.CurrentColValue.Trim());
-                Topic t = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(topicIndex));
+                Topic t = context.RepositoryContext.GetTopicByIndex(topicIndex);
                 if (t == null)
                 {
                     ReportError(string.Format("Included Topic {0} not found.", topicIndex), context);
@@ -547,49 +643,46 @@ namespace Quantae.Engine
                 return context;
             }
 
-            private static VocabEntryHandle CreateVocabEntryIfNotExist(string vocab)
+            private static VocabEntryHandle CreateVocabEntryIfNotExist(IParserRepository repositoryContext, string vocab)
             {
-                var results = Repositories.Repositories.Vocabulary.FindAs(
-                    VocabQueries.GetVocabEntryByText(vocab), indexHint: "Text");
+                var results = repositoryContext.GetVocabEntriesByText(vocab);
 
                 VocabEntry entry = results.FirstOrDefault();
                 if (entry == null)
                 {
                     entry = new VocabEntry();
                     entry.Text = vocab;
-                    Repositories.Repositories.Vocabulary.Save(entry);
+                    repositoryContext.SaveVocabEntry(entry);
                 }
 
                 return new VocabEntryHandle(entry);
             }
 
-            private static GrammarEntryHandle CreateGrammarEntryIfNotExist(string grammarEntry)
+            private static GrammarEntryHandle CreateGrammarEntryIfNotExist(IParserRepository repositoryContext, string grammarEntry)
             {
-                var results = Repositories.Repositories.GrammarEntries.FindAs(
-                    GrammarEntryQueries.GetGrammarEntryByText(grammarEntry), indexHint: "Text");
+                var results = repositoryContext.GetGrammarEntriesByText(grammarEntry);
 
                 GrammarEntry entry = results.FirstOrDefault();
                 if (entry == null)
                 {
                     entry = new GrammarEntry();
                     entry.Text = grammarEntry;
-                    Repositories.Repositories.GrammarEntries.Save(entry);
+                    repositoryContext.SaveGrammarEntry(entry);
                 }
 
                 return new GrammarEntryHandle(entry);
             }
 
-            private static GrammarRoleHandle CreateGrammarRoleIfNotExist(string role)
+            private static GrammarRoleHandle CreateGrammarRoleIfNotExist(IParserRepository repositoryContext, string role)
             {
-                var results = Repositories.Repositories.GrammarRoles.FindAs(
-                    GrammarRoleQueries.GetGrammarRoleByName(role), indexHint: "RoleName");
+                var results = repositoryContext.GetGrammarRolesByName(role);
 
                 GrammarRole gr = results.FirstOrDefault();
                 if (gr == null)
                 {
                     gr = new GrammarRole();
                     gr.RoleName = role;
-                    Repositories.Repositories.GrammarRoles.Save(gr);
+                    repositoryContext.SaveGrammarRole(gr);
                 }
 
                 return new GrammarRoleHandle(gr);
@@ -749,98 +842,6 @@ namespace Quantae.Engine
 
                 return result;
             }
-        }
-
-        public static void PopulateSentences(string filename, int topic)
-        {
-            IParserContext context = new ParserContext();
-            context.FileName = filename;
-            context.PrimaryTopic = topic;
-            context.LineNumber = 0;
-
-            Topic primaryTopic = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(topic));
-
-            var lines = File.ReadAllLines(filename);
-            foreach (var line in lines)
-            {
-                ++context.LineNumber;
-                Sentence sentence = new Sentence();
-                sentence.PrimaryTopic = new TopicHandle(primaryTopic);
-                context.Sentence = sentence;
-
-                string currentColName = string.Empty;
-
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                var tokens = line.Split("\t".ToCharArray());
-                context.ColIndex = 0;
-                foreach (var token in tokens)
-                {
-                    context.ColIndex += token.Length + 4;
-                    if (token.Trim() == "###")
-                    {
-                        continue;
-                    }
-
-                    // 1. if the token is a column name.
-                    if (Columns.IsColumnName(token.Trim()))
-                    {
-                        if (token.Trim().Equals(Columns.WordTranslation)
-                            && currentColName.Equals(Columns.GrammarEntries))
-                        {
-                            context.IsGrammarEntryTranslation = true;
-                        }
-
-                        currentColName = token.Trim();
-                        context.CurrentColName = currentColName;
-                        context.ValueIndex = -1;
-                        continue;
-                    }
-
-                    // 2. else its a column value.
-                    if (Columns.ShouldMaintainValueIndexCount(currentColName))
-                    {
-                        context.ValueIndex++;
-                    }
-
-                    context.CurrentColValue = token.Trim();
-                    context = Columns.ProcessColumn(currentColName, context);
-
-                    if (context.IsExistingSentence && !context.HasSentenceBeenCleared)
-                    {
-                        ClearSentenceFields(context.Sentence);
-                        context.HasSentenceBeenCleared = true;
-                    }
-                }
-
-                Repositories.Repositories.Sentences.Save(context.Sentence);
-                context.GrammarAnalysisContexts.Clear();
-                context.GrammarContexts.Clear();
-                context.IsGrammarEntryTranslation = false;
-                context.QuestionContexts.Clear();
-                context.VocabContexts.Clear();
-                context.ValueIndex = -1;
-                context.IsExistingSentence = false;
-                context.HasSentenceBeenCleared = false;
-            }
-        }
-
-        private static void ClearSentenceFields(Sentence sentence)
-        {
-            // This method only clears the collection fields. It doesn't clear text, translation etc as those
-            // are already replaced while parsing.
-
-            sentence.ContextualAnalysis.Clear();
-            sentence.GrammarAnalysis.Clear();
-            sentence.VocabEntries.Clear();
-            sentence.GrammarEntries.Clear();
-            sentence.Questions.Clear();
-            sentence.RoleConjugationPairs.Clear();
-            sentence.SecondaryTopics.Clear();
-            sentence.Tags.Clear();
         }
     }
 }
