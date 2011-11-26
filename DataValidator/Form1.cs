@@ -123,75 +123,75 @@ namespace DataValidator
         private void DoSentenceParsingLogic(string folderName)
         {
             string intermediatedirectoryname = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "intermediate-sentence-parser-store");
-            //if (!Directory.Exists(intermediatedirectoryname))
-            //{
-            //    Directory.CreateDirectory(intermediatedirectoryname);
-            //}
+            if (!Directory.Exists(intermediatedirectoryname))
+            {
+                Directory.CreateDirectory(intermediatedirectoryname);
+            }
 
-            //txtSentenceParsingLog.AppendText("Exporting from Excel!" + Environment.NewLine);
+            txtSentenceParsingLog.AppendText("Exporting from Excel!" + Environment.NewLine);
 
+            ///// EXPORT FROM EXCEL
+            var files = Directory.GetFiles(folderName, "Database - Topic*xlsm");
+
+            var excelApp = new Microsoft.Office.Interop.Excel.Application();
+            //excelApp.Visible = true;
+            int i = 1;
+            foreach (var file in files)
+            {
+                txtSentenceParsingLog.AppendText(string.Format("Exporting file: {0}{1}", file, Environment.NewLine));
+
+                Workbook workBook = excelApp.Workbooks.Open(file, UpdateLinks: 3);
+                workBook.RunAutoMacros(XlRunAutoMacro.xlAutoOpen);
+                workBook.Activate();
+                var outputSheet = (Worksheet)workBook.Sheets.get_Item("Output");
+                outputSheet.Activate();
+                string filename = string.Format("{0}\\topic{1}.txt", intermediatedirectoryname, i.ToString("D3"));
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
+
+                try
+                {
+                    outputSheet.SaveAs(Filename: filename, FileFormat: XlFileFormat.xlUnicodeText);
+                }
+                catch
+                {
+                }
+
+                workBook.Close(SaveChanges: false);
+                i++;
+
+                System.Windows.Forms.Application.DoEvents();
+            }
+
+            excelApp.Quit();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
             /////// EXPORT FROM EXCEL
-            //var files = Directory.GetFiles(folderName, "Database - Topic*xlsm");
 
-            //var excelApp = new Microsoft.Office.Interop.Excel.Application();
-            ////excelApp.Visible = true;
-            //int i = 1;
-            //foreach (var file in files)
-            //{
-            //    txtSentenceParsingLog.AppendText(string.Format("Exporting file: {0}{1}", file, Environment.NewLine));
+            txtSentenceParsingLog.AppendText("Done exporting from excel!" + Environment.NewLine);
 
-            //    Workbook workBook = excelApp.Workbooks.Open(file, UpdateLinks: 3);
-            //    workBook.RunAutoMacros(XlRunAutoMacro.xlAutoOpen);
-            //    workBook.Activate();
-            //    var outputSheet = (Worksheet)workBook.Sheets.get_Item("Output");
-            //    outputSheet.Activate();
-            //    string filename = string.Format("{0}\\topic{1}.txt", intermediatedirectoryname, i.ToString("D3"));
-            //    if (File.Exists(filename))
-            //    {
-            //        File.Delete(filename);
-            //    }
-
-            //    try
-            //    {
-            //        outputSheet.SaveAs(Filename: filename, FileFormat: XlFileFormat.xlUnicodeText);
-            //    }
-            //    catch
-            //    {
-            //    }
-
-            //    workBook.Close(SaveChanges: false);
-            //    i++;
-
-            //    System.Windows.Forms.Application.DoEvents();
-            //}
-
-            //excelApp.Quit();
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
-            ///////// EXPORT FROM EXCEL
-
-            //txtSentenceParsingLog.AppendText("Done exporting from excel!" + Environment.NewLine);
-
-            //txtSentenceParsingLog.AppendText("Cleaning up files" + Environment.NewLine);
+            txtSentenceParsingLog.AppendText("Cleaning up files" + Environment.NewLine);
 
             ////// TRANSFORM TEXT FILES
-            
-            //files = Directory.GetFiles(intermediatedirectoryname, "topic*.txt");
-            
-            //foreach (var file in files)
-            //{
-            //    txtSentenceParsingLog.AppendText(string.Format("Cleaning file {0}{1}", file, Environment.NewLine));
-            //    var lines = File.ReadAllLines(file);
-            //    File.Delete(file);
-            //    File.WriteAllLines(file, lines.Skip(1));
-            //    System.Windows.Forms.Application.DoEvents();
-            //}
+
+            files = Directory.GetFiles(intermediatedirectoryname, "topic*.txt");
+
+            foreach (var file in files)
+            {
+                txtSentenceParsingLog.AppendText(string.Format("Cleaning file {0}{1}", file, Environment.NewLine));
+                var lines = File.ReadAllLines(file);
+                File.Delete(file);
+                File.WriteAllLines(file, lines.Skip(1));
+                System.Windows.Forms.Application.DoEvents();
+            }
 
             /////// TRANSFORM TEXT FILES
 
-            //txtSentenceParsingLog.AppendText("Done cleaning up files!" + Environment.NewLine);
+            txtSentenceParsingLog.AppendText("Done cleaning up files!" + Environment.NewLine);
 
 
-            //txtSentenceParsingLog.AppendText("Parsing sentences now... Be patient" + Environment.NewLine);
+            txtSentenceParsingLog.AppendText("Parsing sentences now... Be patient" + Environment.NewLine);
 
             HashSet<int> skippedTopics = new HashSet<int>();
 
