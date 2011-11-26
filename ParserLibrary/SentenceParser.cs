@@ -8,6 +8,25 @@ using System.Text.RegularExpressions;
 
 namespace Quantae.ParserLibrary
 {
+    public class ParsingException : Exception
+    {
+        internal ParsingException(IParserContext context, Exception innerException)
+            : base(ComposeMessage(context), innerException)
+        {
+        }
+
+        private static string ComposeMessage(IParserContext context)
+        {
+            return string.Format(
+                "{0},{1}@{2}: Col: {3}, Value: {4}", 
+                context.LineNumber, 
+                context.ColIndex, 
+                context.FileName, 
+                context.CurrentColName, 
+                context.CurrentColValue);
+        }
+    }
+
     internal interface IElementContext
     {
     }
@@ -111,77 +130,85 @@ namespace Quantae.ParserLibrary
         public void PopulateSentences(string filename, int topic)
         {
             IParserContext context = new ParserContext(this.repositoryContext);
-            context.FileName = filename;
-            context.PrimaryTopic = topic;
-            context.LineNumber = 0;
-
-            Topic primaryTopic = this.repositoryContext.GetTopicByIndex(topic);
-
-            var lines = File.ReadAllLines(filename);
-            foreach (var line in lines)
+            try
             {
-                ++context.LineNumber;
-                Sentence sentence = new Sentence();
-                sentence.PrimaryTopic = new TopicHandle(primaryTopic);
-                context.Sentence = sentence;
+                context.FileName = filename;
+                context.PrimaryTopic = topic;
+                context.LineNumber = 0;
 
-                string currentColName = string.Empty;
+                Topic primaryTopic = this.repositoryContext.GetTopicByIndex(topic);
 
-                if (string.IsNullOrWhiteSpace(line))
+                var lines = File.ReadAllLines(filename);
+                foreach (var line in lines)
                 {
-                    continue;
-                }
+                    ++context.LineNumber;
+                    Sentence sentence = new Sentence();
+                    sentence.PrimaryTopic = new TopicHandle(primaryTopic);
+                    context.Sentence = sentence;
 
-                var tokens = line.Split("\t".ToCharArray());
-                context.ColIndex = 0;
-                foreach (var token in tokens)
-                {
-                    context.ColIndex += token.Length + 4;
-                    if (token.Trim() == "###")
+                    string currentColName = string.Empty;
+
+                    if (string.IsNullOrWhiteSpace(line))
                     {
                         continue;
                     }
 
-                    // 1. if the token is a column name.
-                    if (Columns.IsColumnName(token.Trim()))
+                    var tokens = line.Split("\t".ToCharArray());
+                    context.ColIndex = 0;
+                    foreach (var token in tokens)
                     {
-                        if (token.Trim().Equals(Columns.WordTranslation)
-                            && currentColName.Equals(Columns.GrammarEntries))
+                        context.ColIndex += token.Length + 4;
+                        if (token.Trim() == "###")
                         {
-                            context.IsGrammarEntryTranslation = true;
+                            continue;
                         }
 
-                        currentColName = token.Trim();
-                        context.CurrentColName = currentColName;
-                        context.ValueIndex = -1;
-                        continue;
+                        // 1. if the token is a column name.
+                        if (Columns.IsColumnName(token.Trim()))
+                        {
+                            if (token.Trim().Equals(Columns.WordTranslation)
+                                && currentColName.Equals(Columns.GrammarEntries))
+                            {
+                                context.IsGrammarEntryTranslation = true;
+                            }
+
+                            currentColName = token.Trim();
+                            context.CurrentColName = currentColName;
+                            context.ValueIndex = -1;
+                            continue;
+                        }
+
+                        // 2. else its a column value.
+                        if (Columns.ShouldMaintainValueIndexCount(currentColName))
+                        {
+                            context.ValueIndex++;
+                        }
+
+                        context.CurrentColValue = token.Trim();
+                        context = Columns.ProcessColumn(currentColName, context);
+
+                        if (context.IsExistingSentence && !context.HasSentenceBeenCleared)
+                        {
+                            ClearSentenceFields(context.Sentence);
+                            context.HasSentenceBeenCleared = true;
+                        }
                     }
 
-                    // 2. else its a column value.
-                    if (Columns.ShouldMaintainValueIndexCount(currentColName))
-                    {
-                        context.ValueIndex++;
-                    }
-
-                    context.CurrentColValue = token.Trim();
-                    context = Columns.ProcessColumn(currentColName, context);
-
-                    if (context.IsExistingSentence && !context.HasSentenceBeenCleared)
-                    {
-                        ClearSentenceFields(context.Sentence);
-                        context.HasSentenceBeenCleared = true;
-                    }
+                    this.repositoryContext.SaveSentence(context.Sentence);
+                    context.GrammarAnalysisContexts.Clear();
+                    context.GrammarContexts.Clear();
+                    context.IsGrammarEntryTranslation = false;
+                    context.QuestionContexts.Clear();
+                    context.VocabContexts.Clear();
+                    context.ValueIndex = -1;
+                    context.IsExistingSentence = false;
+                    context.HasSentenceBeenCleared = false;
                 }
 
-                this.repositoryContext.SaveSentence(context.Sentence);
-                context.GrammarAnalysisContexts.Clear();
-                context.GrammarContexts.Clear();
-                context.IsGrammarEntryTranslation = false;
-                context.QuestionContexts.Clear();
-                context.VocabContexts.Clear();
-                context.ValueIndex = -1;
-                context.IsExistingSentence = false;
-                context.HasSentenceBeenCleared = false;
+            }
+            catch (Exception ex)
+            {
+                throw new ParsingException(context, ex);
             }
         }
 

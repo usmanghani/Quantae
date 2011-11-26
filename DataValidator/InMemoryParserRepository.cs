@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Quantae.ParserLibrary;
 using Quantae.DataModel;
+using MongoDB.Bson;
 
 namespace DataValidator
 {
@@ -23,6 +24,11 @@ namespace DataValidator
 
         public void SaveSentence(Sentence sentence)
         {
+            if (sentence.ObjectId == null)
+            {
+                sentence.ObjectId = BsonObjectId.GenerateNewId();
+            }
+
             sentences[sentence.SentenceText] = sentence;
         }
 
@@ -36,7 +42,7 @@ namespace DataValidator
         {
             if (!vocabEntries.ContainsKey(text))
             {
-                return null;
+                return Enumerable.Empty<VocabEntry>();
             }
 
             return new VocabEntry[] { vocabEntries[text] };
@@ -44,6 +50,11 @@ namespace DataValidator
 
         public void SaveVocabEntry(VocabEntry entry)
         {
+            if (entry.ObjectId == null)
+            {
+                entry.ObjectId = BsonObjectId.GenerateNewId();
+            }
+
             vocabEntries[entry.Text] = entry;
         }
 
@@ -51,7 +62,7 @@ namespace DataValidator
         {
             if (!grammarEntries.ContainsKey(text))
             {
-                return null;
+                return Enumerable.Empty<GrammarEntry>();
             }
 
             return new GrammarEntry[] { grammarEntries[text] };
@@ -59,6 +70,11 @@ namespace DataValidator
 
         public void SaveGrammarEntry(GrammarEntry entry)
         {
+            if (entry.ObjectId == null)
+            {
+                entry.ObjectId = BsonObjectId.GenerateNewId();
+            }
+
             grammarEntries[entry.Text] = entry;
         }
 
@@ -76,7 +92,7 @@ namespace DataValidator
         {
             if (!grammarRoles.ContainsKey(name))
             {
-                return null;
+                return Enumerable.Empty<GrammarRole>();
             }
 
             return new GrammarRole[] { GetGrammarRoleByName(name) };
@@ -84,6 +100,11 @@ namespace DataValidator
 
         public void SaveGrammarRole(GrammarRole role)
         {
+            if (role.ObjectId == null)
+            {
+                role.ObjectId = BsonObjectId.GenerateNewId();
+            }
+
             this.grammarRoles[role.RoleName] = role;
         }
 
@@ -107,6 +128,11 @@ namespace DataValidator
 
         public void SaveTopic(Topic t)
         {
+            if (t.ObjectId == null)
+            {
+                t.ObjectId = BsonObjectId.GenerateNewId();
+            }
+
             topics[t.Index] = t;
         }
     }
