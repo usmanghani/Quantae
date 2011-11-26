@@ -39,22 +39,12 @@ namespace Quantae.ViewModels
                     {
                         model.QuestionSubText = q.QuestionSubstring;
                         model.BlankIndex = q.BlankPosition;
-<<<<<<< HEAD
                         model.CorrectAnswerChoice = q.CorrectAnswerIndex;
-=======
->>>>>>> a4ca24a21ca721ff7267e5029e4de49630e764c4
 
                         for (int i = 0; i < q.AnswerChoices.Count; i++)
                         {
                             ViewModelAnswerChoice vmac = new ViewModelAnswerChoice();
                             vmac.Choice = q.AnswerChoices[i].Answer;
-<<<<<<< HEAD
-                            
-=======
-                            if (q.AnswerChoices[i].IsCorrect)
-                                model.CorrectAnswerChoice = i;
-
->>>>>>> a4ca24a21ca721ff7267e5029e4de49630e764c4
                             model.AnswerChoices.Add(vmac);
                         }
 
