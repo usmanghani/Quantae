@@ -90,12 +90,12 @@ namespace Quantae.ParserLibrary
         public string QuestionString { get; set; }
         public string QuestionSubstring { get; set; }
         public QuestionDimension Dimension { get; set; }
-        public List<Tuple<string, AnswerDimension>> QuestionSelections { get; set; }
+        public Dictionary<int, Tuple<string, AnswerDimension>> QuestionSelections { get; set; }
         public List<int> BlankIndices { get; set; }
 
         public QuestionContext()
         {
-            this.QuestionSelections = new List<Tuple<string, AnswerDimension>>();
+            this.QuestionSelections = new Dictionary<int, Tuple<string, AnswerDimension>>();
         }
     }
 
@@ -599,7 +599,8 @@ namespace Quantae.ParserLibrary
             {
                 QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
                 Tuple<string, AnswerDimension> selection = Tuple.Create<string, AnswerDimension>(context.CurrentColValue, AnswerDimension.Unknown);
-                qc.QuestionSelections.Add(selection);
+                int index = ExtractIndexFromColName(context.CurrentColName, "QuestionSelection");
+                qc.QuestionSelections.Add(index, selection);
                 AnswerChoice choice = new AnswerChoice();
                 choice.Answer = context.CurrentColValue;
                 context.Sentence.Questions[qc.Dimension].AnswerChoices.Add(choice);
@@ -616,8 +617,8 @@ namespace Quantae.ParserLibrary
                 QuestionContext qc = (QuestionContext)context.QuestionContexts[context.QuestionContexts.Count - 1];
                 var answerDimension = (AnswerDimension)Enum.Parse(typeof(AnswerDimension), context.CurrentColValue, true);
                 int index = ExtractIndexFromColName(context.CurrentColName, "AnswerDimension");
-                string existingQuestionSelection = qc.QuestionSelections[index - 1].Item1;
-                qc.QuestionSelections[index - 1] = Tuple.Create(existingQuestionSelection, answerDimension);
+                string existingQuestionSelection = qc.QuestionSelections[index].Item1;
+                qc.QuestionSelections[index] = Tuple.Create(existingQuestionSelection, answerDimension);
 
                 context.Sentence.Questions[qc.Dimension].AnswerChoices[index - 1].Dimension = answerDimension;
 

@@ -7,16 +7,12 @@ using System.Web.Routing;
 using System.Web.Security;
 using Quantae.ViewModels;
 using Quantae.Engine;
-using log4net;
-using log4net.Config;
 
 namespace QuantaeWebApp.Controllers
 {
     public class AccountController : Controller
 	{
 		
-        private static ILog log = LogManager.GetLogger(typeof(AccountController).Name);
-
         //
         // GET: /Account/LogOn
 

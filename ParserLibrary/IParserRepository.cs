@@ -8,7 +8,10 @@ namespace Quantae.ParserLibrary
 {
     public interface IParserRepository
     {
+        long GetTopicCount();
         Topic GetTopicByIndex(int topic);
+        Topic GetTopicByName(string name);
+        void SaveTopic(Topic t);
         void SaveSentence(Sentence sentence);
         Sentence GetSentenceByText(string text);
         IEnumerable<VocabEntry> GetVocabEntriesByText(string text);
