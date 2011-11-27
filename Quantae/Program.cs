@@ -20,12 +20,18 @@ namespace Quantae
     {
         static void Main(string[] args)
         {
+            QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
+
+            //Topic firstTopic = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(1));
+            //var sentences = Repositories.Repositories.Sentences.FindAs(SentenceQueries.GetSentencesByTopic(new TopicHandle(firstTopic)));
+            //Console.WriteLine(sentences.Count());
+            //Environment.Exit(1);
+
             if (!Directory.Exists(@"C:\tmp"))
             {
                 Directory.CreateDirectory(@"c:\tmp");
             }
 
-            QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
             MongoParserRepository repository = new MongoParserRepository();
             TopicsParser topicsParser = new TopicsParser(repository);
 

@@ -65,7 +65,7 @@ namespace Quantae.Repositories
     {
         public static IMongoQuery GetSentencesByTopic(TopicHandle handle)
         {
-            return Query.EQ("PrimaryTopic", new BsonObjectId(handle.ObjectId.Value));
+            return Query.EQ("PrimaryTopic", new BsonDocument("_id", new BsonObjectId(handle.ObjectId.Value)));
         }
 
         public static IMongoQuery GetSentencesByText(string sentenceText)

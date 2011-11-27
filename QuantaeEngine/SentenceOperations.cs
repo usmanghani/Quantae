@@ -25,7 +25,8 @@ namespace Quantae.Engine
             // 2. see if its not in history.
             // 3. return it.
 
-            var sentences = Repositories.Repositories.Sentences.GetAllItems();
+            //var sentences = Repositories.Repositories.Sentences.GetAllItems();
+            var sentences = Repositories.Repositories.Sentences.FindAs(SentenceQueries.GetSentencesByTopic(profile.CurrentState.CourseLocationInfo.CurrentTopic.Topic));
             foreach (var sentence in sentences)
             {
                 bool result = FilterManager.ApplyFilters(profile, sentence);

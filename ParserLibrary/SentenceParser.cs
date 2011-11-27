@@ -374,6 +374,7 @@ namespace Quantae.ParserLibrary
                     if (sFromRepo.PrimaryTopic.ObjectId.Equals(context.Sentence.PrimaryTopic.ObjectId))
                     {
                         context.Sentence = sFromRepo;
+                        context.Sentence.PrimaryTopic = new TopicHandle(context.RepositoryContext.GetTopicByIndex(context.PrimaryTopic));
                         context.IsExistingSentence = true;
                     }
                 }
