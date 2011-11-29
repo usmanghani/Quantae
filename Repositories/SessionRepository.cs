@@ -111,5 +111,11 @@ namespace Quantae.Repositories
         {
             this.Collection.Remove(query);
         }
+
+
+        public UserSession FindById(string id)
+        {
+            return this.GetSessionByToken(id);
+        }
     }
 }

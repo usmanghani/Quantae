@@ -13,6 +13,7 @@ using FluentCassandra.Types;
 using System.Configuration;
 using Microsoft.Office.Interop.Excel;
 using Quantae.ParserLibrary;
+using Quantae.BingSearchService;
 
 namespace Quantae
 {
@@ -20,6 +21,8 @@ namespace Quantae
     {
         static void Main(string[] args)
         {
+            // DoBingImageStuff();
+
             QuantaeEngine.Init(ConfigurationManager.AppSettings["MONGOHQ_DB"], ConfigurationManager.AppSettings["MONGOHQ_URL"]);
 
             //Topic firstTopic = Repositories.Repositories.Topics.FindOneAs(TopicQueries.GetTopicByIndex(1));
@@ -125,6 +128,38 @@ namespace Quantae
 
                 filename = string.Format("c:\\tmp\\topic{0}.txt", topic.ToString("D3"));
                 sentenceParser.PopulateSentences(filename, topic);
+            }
+        }
+
+        private static void DoBingImageStuff()
+        {
+            using (BingPortTypeClient client = new BingPortTypeClient())
+            {
+                var searchRequest = new SearchRequest();
+                searchRequest.Adult = BingSearchService.AdultOption.Strict;
+                searchRequest.AdultSpecified = true;
+                searchRequest.Market = "en-US";
+                searchRequest.Version = "2.2";
+                searchRequest.AppId = "C208A7E582F635C7768950E74C8FDC274A0EA7B4";
+                searchRequest.Sources = new BingSearchService.SourceType[] { SourceType.Image };
+                searchRequest.Query = "this is a book";
+
+                searchRequest.Image = new ImageRequest();
+                searchRequest.Image.Count = 10;
+                searchRequest.Image.CountSpecified = true;
+
+                searchRequest.Image.Offset = 0;
+                searchRequest.Image.OffsetSpecified = true;
+
+                var response = client.Search(searchRequest);
+
+                if (response.Image != null && response.Image.Results.Count() > 0)
+                {
+                    foreach (var ir in response.Image.Results)
+                    {
+                        Console.WriteLine(ir.MediaUrl);
+                    }
+                }
             }
         }
 

@@ -195,7 +195,7 @@ namespace DataValidator
 
             HashSet<int> skippedTopics = new HashSet<int>();
 
-            for (int topic = 1; topic <= 20; topic++)
+            for (int topic = 1; topic <= files.Count(); topic++)
             {
                 if (skippedTopics.Contains(topic))
                 {

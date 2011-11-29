@@ -116,5 +116,10 @@ namespace Quantae.Repositories
         {
             this.Collection.EnsureIndex(fieldNames);
         }
+
+        public TObject FindById(string id)
+        {
+            return this.Collection.FindOneByIdAs<TObject>(new BsonObjectId(id));
+        }
     }
 }
