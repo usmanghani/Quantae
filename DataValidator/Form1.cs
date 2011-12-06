@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using Quantae.ParserLibrary;
 using Microsoft.Office.Interop.Excel;
+using System.Text.RegularExpressions;
 
 namespace DataValidator
 {
@@ -19,7 +20,7 @@ namespace DataValidator
         SentenceParser sentenceParser = null;
 
         public Form1()
-        {    
+        {
             topicParser = new TopicsParser(repository);
             sentenceParser = new SentenceParser(repository);
 
@@ -135,7 +136,6 @@ namespace DataValidator
 
             var excelApp = new Microsoft.Office.Interop.Excel.Application();
             //excelApp.Visible = true;
-            int i = 1;
             foreach (var file in files)
             {
                 txtSentenceParsingLog.AppendText(string.Format("Exporting file: {0}{1}", file, Environment.NewLine));
@@ -145,7 +145,12 @@ namespace DataValidator
                 workBook.Activate();
                 var outputSheet = (Worksheet)workBook.Sheets.get_Item("Output");
                 outputSheet.Activate();
-                string filename = string.Format("{0}\\topic{1}.txt", intermediatedirectoryname, i.ToString("D3"));
+
+                var match = Regex.Match(file, @"Database - Topic (\d{3}) - .*xlsm");
+
+                int topic = int.Parse(match.Captures[0].Value);
+
+                string filename = string.Format("{0}\\topic{1}.txt", intermediatedirectoryname, topic.ToString("D3"));
                 if (File.Exists(filename))
                 {
                     File.Delete(filename);
@@ -160,7 +165,6 @@ namespace DataValidator
                 }
 
                 workBook.Close(SaveChanges: false);
-                i++;
 
                 System.Windows.Forms.Application.DoEvents();
             }
@@ -195,8 +199,9 @@ namespace DataValidator
 
             HashSet<int> skippedTopics = new HashSet<int>();
 
-            for (int topic = 1; topic <= files.Count(); topic++)
+            foreach (var file in files)
             {
+                int topic = int.Parse(file.Replace("topic", string.Empty).Replace(".txt", string.Empty));
                 if (skippedTopics.Contains(topic))
                 {
                     txtSentenceParsingLog.AppendText(string.Format("Skipping topic {0}{1}", topic, Environment.NewLine));
@@ -205,10 +210,10 @@ namespace DataValidator
 
                 System.Windows.Forms.Application.DoEvents();
 
-                string filename = string.Format("{0}\\topic{1}.txt", intermediatedirectoryname, topic.ToString("D3"));
-                txtSentenceParsingLog.AppendText(string.Format("Parsing file {0}{1}", filename, Environment.NewLine));
+                //string filename = string.Format("{0}\\topic{1}.txt", intermediatedirectoryname, topic.ToString("D3"));
+                txtSentenceParsingLog.AppendText(string.Format("Parsing file {0}{1}", file, Environment.NewLine));
 
-                sentenceParser.PopulateSentences(filename, topic);
+                sentenceParser.PopulateSentences(file, topic);
 
                 System.Windows.Forms.Application.DoEvents();
             }
