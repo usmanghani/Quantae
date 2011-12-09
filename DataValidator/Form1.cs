@@ -146,9 +146,9 @@ namespace DataValidator
                 var outputSheet = (Worksheet)workBook.Sheets.get_Item("Output");
                 outputSheet.Activate();
 
-                var match = Regex.Match(file, @"Database - Topic (\d{3}) - .*xlsm");
+                var match = Regex.Match(file, @"Database - Topic (?<number>\d{3}) - .*xlsm");
 
-                int topic = int.Parse(match.Captures[0].Value);
+                int topic = int.Parse(match.Groups["number"].Value);
 
                 string filename = string.Format("{0}\\topic{1}.txt", intermediatedirectoryname, topic.ToString("D3"));
                 if (File.Exists(filename))
@@ -201,7 +201,12 @@ namespace DataValidator
 
             foreach (var file in files)
             {
-                int topic = int.Parse(file.Replace("topic", string.Empty).Replace(".txt", string.Empty));
+                var temp = Path.GetFileName(file);
+                temp = temp.Replace("topic", string.Empty);
+                temp = temp.Replace(".txt", string.Empty);
+
+                int topic = int.Parse(temp);
+
                 if (skippedTopics.Contains(topic))
                 {
                     txtSentenceParsingLog.AppendText(string.Format("Skipping topic {0}{1}", topic, Environment.NewLine));

@@ -62,15 +62,22 @@ namespace SentenceMediaHandler
 
             var sentence = Repositories.Sentences.FindById(e.Node.Name);
 
-            //List<string> tags = new List<string>();
-            //foreach (var vocab in sentence.VocabEntries)
-            //{
-            //    VocabEntry entry = Repositories.Vocabulary.GetItemByHandle(vocab);
-            //    tags.Add(entry.Translation);
-            //}
-            
-            //GetImageUrlsForSentence(string.Join(",", tags.ToArray()));
-            GetImageUrlsForSentence(sentence.SentenceTranslation);
+            var query = sentence.SentenceTranslation;
+
+            if (rdoFlickr.Checked)
+            {
+                List<string> tags = new List<string>();
+                foreach (var vocab in sentence.VocabEntries)
+                {
+                    VocabEntry entry = Repositories.Vocabulary.GetItemByHandle(vocab);
+                    tags.Add(entry.Translation);
+                }
+
+                query = string.Join(",", tags.ToArray());
+            }
+
+            GetImageUrlsForSentence(query);
+
         }
 
         private void GetImageUrlsForSentence(string query)
