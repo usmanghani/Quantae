@@ -75,58 +75,64 @@ namespace SentenceMediaHandler
 
         private void GetImageUrlsForSentence(string query)
         {
-            //FlickrNet.Flickr flickr = new FlickrNet.Flickr("580162ba802ed95a92fc92494dcdecbf", "a6b6d63a6ce977c5");
-            //FlickrNet.PhotoSearchOptions options = new FlickrNet.PhotoSearchOptions();
-            //options.Tags = query;
-            //options.PerPage = 10;
-            ////options.IsCommons = true;
-            //options.Licenses.Add(FlickrNet.LicenseType.NoKnownCopyrightRestrictions);
-            //options.Licenses.Add(FlickrNet.LicenseType.AttributionCC);
-            //options.Licenses.Add(FlickrNet.LicenseType.AttributionNoDerivativesCC);
-            //options.Licenses.Add(FlickrNet.LicenseType.AttributionShareAlikeCC);
-
-            //var result = flickr.PhotosSearch(options);
-            //SearchCompleted(result);
-
-            //flickr.PhotosSearchAsync(options, result =>
-            //    {
-            //        if (result.HasError)
-            //        {
-            //            TextBox txtError = new TextBox();
-            //            txtError.Multiline = true;
-            //            txtError.Dock = DockStyle.Fill;
-            //            txtError.Text = result.Error.ToString();
-            //            flowLayoutPanel1.Controls.Add(txtError);
-
-            //            return;
-            //        }
-
-            //        var photos = result.Result;
-
-            //        SearchCompleted(photos);
-            //    });
-
-            using (BingPortTypeClient client = new BingPortTypeClient())
+            if (rdoFlickr.Checked)
             {
-                client.SearchCompleted += new EventHandler<SearchCompletedEventArgs>(client_SearchCompleted);
-                var searchRequest = new SearchRequest();
-                searchRequest.Adult = BingSearchService.AdultOption.Strict;
-                searchRequest.AdultSpecified = true;
-                searchRequest.Market = "en-US";
-                searchRequest.Version = "2.2";
-                searchRequest.AppId = "C208A7E582F635C7768950E74C8FDC274A0EA7B4";
-                searchRequest.Sources = new BingSearchService.SourceType[] { SourceType.Image };
-                searchRequest.Query = query;
+                FlickrNet.Flickr flickr = new FlickrNet.Flickr("580162ba802ed95a92fc92494dcdecbf", "a6b6d63a6ce977c5");
+                FlickrNet.PhotoSearchOptions options = new FlickrNet.PhotoSearchOptions();
+                options.Tags = query;
+                options.PerPage = 10;
+                //options.IsCommons = true;
+                options.Licenses.Add(FlickrNet.LicenseType.NoKnownCopyrightRestrictions);
+                options.Licenses.Add(FlickrNet.LicenseType.AttributionCC);
+                options.Licenses.Add(FlickrNet.LicenseType.AttributionNoDerivativesCC);
+                options.Licenses.Add(FlickrNet.LicenseType.AttributionShareAlikeCC);
 
-                searchRequest.Image = new ImageRequest();
-                searchRequest.Image.Count = 10;
-                progressBar1.Step = (int)100 / (int)searchRequest.Image.Count;
-                searchRequest.Image.CountSpecified = true;
+                var result = flickr.PhotosSearch(options);
+                SearchCompleted(result);
 
-                searchRequest.Image.Offset = 0;
-                searchRequest.Image.OffsetSpecified = true;
+                flickr.PhotosSearchAsync(options, asyncResult =>
+                    {
+                        if (asyncResult.HasError)
+                        {
+                            TextBox txtError = new TextBox();
+                            txtError.Multiline = true;
+                            txtError.Dock = DockStyle.Fill;
+                            txtError.Text = asyncResult.Error.ToString();
+                            flowLayoutPanel1.Controls.Add(txtError);
 
-                client.SearchAsync(searchRequest);
+                            return;
+                        }
+
+                        var photos = asyncResult.Result;
+
+                        SearchCompleted(photos);
+                    });
+            }
+
+            else if (rdoBing.Checked)
+            {
+                using (BingPortTypeClient client = new BingPortTypeClient())
+                {
+                    client.SearchCompleted += new EventHandler<SearchCompletedEventArgs>(client_SearchCompleted);
+                    var searchRequest = new SearchRequest();
+                    searchRequest.Adult = BingSearchService.AdultOption.Strict;
+                    searchRequest.AdultSpecified = true;
+                    searchRequest.Market = "en-US";
+                    searchRequest.Version = "2.2";
+                    searchRequest.AppId = "C208A7E582F635C7768950E74C8FDC274A0EA7B4";
+                    searchRequest.Sources = new BingSearchService.SourceType[] { SourceType.Image };
+                    searchRequest.Query = query;
+
+                    searchRequest.Image = new ImageRequest();
+                    searchRequest.Image.Count = 10;
+                    progressBar1.Step = (int)100 / (int)searchRequest.Image.Count;
+                    searchRequest.Image.CountSpecified = true;
+
+                    searchRequest.Image.Offset = 0;
+                    searchRequest.Image.OffsetSpecified = true;
+
+                    client.SearchAsync(searchRequest);
+                }
             }
         }
 
