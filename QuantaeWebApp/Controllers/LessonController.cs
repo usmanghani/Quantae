@@ -30,7 +30,7 @@ namespace QuantaeWebApp.Controllers
             // 3. Current Topic.
             // 4. Set Type of Slide to Lesson Hub. (Lesson Hub talks to the engine and does GetNextTopic.)
             // POST: Returns the Lesson Hub
-
+            DependencyResolver.Current.GetService<ILoggingService>().Logger.Info("lesson controller");
             UserProfile profile = UserOperations.GetUserProfileFromSession(User.Identity.Name);
             if (profile == null)
             {
