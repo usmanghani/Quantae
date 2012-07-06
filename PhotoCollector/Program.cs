@@ -9,7 +9,9 @@ using System.IO;
 namespace PhotoCollector
 {
     using AwsMTurkRequester;
-    
+    using System.Configuration;
+    using System.Xml.Serialization;
+
     class Program
     {
         const string TemplateRegexPattern = "(?<variable>{{.*?}})";
@@ -22,9 +24,21 @@ namespace PhotoCollector
             Dictionary<string, string> env = new Dictionary<string, string>() { { "QuestionText", "The girl is walking to the church" }, { "QuestionId", "1234" }, };
             string hitdataoriginal = File.ReadAllText("hitdata.xml");
             string hitdatatransformed = Transform(hitdataoriginal, env, false);
-            Console.WriteLine(hitdatatransformed);
+            //Console.WriteLine(hitdatatransformed);
             CreateHIT createHit = new CreateHIT();
+            createHit.AWSAccessKeyId = ConfigurationManager.AppSettings[AwsAccessKeyIdSettingName];
+            createHit.Credential = ConfigurationManager.AppSettings[AwsSecretAccessKeySettingName];
+            CreateHITRequest request = new CreateHITRequest();
+            createHit.Request = new CreateHITRequest[] { request };
             
+            XmlSerializer serializer = new XmlSerializer(typeof(QuestionForm));
+            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(hitdatatransformed));
+            QuestionForm questionForm = (QuestionForm)serializer.Deserialize(stream);
+            stream = new MemoryStream();
+            serializer.Serialize(stream, questionForm);
+            //Console.WriteLine(Encoding.UTF8.GetString(stream.GetBuffer()));
+            AWSMechanicalTurkRequesterPortTypeClient client = new AWSMechanicalTurkRequesterPortTypeClient();
+            client.CreateHIT(createHit);
         }
 
         static string Transform(string input, IDictionary<string, string> env, bool xmlEscapeValues)

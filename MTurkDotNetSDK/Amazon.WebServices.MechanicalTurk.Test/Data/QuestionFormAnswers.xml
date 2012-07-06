@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuestionFormAnswers xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionFormAnswers.xsd">
+<Answer>
+<QuestionIdentifier>Submit</QuestionIdentifier>
+<FreeText>Submit</FreeText>
+</Answer>
+<Answer>
+<QuestionIdentifier>category</QuestionIdentifier>
+<FreeText>retail</FreeText>
+</Answer>
+</QuestionFormAnswers>

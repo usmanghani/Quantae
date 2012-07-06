@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.WebServices.MechanicalTurk.Test", "Amazon.WebServices.MechanicalTurk.Test\Amazon.WebServices.MechanicalTurk.Test.csproj", "{8A805843-8FAF-4E7C-A443-0D27E23CEBE8}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.WebServices.MechanicalTurk.Domain", "Amazon.WebServices.MechanicalTurk.Domain\Amazon.WebServices.MechanicalTurk.Domain.csproj", "{F260F434-6789-4E55-8548-E9F477E8A0E5}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amazon.WebServices.MechanicalTurk", "Amazon.WebServices.MechanicalTurk\Amazon.WebServices.MechanicalTurk.csproj", "{41A1DA7C-40C1-4D44-9CB8-B6827E28BCC3}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A805843-8FAF-4E7C-A443-0D27E23CEBE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A805843-8FAF-4E7C-A443-0D27E23CEBE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A805843-8FAF-4E7C-A443-0D27E23CEBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A805843-8FAF-4E7C-A443-0D27E23CEBE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F260F434-6789-4E55-8548-E9F477E8A0E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F260F434-6789-4E55-8548-E9F477E8A0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F260F434-6789-4E55-8548-E9F477E8A0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F260F434-6789-4E55-8548-E9F477E8A0E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41A1DA7C-40C1-4D44-9CB8-B6827E28BCC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41A1DA7C-40C1-4D44-9CB8-B6827E28BCC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41A1DA7C-40C1-4D44-9CB8-B6827E28BCC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41A1DA7C-40C1-4D44-9CB8-B6827E28BCC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

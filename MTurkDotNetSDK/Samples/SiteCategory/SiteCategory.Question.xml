@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!-- Note the inclusion of the $urls variable which is defined as a field in the input file.-->
+<ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd">
+	<ExternalURL>http://s3.amazonaws.com/mturk/samples/sitecategory/externalpage.htm?url=${urls}</ExternalURL>	
+	<FrameHeight>400</FrameHeight>
+</ExternalQuestion>
