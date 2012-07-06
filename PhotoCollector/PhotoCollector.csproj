@@ -214,6 +214,16 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\AwsMTurkRequester\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MTurkDotNetSDK\Amazon.WebServices.MechanicalTurk.Domain\Amazon.WebServices.MechanicalTurk.Domain.csproj">
+      <Project>{F260F434-6789-4E55-8548-E9F477E8A0E5}</Project>
+      <Name>Amazon.WebServices.MechanicalTurk.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MTurkDotNetSDK\Amazon.WebServices.MechanicalTurk\Amazon.WebServices.MechanicalTurk.csproj">
+      <Project>{41A1DA7C-40C1-4D44-9CB8-B6827E28BCC3}</Project>
+      <Name>Amazon.WebServices.MechanicalTurk</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

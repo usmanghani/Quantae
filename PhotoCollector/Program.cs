@@ -8,9 +8,13 @@ using System.IO;
 
 namespace PhotoCollector
 {
-    using AwsMTurkRequester;
+    using Amazon.WebServices.MechanicalTurk;
+    using Amazon.WebServices.MechanicalTurk.Advanced;
+    using Amazon.WebServices.MechanicalTurk.Domain;
     using System.Configuration;
     using System.Xml.Serialization;
+    using System.Security.Cryptography;
+    using System.Diagnostics;
 
     class Program
     {
@@ -24,21 +28,30 @@ namespace PhotoCollector
             Dictionary<string, string> env = new Dictionary<string, string>() { { "QuestionText", "The girl is walking to the church" }, { "QuestionId", "1234" }, };
             string hitdataoriginal = File.ReadAllText("hitdata.xml");
             string hitdatatransformed = Transform(hitdataoriginal, env, false);
+
+            MTurkConfig config = new MTurkConfig(ConfigurationManager.AppSettings[MTurkServiceUrlSettingName], ConfigurationManager.AppSettings[AwsAccessKeyIdSettingName], ConfigurationManager.AppSettings[AwsSecretAccessKeySettingName]);
+            SimpleClient client = new SimpleClient(config);
+            QuestionForm questionForm = QuestionUtil.DeserializeQuestionForm(hitdatatransformed);
+            HIT hit = client.CreateHIT(null, "Find an Image for a given sentence.", "Find an Image for a given sentence.", null, questionForm, 0.10m, (long)TimeSpan.FromHours(4).TotalSeconds, null, (long)TimeSpan.FromDays(7).TotalSeconds, 1, null, null, null);
+            Process.Start(client.GetPreviewURL(hit.HITTypeId));
+
             //Console.WriteLine(hitdatatransformed);
-            CreateHIT createHit = new CreateHIT();
-            createHit.AWSAccessKeyId = ConfigurationManager.AppSettings[AwsAccessKeyIdSettingName];
-            createHit.Credential = ConfigurationManager.AppSettings[AwsSecretAccessKeySettingName];
-            CreateHITRequest request = new CreateHITRequest();
-            createHit.Request = new CreateHITRequest[] { request };
-            
-            XmlSerializer serializer = new XmlSerializer(typeof(QuestionForm));
-            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(hitdatatransformed));
-            QuestionForm questionForm = (QuestionForm)serializer.Deserialize(stream);
-            stream = new MemoryStream();
-            serializer.Serialize(stream, questionForm);
+            //CreateHIT createHit = new CreateHIT();
+            //createHit.AWSAccessKeyId = ConfigurationManager.AppSettings[AwsAccessKeyIdSettingName];
+            //CreateHITRequest request = new CreateHITRequest();
+            //createHit.Request = new CreateHITRequest[] { request };
+            //createHit.Timestamp = DateTime.UtcNow;
+            //CreateHITRequest1 request1 = new CreateHITRequest1();
+            //HMACSHA1 hmacSha1 = new HMACSHA1(Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings[AwsSecretAccessKeySettingName]));
+
+            //XmlSerializer serializer = new XmlSerializer(typeof(QuestionForm));
+            //MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(hitdatatransformed));
+            //QuestionForm questionForm = (QuestionForm)serializer.Deserialize(stream);
+            //stream = new MemoryStream();
+            //serializer.Serialize(stream, questionForm);
             //Console.WriteLine(Encoding.UTF8.GetString(stream.GetBuffer()));
-            AWSMechanicalTurkRequesterPortTypeClient client = new AWSMechanicalTurkRequesterPortTypeClient();
-            client.CreateHIT(createHit);
+            //AWSMechanicalTurkRequesterPortTypeClient client = new AWSMechanicalTurkRequesterPortTypeClient();
+            //client.CreateHIT(createHit);
         }
 
         static string Transform(string input, IDictionary<string, string> env, bool xmlEscapeValues)
