@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quantae", "Quantae\Quantae.csproj", "{E5AB8C40-42A7-4AFF-A269-F51DCB5FC02F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransliterationLibrary", "TransliterationLibrary\TransliterationLibrary.csproj", "{36AEA523-BB68-4761-B5E3-3ED14D643D62}"
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataValidator", "DataValidator\DataValidator.csproj", "{F712C5F6-CB1D-4431-85AA-9536FC5B91CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentenceMediaHandler", "SentenceMediaHandler\SentenceMediaHandler.csproj", "{CFABBBF4-119A-42C5-9BC7-7196DA990F4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoCollector", "PhotoCollector\PhotoCollector.csproj", "{98AA5AE5-B37A-4421-A113-C34F905CBCC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +145,16 @@ Global
 		{CFABBBF4-119A-42C5-9BC7-7196DA990F4D}.Release|Mixed Platforms.Build.0 = Release|x86
 		{CFABBBF4-119A-42C5-9BC7-7196DA990F4D}.Release|x86.ActiveCfg = Release|x86
 		{CFABBBF4-119A-42C5-9BC7-7196DA990F4D}.Release|x86.Build.0 = Release|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Debug|x86.ActiveCfg = Debug|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Debug|x86.Build.0 = Debug|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Release|Any CPU.ActiveCfg = Release|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Release|Mixed Platforms.Build.0 = Release|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Release|x86.ActiveCfg = Release|x86
+		{98AA5AE5-B37A-4421-A113-C34F905CBCC6}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
