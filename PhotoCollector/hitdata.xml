@@ -15,7 +15,7 @@
     <IsRequired>true</IsRequired>
     <QuestionContent>
       <Title>Upload an image depicting the sentence in question.</Title>
-      <Title>{{QuestionText}}.</Title>
+      <Title>{{QuestionText}}</Title>
       <List>
         <ListItem>The image should not have any copyright issues.</ListItem>
         <ListItem>The image should be ideally in color.</ListItem>

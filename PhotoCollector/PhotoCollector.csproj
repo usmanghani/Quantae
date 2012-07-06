@@ -11,7 +11,8 @@
     <RootNamespace>PhotoCollector</RootNamespace>
     <AssemblyName>PhotoCollector</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -36,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,12 +48,170 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestionForm.cs">
+      <DependentUpon>QuestionForm.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\AwsMTurkRequester\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="QuestionForm.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\AWSMechanicalTurkRequester.wsdl" />
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.ApproveAssignmentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.ApproveRejectedAssignmentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.AssignQualificationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.BlockWorkerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.ChangeHITTypeOfHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.CreateHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.CreateQualificationTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.DisableHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.DisposeHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.DisposeQualificationTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.ExtendHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.ForceExpireHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetAccountBalanceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetAssignmentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetAssignmentsForHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetBlockedWorkersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetBonusPaymentsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetFileUploadURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetHITsForQualificationTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetQualificationRequestsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetQualificationScoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetQualificationsForQualificationTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetQualificationTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetRequesterStatisticResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetRequesterWorkerStatisticResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetReviewableHITsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GetReviewResultsForHITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GrantBonusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.GrantQualificationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.HelpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.NotifyWorkersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.RegisterHITTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.RejectAssignmentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.RejectQualificationRequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.RevokeQualificationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.SearchHITsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.SearchQualificationTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.SendTestEventNotificationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.SetHITAsReviewingResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.SetHITTypeNotificationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.UnblockWorkerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.UpdateQualificationScoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\PhotoCollector.AwsMTurkRequester.UpdateQualificationTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="hitdata.xml" />
+    <Content Include="hitdata.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Service References\AwsMTurkRequester\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\AwsMTurkRequester\configuration.svcinfo" />
+    <None Include="Service References\AwsMTurkRequester\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AwsMTurkRequester\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Security;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace PhotoCollector
 {
+    using AwsMTurkRequester;
+    
     class Program
     {
         const string TemplateRegexPattern = "(?<variable>{{.*?}})";
@@ -16,7 +19,12 @@ namespace PhotoCollector
 
         static void Main(string[] args)
         {
-                        
+            Dictionary<string, string> env = new Dictionary<string, string>() { { "QuestionText", "The girl is walking to the church" }, { "QuestionId", "1234" }, };
+            string hitdataoriginal = File.ReadAllText("hitdata.xml");
+            string hitdatatransformed = Transform(hitdataoriginal, env, false);
+            Console.WriteLine(hitdatatransformed);
+            CreateHIT createHit = new CreateHIT();
+            
         }
 
         static string Transform(string input, IDictionary<string, string> env, bool xmlEscapeValues)
@@ -32,7 +40,8 @@ namespace PhotoCollector
                 string variableName = tag.Replace("{{", "").Replace("}}", "");
                 if (env.ContainsKey(variableName))
                 {
-                    sb.Replace(tag, env[variableName], m.Index, m.Length);
+                    string valueForVar = xmlEscapeValues ? SecurityElement.Escape(env[variableName]) : env[variableName];
+                    sb.Replace(tag, valueForVar, m.Index, m.Length);
                 }
 
                 m = regex.Match(sb.ToString(), m.Index + m.Length);
