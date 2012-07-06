@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<QuestionForm xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd">
+  <Overview>
+    <Title>Upload an image depicting the sentence in question.</Title>
+    <List>
+      <ListItem>The image should not have any copyright issues.</ListItem>
+      <ListItem>The image should be ideally in color.</ListItem>
+      <ListItem>The image should be of size 800 (Width) by 600 (Height).</ListItem>
+      <ListItem>The image should be between 1KB and 2MB in size.</ListItem>
+    </List>
+  </Overview>
+  <Question>
+    <QuestionIdentifier>{{QuestionId}}</QuestionIdentifier>
+    <DisplayName>Upload an image depicting the sentence in question.</DisplayName>
+    <IsRequired>true</IsRequired>
+    <QuestionContent>
+      <Title>Upload an image depicting the sentence in question.</Title>
+      <Title>{{QuestionText}}.</Title>
+      <List>
+        <ListItem>The image should not have any copyright issues.</ListItem>
+        <ListItem>The image should be ideally in color.</ListItem>
+        <ListItem>The image should be of size 800 (Width) by 600 (Height).</ListItem>
+        <ListItem>The image should be between 1KB and 2MB in size.</ListItem>
+      </List>
+    </QuestionContent>
+    <AnswerSpecification>
+      <FileUploadAnswer>
+        <MinFileSizeInBytes>1024</MinFileSizeInBytes>
+        <MaxFileSizeInBytes>2097152</MaxFileSizeInBytes>
+      </FileUploadAnswer>
+    </AnswerSpecification>
+  </Question>
+</QuestionForm>
