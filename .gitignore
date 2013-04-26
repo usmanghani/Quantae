@@ -59,4 +59,12 @@ packages/
 # visual studio database projects
 *.dbmdl
 
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+*.iws
+.DS_Store
+log/
 target/
