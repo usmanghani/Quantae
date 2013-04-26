@@ -23,16 +23,16 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="scala-compiler-2.9.1" level="application" />
-    <orderEntry type="library" name="Maven: org.mongodb:casbah-commons_2.9.1:2.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.9.1" level="project" />
-    <orderEntry type="library" name="Maven: com.github.nscala-time:nscala-time_2.9.1:0.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:casbah-commons_2.9.2:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.9.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.nscala-time:nscala-time_2.9.2:0.2.0" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.1" level="project" />
     <orderEntry type="library" name="Maven: org.joda:joda-convert:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.11.1" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:casbah-core_2.9.1:2.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:casbah-query_2.9.1:2.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:casbah-gridfs_2.9.1:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:casbah-core_2.9.2:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:casbah-query_2.9.2:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:casbah-gridfs_2.9.2:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.1.2" level="project" />
   </component>
